@@ -5,12 +5,13 @@ import Web3Modal from "web3modal"
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Link from 'next/link'
 import Moralis from "moralis"
+import InfiniteScroll from "react-infinite-scroll-component";
 
 
 import config from '../config';
 
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
-import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
+// import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
+// import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
 
 console.log(`${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
 
@@ -65,18 +66,27 @@ export default function Gallery ({ result, items }) {
   const [collectionNfts, setCollectionNfts] = useState([]);
   const [total, setTotal] = useState(0);
   const [loadingState, setLoadingState] = useState('not-loaded');
+  const [hasMore, setHasMore] = useState(true);
+  const [subset, setSubset] = useState([]);
+
 
   useEffect(() => {
     loadCollectionNFTs(result);
     setTotal(items);
-  })
+  }, []);
 
   async function loadCollectionNFTs(altItems) {
     setCollectionNfts(altItems);
+    setSubset(altItems.slice(0, 4));
     setLoadingState('loaded');
   }
-  
-  
+
+  const getMoreListings = () => {
+    console.log("subset before", subset);
+    setSubset(collectionNfts.slice(0, subset.length + 4));
+    console.log("subset after", subset);
+    console.log("getting more listings updated");
+  };
 
   return (
     <div className="flex-col justify-center">
@@ -95,8 +105,15 @@ export default function Gallery ({ result, items }) {
       <div className="flex justify-center">
       <div className="px-4" style={{ maxWidth: '1600px' }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+              <InfiniteScroll
+        dataLength={subset.length}
+        next={getMoreListings}
+        hasMore={hasMore}
+        loader={<h3> Collection Loading...</h3>}
+        endMessage={<h4>Nothing more to show</h4>}
+      >
           {
-            collectionNfts.map((nft, i) => (
+            subset.map((nft, i) => (
               <Link key={i} href={`collection/${nft.tokenAddr}/${nft.tokenId}`}>
       
               <div className="border border-gray-200 hover:border-black">
@@ -108,6 +125,7 @@ export default function Gallery ({ result, items }) {
                 
             ))
           }
+          </InfiniteScroll>
         </div>
       </div>
     </div>
