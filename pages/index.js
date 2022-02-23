@@ -122,8 +122,17 @@ export default function Gallery({ result, items }) {
                   key={i}
                   href={`collection/${nft.tokenAddr}/${nft.tokenId}`}
                 >
-                  <div className="border border-gray-200 hover:border-black">
-                    <img src={nft.image} />
+                  <div>
+                    <div className="rounded-full border border-gray-200 hover:border-black">
+                      <img
+                        alt=""
+                        loading="lazy"
+                        width="100%"
+                        height="100%"
+                        className="rounded-full"
+                        src={nft.image}
+                      />
+                    </div>
                     <p className="mt-0.5">{nft.name}</p>
                   </div>
                 </Link>
