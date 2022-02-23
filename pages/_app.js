@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
 
-      <div>
+      <div className="bg-slate-50">
         <Script src="https://unpkg.com/flowbite@1.3.3/dist/flowbite.js"></Script>
 
         <nav className="navbar navbar-expand-lg navbar-light relative flex w-full flex-wrap items-center justify-between bg-gray-900 py-3 text-gray-200 shadow-lg">

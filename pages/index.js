@@ -101,7 +101,7 @@ export default function Gallery({ result, items }) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <br />
-      <h1 className="text-center text-5xl font-semibold leading-normal subpixel-antialiased">
+      <h1 className="font-serif text-center text-5xl font-semibold leading-normal subpixel-antialiased">
         GALLERY
       </h1>
       <div className="flex content-center justify-center border text-center">
