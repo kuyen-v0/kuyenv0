@@ -145,12 +145,12 @@ export default function Gallery({ result, items }) {
                     <br />
                     <div>
                       <p className="mt-0.5 text-center">
-                        {parseNFTName(nft.name)[0]}
+                        {parseNFTName(nft.name)[0][0]}
                       </p>
                     </div>
                     <div>
                       <p className="mt-0.5 text-center">
-                        {parseNFTName(nft.name)[0]}
+                        {"NO . " + parseNFTName(nft.name)[0][1]}
                       </p>
                     </div>
                     <br />
