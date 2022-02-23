@@ -82,10 +82,10 @@ export default function Gallery ({ result, items }) {
   }
 
   const getMoreListings = () => {
-    console.log("subset before", subset);
+    if (subset.length === collectionNfts.length) {
+      setHasMore(false);
+    }
     setSubset(collectionNfts.slice(0, subset.length + 4));
-    console.log("subset after", subset);
-    console.log("getting more listings updated");
   };
 
   return (

@@ -8,8 +8,8 @@ const client = create({url: 'https://ipfs.infura.io:5001/api/v0'});
 
 import config from '../config';
 
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
-import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
+// import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
+// import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
 import createStatsCollector from 'mocha/lib/stats-collector'
 
 export default function CreateItem() { //this is the component being exported
