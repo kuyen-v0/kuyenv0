@@ -17,10 +17,10 @@ function MyApp({ Component, pageProps }) {
       <div>
         <Script src="https://unpkg.com/flowbite@1.3.3/dist/flowbite.js"></Script>
 
-        <nav class="navbar navbar-expand-lg navbar-light relative flex w-full flex-wrap items-center justify-between bg-gray-900 py-3 text-gray-200 shadow-lg">
-          <div class="container-fluid flex w-full flex-wrap items-center justify-between px-6">
+        <nav className="navbar navbar-expand-lg navbar-light relative flex w-full flex-wrap items-center justify-between bg-gray-900 py-3 text-gray-200 shadow-lg">
+          <div className="container-fluid flex w-full flex-wrap items-center justify-between px-6">
             <button
-              class="navbar-toggler border-0 bg-transparent py-2 px-2.5 text-gray-200 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0"
+              className="navbar-toggler border-0 bg-transparent py-2 px-2.5 text-gray-200 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent1"
@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }) {
                 focusable="false"
                 data-prefix="fas"
                 data-icon="bars"
-                class="w-6"
+                className="w-6"
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 448 512"
@@ -45,32 +45,32 @@ function MyApp({ Component, pageProps }) {
               </svg>
             </button>
             <div
-              class="collapse navbar-collapse flex-grow items-center"
+              className="collapse navbar-collapse flex-grow items-center"
               id="navbarSupportedContent1"
             >
-              <a class="pr-2 text-xl font-semibold text-white" href="/">
+              <a className="pr-2 text-xl font-semibold text-white" href="/">
                 Kuyen Marketplace
               </a>
-              <ul class="navbar-nav list-style-none mr-auto flex flex-col pl-0">
-                <li class="nav-item p-2">
+              <ul className="navbar-nav list-style-none mr-auto flex flex-col pl-0">
+                <li className="nav-item p-2">
                   <a
-                    class="nav-link text-white opacity-60 hover:opacity-80 focus:opacity-80"
+                    className="nav-link text-white opacity-60 hover:opacity-80 focus:opacity-80"
                     href="/"
                   >
                     Gallery
                   </a>
                 </li>
-                <li class="nav-item p-2">
+                <li className="nav-item p-2">
                   <a
-                    class="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
+                    className="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
                     href="create-item"
                   >
                     Sell Digital Asset
                   </a>
                 </li>
-                <li class="nav-item p-2">
+                <li className="nav-item p-2">
                   <a
-                    class="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
+                    className="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
                     href="my-assets"
                   >
                     My Digital Assets
@@ -79,10 +79,10 @@ function MyApp({ Component, pageProps }) {
               </ul>
             </div>
 
-            <div class="relative flex items-center">
-              <div class="dropdown relative">
+            <div className="relative flex items-center">
+              <div className="dropdown relative">
                 <a
-                  class="dropdown-toggle hidden-arrow flex items-center"
+                  className="dropdown-toggle hidden-arrow flex items-center"
                   href="/"
                   id="dropdownMenuButton2"
                   role="button"
@@ -90,7 +90,7 @@ function MyApp({ Component, pageProps }) {
                   aria-expanded="false"
                 ></a>
                 <ul
-                  class="dropdown-menu absolute left-auto right-0 z-50 float-left m-0 mt-1 hidden hidden min-w-max list-none rounded-lg border-none bg-white bg-clip-padding py-2 text-left text-base shadow-lg"
+                  className="dropdown-menu absolute left-auto right-0 z-50 float-left m-0 mt-1 hidden hidden min-w-max list-none rounded-lg border-none bg-white bg-clip-padding py-2 text-left text-base shadow-lg"
                   aria-labelledby="dropdownMenuButton2"
                 ></ul>
               </div>

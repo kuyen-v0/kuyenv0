@@ -107,6 +107,7 @@ export default function Gallery({ result, items }) {
           <span className="mb-3px text-l mx-8 block font-mono">owners</span>
         </div>
       </div>
+
       <div className="flex justify-center">
         <div className="px-4" style={{ maxWidth: "1600px" }}>
           <InfiniteScroll
@@ -116,6 +117,7 @@ export default function Gallery({ result, items }) {
             loader={<h3> Collection Loading...</h3>}
             endMessage={<h4></h4>}
           >
+            <br />
             <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
               {subset.map((nft, i) => (
                 <Link
@@ -123,17 +125,17 @@ export default function Gallery({ result, items }) {
                   href={`collection/${nft.tokenAddr}/${nft.tokenId}`}
                 >
                   <div>
-                    <div className="rounded-full border border-gray-200 hover:border-black">
+                    <div className="rounded-full border border-gray-200 hover:scale-105 hover:border-black">
                       <img
                         alt=""
                         loading="lazy"
                         width="100%"
                         height="100%"
-                        className="rounded-full"
+                        className="rounded-full hover:scale-105"
                         src={nft.image}
                       />
                     </div>
-                    <p className="mt-0.5">{nft.name}</p>
+                    <p className="mt-0.5 text-center">{nft.name}</p>
                   </div>
                 </Link>
               ))}
