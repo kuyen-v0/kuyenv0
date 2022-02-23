@@ -93,15 +93,18 @@ export default function Gallery({ result, items }) {
         <title>NFT Gallery</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <h2 className="text-center">GALLERY</h2>
+      <br />
+      <h1 className="text-center text-5xl font-semibold leading-normal subpixel-antialiased">
+        GALLERY
+      </h1>
       <div className="flex content-center justify-center border text-center">
-        <div className="box-sizing border-right border-gray-200 ">
-          <span className="mb-5px text-xl">8.0k</span>
-          <span className="mb-3px text-l mx-8 block">items</span>
+        <div className=" box-sizing border-right border border-gray-200">
+          <span className="mb-5px font-serif text-4xl">8.0k</span>
+          <span className="mb-3px text-l mx-8 block font-mono">items</span>
         </div>
-        <div className="border">
-          <span className="mb-5px text-xl">4.0k</span>
-          <span className="mb-3px text-l block">owners</span>
+        <div className="box-sizing border-right border border-gray-200">
+          <span className="mb-5px font-serif text-4xl">4.0k</span>
+          <span className="mb-3px text-l mx-8 block font-mono">owners</span>
         </div>
       </div>
       <div className="flex justify-center">
