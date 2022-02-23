@@ -87,6 +87,13 @@ export default function Gallery({ result, items }) {
     setSubset(collectionNfts.slice(0, subset.length + 4));
   };
 
+  const parseNFTName = (nftName) => {
+    const listOfWords = nftName.split("#");
+    const nftCollectionName = listOfWords.slice(0, 2);
+    const nftCollectionNumber = listOfWords.slice(2, 6);
+    return [nftCollectionName, nftCollectionNumber];
+  };
+
   return (
     <div className="flex-col justify-center">
       <Head>
@@ -135,7 +142,18 @@ export default function Gallery({ result, items }) {
                         src={nft.image}
                       />
                     </div>
-                    <p className="mt-0.5 text-center">{nft.name}</p>
+                    <br />
+                    <div>
+                      <p className="mt-0.5 text-center">
+                        {parseNFTName(nft.name)[0]}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mt-0.5 text-center">
+                        {parseNFTName(nft.name)[0]}
+                      </p>
+                    </div>
+                    <br />
                   </div>
                 </Link>
               ))}
