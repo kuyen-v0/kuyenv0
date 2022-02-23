@@ -3,6 +3,8 @@ import { ethers } from "ethers";
 import axios from "axios";
 import Web3Modal from "web3modal";
 import config from "../config";
+import Head from 'next/head'
+
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
 
@@ -53,6 +55,10 @@ export default function MyAssets() {
   }
   return (
     <div className="flex justify-center">
+      <Head>
+        <title>My Assets</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="p-4">
         <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
           {nfts.map((nft, i) => (

@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { create } from "ipfs-http-client";
 import { useRouter } from "next/router";
 import Web3Modal from "web3modal";
+import Head from "next/head";
 
 import config from "../config";
 
@@ -86,6 +87,10 @@ export default function CreateItem() {
 
   return (
     <div className="flex justify-center">
+      <Head>
+        <title>Sell Asset</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="flex w-1/2 flex-col pb-12">
         <input
           placeholder="Asset Name"

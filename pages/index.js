@@ -6,6 +6,7 @@ import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Link from "next/link";
 import Moralis from "moralis";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Head from "next/head";
 
 import config from "../config";
 
@@ -88,6 +89,10 @@ export default function Gallery({ result, items }) {
 
   return (
     <div className="flex-col justify-center">
+      <Head>
+        <title>NFT Gallery</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <h2 className="text-center">GALLERY</h2>
       <div className="flex content-center justify-center border text-center">
         <div className="box-sizing border-right border-gray-200 ">
