@@ -9,8 +9,10 @@ import Moralis from "moralis"
 
 import config from '../config';
 
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
-import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
+import GalleryItem from '../components/GalleryItem';
+
+// import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
+// import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
 
 console.log(`${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
 
@@ -98,14 +100,8 @@ export default function Gallery ({ result, items }) {
           {
             collectionNfts.map((nft, i) => (
               <Link key={i} href={`collection/${nft.tokenAddr}/${nft.tokenId}`}>
-      
-              <div className="border border-gray-200 hover:border-black">
-              
-              <img src={nft.image} />
-              <p className="mt-0.5">{nft.name}</p>
-            </div>
-            </Link>
-                
+                <a><GalleryItem nft={nft} /></a>
+              </Link>
             ))
           }
         </div>
