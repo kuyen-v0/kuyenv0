@@ -5,15 +5,16 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider>
+    <div>
       <Head>
         <link
           rel="stylesheet"
           href="https://unpkg.com/flowbite@1.3.3/dist/flowbite.min.css"
         />
+        <link href="../styles/output.css" rel="stylesheet"></link>
       </Head>
 
-      <div className="bg-slate-50">
+      <div>
         <Script src="https://unpkg.com/flowbite@1.3.3/dist/flowbite.js"></Script>
 
         <nav className="navbar navbar-expand-lg navbar-light relative flex w-full flex-wrap items-center justify-between bg-gray-900 py-3 text-gray-200 shadow-lg">
@@ -98,7 +99,7 @@ function MyApp({ Component, pageProps }) {
         </nav>
         <Component {...pageProps} />
       </div>
-    </ChakraProvider>
+    </div>
   );
 }
 

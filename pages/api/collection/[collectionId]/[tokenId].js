@@ -29,11 +29,25 @@ export default async function tokenMetadata(req, res) {
       title: idMeta.title
     }
 
-    
-
     item.image = "http://cloudflare-ipfs.com/ipfs/" + item.metadata.image.slice(7);
 
-    item.faction = item.metadata.attributes.filter(attribute => attribute.trait_type==="Faction");
+  
+    item.metadata.attributes = item.metadata.attributes.filter(attribute => attribute.value!=="None");
+    
+    item.faction = item.metadata.attributes.filter(attribute => attribute.trait_type==="Faction")[0].value;
+    item.palette = item.metadata.attributes.filter(attribute => attribute.trait_type==="Palette")[0].value.toLowerCase();
+    
+    item.palette = item.palette.replace(/ +/g, "");
+    item.background = 'bg-' + item.palette;
+
+    item.textcolor = (item.palette == 'angel' || 
+                      item.palette == 'greenvelvet' || 
+                      item.palette == 'taffy' || 
+                      item.palette == 'militant' || 
+                      item.palette == 'bluepill' ||
+                      item.palette == 'silvercharm' || 
+                      item.palette == 'whitenight' ||
+                      item.palette == 'obedience') ? 'text-white' : 'text-black';
 
     const options = { address: collection, token_id: tokenId, chain: "eth" };
     const tokenIdOwners = await Moralis.Web3API.token.getTokenIdOwners(options);
