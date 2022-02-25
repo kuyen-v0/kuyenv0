@@ -1,12 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import useSWR from "swr";
-import Link from "next/link";
-import Script from "next/script";
-import Head from "next/head";
-import classNames from "classnames";
-
-
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -25,33 +19,13 @@ export default function TokenData() {
     fetcher
   );
 
-  useEffect(() => {
-    
-  }, []);
+  useEffect(() => {}, []);
 
-  // if (data.error) return <div>{error.message}</div>
   if (!data) {
     return <div>Loading...</div>;
   }
-  //  console.log(data);
-  // }
-
-  console.log(data.palette);
-
-  const classStr = classNames(
-    "mx-auto my-0 box-border flex justify-around px-5 pt-7 pb-5 bg-coldblue",
-    "bg-" + data.palette
-  );
-
-  //const Page = styled.div`
-  //${tw`mx-auto my-0 box-border flex justify-around px-5 pt-7 pb-5`};
-  //background-color: ${theme`coldblue`};
-//`;
-
-  const backgroundColor = `bg-${data.palette}`;
 
   return (
-    
     <div className={`mx-auto my-0 box-border flex justify-around px-5 pt-7 pb-5 h-screen ${data.textcolor} ${data.background}`}>
       <div className="md:inline-block mx-7 my-1 block w-1/2 px-7 align-top md:sticky">
         <iframe
