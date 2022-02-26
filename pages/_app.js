@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }) {
       <Script src="https://unpkg.com/flowbite@1.3.3/dist/flowbite.js"></Script>
 
 
-    <nav className="border-b p-6">
+    <nav className="p-6">
     <p className="text-4xl font-bold">Kuyen Marketplace</p>
     <div className="flex mt-4">
       <Link href="/">

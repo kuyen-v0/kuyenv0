@@ -82,18 +82,13 @@ export default function Gallery ({ result, items }) {
 
   return (
     <div className="flex-col justify-center">
-      <h2 className="text-center">GALLERY</h2>
-      <div className="flex border text-center content-center justify-center">
-        <div className="box-sizing border-right border-gray-200 ">
-          <span className="mb-5px text-xl">8.0k</span>
-          <span className="block mb-3px text-l mx-8">items</span>
-        </div>
-        <div className="border">
-          <span className="mb-5px text-xl">4.0k</span>
-          <span className="block mb-3px text-l">owners</span>
-        </div>
 
+      <div className="flex items-end px-4">
+        <h2 className="text-2xl font-bold">GALLERY</h2>
+        <p className="mb-5px text-lg mx-2">8.0k items</p>
+        <p className="mb-5px text-lg">4.0k owners</p>
       </div>
+
       <div className="flex justify-center">
       <div className="px-4" style={{ maxWidth: '1600px' }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
