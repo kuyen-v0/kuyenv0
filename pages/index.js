@@ -109,7 +109,7 @@ export default function Gallery({ result, items }) {
       </div>
 
       <div className="flex justify-center">
-        <div className="px-4" style={{ maxWidth: "1600px" }}>
+        <div style={{ maxWidth: "1600px" }}>
           <InfiniteScroll
             dataLength={subset.length}
             next={getMoreListings}
@@ -118,7 +118,7 @@ export default function Gallery({ result, items }) {
             endMessage={<h4></h4>}
           >
             <br />
-            <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 p-4 gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
               {subset.map((nft, i) => (
                 <Link key={i} href={`collection/${nft.tokenAddr}/${nft.tokenId}`}>
                   <a><GalleryItem nft={nft} /></a>
