@@ -1,155 +1,108 @@
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import useSWR from 'swr'
-import Link from 'next/link'
-import Script from 'next/script'
-import Head from 'next/head'
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Box,
-} from '@chakra-ui/react'
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import useSWR from "swr";
 
 const fetcher = async (url) => {
-  const res = await fetch(url)
-  const data = await res.json()
+  const res = await fetch(url);
+  const data = await res.json();
 
   if (res.status !== 200) {
-    throw new Error(data.error)
+    throw new Error(data.error);
   }
-  return data
-}
+  return data;
+};
 
 export default function TokenData() {
-  
-
-  const { query } = useRouter()
+  const { query } = useRouter();
   const { data } = useSWR(
     `/api/collection/${query.collectionId}/${query.tokenId}`,
     fetcher
-  )
+  );
 
-  useEffect(() => {
-    import("flowbite");
-  }, []);
+  useEffect(() => {}, []);
 
-  //if (data.error) return <div>{error.message}</div>
-  if (!data) {return <div>Loading...</div>}
-  //  console.log(data);
-  //}
+  if (!data) {
+    return <div>Loading...</div>;
+  }
 
-  console.log(data);
-
-
-  return(
-    
-    
-    <div className="flex flex-wrap box-border justify-around max-w-3xl min-h-full pt-7 px-5 pb-5 mx-auto my-0">
-      <div className="block md:sticky md:inline-bloc md:w-1/2 align-top mx-7 my-1 w-3/12 px-7">
+  return (
+    <div className={`mx-auto my-0 box-border flex justify-around px-5 pt-7 pb-5 h-screen ${data.textcolor} ${data.background}`}>
+      <div className="md:inline-block mx-7 my-1 block w-1/2 px-7 align-top md:sticky">
         <iframe
           allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
           frameBorder="0"
-          height="500"
+          height="100%"
           sandbox="allow-scripts"
           src={`https://fyatlux-viewer.web.app?tokenID=${query.tokenId}`}
           width="100%"
-        >
-        </iframe>
-        <p>{data.title}</p>
+        ></iframe>
       </div>
 
-      
-
-      <div className="px-20 mt-1 w-1/2">
-        <div className="justify-start items-center mb-3">
-          <p className="text-5xl mb-2">{data.title}</p>
-          <div className="flex">
-          <span className="text-red-500">{data.faction[0].value}</span>
-          <p>&nbsp;owned by&nbsp;</p>
-          <a href={`https://opensea.io/${data.owner_name}`} target="_blank" title="View on OpenSea" className="text-red-500 no-underline hover:underline">
-            {data.owner_name}
-          </a>
+      <div className="mt-1 w-1/2 px-20">
+        <div className="mb-3 items-center justify-start">
+          <p className="mb-2 text-xs">Fyat Lux</p>
+          <p className="mb-2 text-4xl">{`#${query.tokenId}`}</p>
+          <div className="flex text-sm">
+            <span className="font-bold">{data.faction}</span>
+            <p>&nbsp;owned by&nbsp;</p>
+            <a
+              href={`https://opensea.io/${data.owner_name}`}
+              target="_blank"
+              title="View Owner on OpenSea"
+              className="italic no-underline hover:underline"
+            >
+              {data.owner_name}
+            </a>
           </div>
         </div>
 
-        <Accordion className="mb-3">
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box flex='1' textAlign='left'>
-          <p className="font-bold">Properties</p>
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-      {data.metadata.attributes.map((attribute, i) => (
-          <div key={i} className="border border-black content-center">
-            <div class="text-center text-sm text-blue-600">{attribute.trait_type}</div>
-            <div class="text-center">{attribute.value}</div>
+        <div className="mt-5">
+          <div class="font-bold text-2xl leading-24 mb-3">Properties</div>
+          <div className="rounded-12 py-1 bg-gray-4 mt-3 mb-3 overflow-hidden">
+            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {data.metadata.attributes.map((attribute, i) => (
+                <li key={i} className="w-full flex items-center content-center py-2 px-3 bg-white bg-opacity-10">
+                  <img className="w-8 pr-2" src={`/filtericons/Black/${attribute.trait_type}.png`} />
+                  <div>
+                    <p className="flex items-center uppercase opacity-60 font-mono text-2xs tracking-wider mr-auto inline-block">
+                      <span className="pt-px">
+                        {attribute.trait_type}:
+                      </span>
+                    </p>
+                    <p className="ml-auto text-xs font-600 uppercase">{attribute.value}</p>
+                    
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-        ))}
+        </div>
 
-      </div>
+        <div className="flex pt-5">
+          <button class="mr-2 mb-2 rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+            <a
+              href={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`}
+              target="_blank"
+              title="View on OpenSea"
+              className="back-green button view-opensea"
+            >
+              VIEW ON OPENSEA
+            </a>
+          </button>
+          <button class="mr-2 mb-2 rounded-lg bg-purple-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+            <a
+              href={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`}
+              target="_blank"
+              title="View Activity on Etherscan"
+              className="back-green button view-etherscan"
+            >
+              VIEW ON ETHERSCAN
+            </a>
+          </button>
+        </div>
+
         
-    </AccordionPanel>
-  </AccordionItem>
-
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box flex='1' textAlign='left'>
-          <p className="font-bold">Details</p>
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-
-
-      <div className="pt-5">
-      <div className="flex justify-between">
-        Token Address
-        <span>
-          <a href={`https://etherscan.io/token/${query.collectionId}`} target="_blank" title="View on Etherscan" className="text-blue-500 no-underline hover:underline">
-            {data.contract}
-          </a>
-        </span>
       </div>
-      <div className="flex justify-between">
-        Token ID
-        <span>
-          <a href={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`} target="_blank" title="View Activity on Etherscan" className="text-blue-500 no-underline hover:underline">
-            {query.tokenId}
-          </a>
-        </span>
-      </div>
-      </div>
-    </AccordionPanel>
-  </AccordionItem>
-</Accordion>
-      
-      
-      <div className="pt-5">
-      <button class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-        <a href={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`} target="_blank" title="View on OpenSea" className="back-green button view-opensea">
-          VIEW ON OPENSEA
-        </a>
-      </button>
-        
-
-      </div>
-
-
-      </div>
-
-      
     </div>
-  )
-
-
+  );
 }
