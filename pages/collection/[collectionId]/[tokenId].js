@@ -57,7 +57,7 @@ export default function TokenData() {
         </div>
 
         <div className="mt-5">
-          <div class="font-bold text-2xl leading-24 mb-3">Properties</div>
+          <div className="font-bold text-2xl leading-24 mb-3">Properties</div>
           <div className="rounded-12 py-1 bg-gray-4 mt-3 mb-3 overflow-hidden">
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {data.metadata.attributes.map((attribute, i) => (
@@ -79,7 +79,7 @@ export default function TokenData() {
         </div>
 
         <div className="flex pt-5">
-          <button class="mr-2 mb-2 rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+          <button className="mr-2 mb-2 rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
             <a
               href={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`}
               target="_blank"
@@ -89,7 +89,7 @@ export default function TokenData() {
               VIEW ON OPENSEA
             </a>
           </button>
-          <button class="mr-2 mb-2 rounded-lg bg-purple-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+          <button className="mr-2 mb-2 rounded-lg bg-purple-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
             <a
               href={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`}
               target="_blank"

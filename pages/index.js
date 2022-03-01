@@ -8,7 +8,7 @@ import Moralis from "moralis";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 
-import GalleryItem from '../components/GalleryItem';
+import GalleryItem from "../components/GalleryItem";
 
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
@@ -95,8 +95,7 @@ export default function Gallery({ result, items }) {
   };
 
   return (
-    <div className="flex-col justify-center">
-
+    <div className="main-body-img flex-col justify-center">
       <Head>
         <title>NFT Gallery</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -104,7 +103,7 @@ export default function Gallery({ result, items }) {
 
       <div className="flex items-end px-4">
         <h2 className="text-2xl font-bold">GALLERY</h2>
-        <p className="mb-5px text-lg mx-2">8.0k items</p>
+        <p className="mb-5px mx-2 text-lg">8.0k items</p>
         <p className="mb-5px text-lg">4.0k owners</p>
       </div>
 
@@ -118,10 +117,15 @@ export default function Gallery({ result, items }) {
             endMessage={<h4></h4>}
           >
             <br />
-            <div className="grid grid-cols-1 p-4 gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 p-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
               {subset.map((nft, i) => (
-                <Link key={i} href={`collection/${nft.tokenAddr}/${nft.tokenId}`}>
-                  <a><GalleryItem nft={nft} /></a>
+                <Link
+                  key={i}
+                  href={`collection/${nft.tokenAddr}/${nft.tokenId}`}
+                >
+                  <a>
+                    <GalleryItem nft={nft} />
+                  </a>
                 </Link>
               ))}
             </div>

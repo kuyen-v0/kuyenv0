@@ -961,7 +961,7 @@ input:checked + .toggle-bg {
   --font-family-yukarimobile-regular: "Yukarimobile-Regular", Helvetica;
 }
 
-.header-button {
+/* .header-button {
   color: var(--white);
   font-family: var(--font-family-space_grotesk);
   font-size: 23px;
@@ -972,6 +972,11 @@ input:checked + .toggle-bg {
   min-width: 166px;
   white-space: nowrap;
 }
+
+.main-body-img {
+    background-image: url("https://farooqashar.github.io/images/AsharFarooq.JPG");
+    background-color: #ec0000;
+} */
 
 .input-group:not(.has-validation)
   > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
