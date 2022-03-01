@@ -8,7 +8,7 @@ import Moralis from "moralis";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 
-import config from "../config";
+import GalleryItem from '../components/GalleryItem';
 
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
@@ -76,7 +76,7 @@ export default function Gallery({ result, items }) {
 
   async function loadCollectionNFTs(altItems) {
     setCollectionNfts(altItems);
-    setSubset(altItems.slice(0, 4));
+    setSubset(altItems.slice());
     setLoadingState("loaded");
   }
 
@@ -96,27 +96,20 @@ export default function Gallery({ result, items }) {
 
   return (
     <div className="flex-col justify-center">
+
       <Head>
         <title>NFT Gallery</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <br />
-      <h1 className="font-serif text-center text-5xl font-semibold leading-normal subpixel-antialiased">
-        GALLERY
-      </h1>
-      <div className="flex content-center justify-center border text-center">
-        <div className=" box-sizing border-right border border-gray-200">
-          <span className="mb-5px font-serif text-4xl">8.0k</span>
-          <span className="mb-3px text-l mx-8 block font-mono">items</span>
-        </div>
-        <div className="box-sizing border-right border border-gray-200">
-          <span className="mb-5px font-serif text-4xl">4.0k</span>
-          <span className="mb-3px text-l mx-8 block font-mono">owners</span>
-        </div>
+
+      <div className="flex items-end px-4">
+        <h2 className="text-2xl font-bold">GALLERY</h2>
+        <p className="mb-5px text-lg mx-2">8.0k items</p>
+        <p className="mb-5px text-lg">4.0k owners</p>
       </div>
 
       <div className="flex justify-center">
-        <div className="px-4" style={{ maxWidth: "1600px" }}>
+        <div style={{ maxWidth: "1600px" }}>
           <InfiniteScroll
             dataLength={subset.length}
             next={getMoreListings}
@@ -125,36 +118,10 @@ export default function Gallery({ result, items }) {
             endMessage={<h4></h4>}
           >
             <br />
-            <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 p-4 gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
               {subset.map((nft, i) => (
-                <Link
-                  key={i}
-                  href={`collection/${nft.tokenAddr}/${nft.tokenId}`}
-                >
-                  <div>
-                    <div className="rounded-full border border-gray-200 hover:scale-105 hover:border-black">
-                      <img
-                        alt=""
-                        loading="lazy"
-                        width="100%"
-                        height="100%"
-                        className="rounded-full hover:scale-105"
-                        src={nft.image}
-                      />
-                    </div>
-                    <br />
-                    <div>
-                      <p className="mt-0.5 text-center font-mono font-light">
-                        {parseNFTName(nft.name)[0][0]}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="mt-0.5 text-center font-serif text-lg font-semibold subpixel-antialiased">
-                        {"NO. " + parseNFTName(nft.name)[0][1]}
-                      </p>
-                    </div>
-                    <br />
-                  </div>
+                <Link key={i} href={`collection/${nft.tokenAddr}/${nft.tokenId}`}>
+                  <a><GalleryItem nft={nft} /></a>
                 </Link>
               ))}
             </div>
