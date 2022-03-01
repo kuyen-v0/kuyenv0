@@ -57,7 +57,7 @@ function MyApp({ Component, pageProps }) {
                     className="nav-link text-white opacity-60 hover:opacity-80 focus:opacity-80"
                     href="/"
                   >
-                    <button class="bg-blue-500 py-2 px-4 font-bold text-black hover:bg-blue-700">
+                    <button class="relative bg-blue-500 py-2 px-4 font-bold text-black shadow-2xl duration-300 hover:scale-105 hover:bg-blue-700">
                       Gallery
                     </button>
                   </a>
@@ -67,7 +67,7 @@ function MyApp({ Component, pageProps }) {
                     className="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
                     href="create-item"
                   >
-                    <button class="bg-blue-500 py-2 px-4 font-bold text-black hover:bg-blue-700">
+                    <button class="relative bg-blue-500 py-2 px-4 font-bold text-black shadow-2xl duration-300 hover:scale-105 hover:bg-blue-700">
                       Sell Digital Asset
                     </button>
                   </a>
@@ -77,7 +77,7 @@ function MyApp({ Component, pageProps }) {
                     className="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
                     href="my-assets"
                   >
-                    <button class="bg-blue-500 py-2 px-4 font-bold text-black hover:bg-blue-700">
+                    <button class="relative bg-blue-500 py-2 px-4 font-bold text-black shadow-2xl duration-300 hover:scale-105 hover:bg-blue-700">
                       My Digital Assets
                     </button>
                   </a>
