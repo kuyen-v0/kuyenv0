@@ -961,6 +961,18 @@ input:checked + .toggle-bg {
   --font-family-yukarimobile-regular: "Yukarimobile-Regular", Helvetica;
 }
 
+.header-button {
+  color: var(--white);
+  font-family: var(--font-family-space_grotesk);
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 23px;
+  min-height: 33px;
+  min-width: 166px;
+  white-space: nowrap;
+}
+
 .input-group:not(.has-validation)
   > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
   border-top-right-radius: 0;

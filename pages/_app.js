@@ -57,7 +57,9 @@ function MyApp({ Component, pageProps }) {
                     className="nav-link text-white opacity-60 hover:opacity-80 focus:opacity-80"
                     href="/"
                   >
-                    Gallery
+                    <button class="bg-blue-500 py-2 px-4 font-bold text-black hover:bg-blue-700">
+                      Gallery
+                    </button>
                   </a>
                 </li>
                 <li className="nav-item p-2">
@@ -65,7 +67,9 @@ function MyApp({ Component, pageProps }) {
                     className="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
                     href="create-item"
                   >
-                    Sell Digital Asset
+                    <button class="bg-blue-500 py-2 px-4 font-bold text-black hover:bg-blue-700">
+                      Sell Digital Asset
+                    </button>
                   </a>
                 </li>
                 <li className="nav-item p-2">
@@ -73,7 +77,9 @@ function MyApp({ Component, pageProps }) {
                     className="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
                     href="my-assets"
                   >
-                    My Digital Assets
+                    <button class="bg-blue-500 py-2 px-4 font-bold text-black hover:bg-blue-700">
+                      My Digital Assets
+                    </button>
                   </a>
                 </li>
               </ul>
