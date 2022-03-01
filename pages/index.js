@@ -95,7 +95,7 @@ export default function Gallery({ result, items }) {
   };
 
   return (
-    <div className="main-body-img flex-col justify-center">
+    <div className="flex-col justify-center">
       <Head>
         <title>NFT Gallery</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
