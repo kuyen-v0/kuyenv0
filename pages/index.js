@@ -127,14 +127,14 @@ export default function Gallery({ result, items }) {
         <p className="mb-5px text-lg text-yellow-300">4.0k owners</p>
       </div>
       <br />
-      <div class="ml-4 mr-4 flex items-center justify-start">
+      <div className="ml-4 mr-4 flex items-center justify-start">
         <form onSubmit={handleSearchFilter}>
           <div className="flex rounded border-2">
             <input
               type="text"
               id="filter"
               name="filter"
-              class="w-80 px-4 py-2"
+              className="w-80 px-4 py-2"
               placeholder="Search..."
             />
             <button
