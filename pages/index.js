@@ -95,6 +95,23 @@ export default function Gallery({ result, items }) {
     setSubset(filteredArray);
   };
 
+  const handleDropdownFilter = (e) => {
+    const selectedValue = e.value;
+
+    if (selectedValue === "lowhigh") {
+      collectionNfts.sort((a, b) => {
+        return a.price - b.price;
+      });
+      setSubset(collectionNfts);
+    } else if (selectedValue === "highlow") {
+      collectionNfts.sort((a, b) => {
+        return b.price - a.price;
+      });
+    } else {
+      setSubset(collectionNfts.reverse());
+    }
+  };
+
   return (
     <div className="flex-col justify-center">
       <Head>
@@ -110,7 +127,7 @@ export default function Gallery({ result, items }) {
         <p className="mb-5px text-lg text-yellow-300">4.0k owners</p>
       </div>
       <br />
-      <div class="ml-4 flex items-center justify-start">
+      <div class="ml-4 mr-4 flex items-center justify-start">
         <form onSubmit={handleSearchFilter}>
           <div className="flex rounded border-2">
             <input
@@ -135,6 +152,19 @@ export default function Gallery({ result, items }) {
             </button>
           </div>
         </form>
+
+        <div className="ml-6 flex rounded border-2">
+          <select
+            className="form-select dropdown relative block w-full w-80 px-4 py-2"
+            name="price"
+            id="price"
+            onChange={handleDropdownFilter}
+          >
+            <option value="lowhigh">Price: Low To High</option>
+            <option value="highLow">Price: High To Low</option>
+            <option value="recentlyListed">Recently Listed</option>
+          </select>
+        </div>
       </div>
 
       <div className="flex justify-center">
