@@ -100,7 +100,8 @@ export default function Gallery({ result, items }) {
         <title>NFT Gallery</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-
+      <br />
+      <br />
       <div className="flex items-end px-4">
         <h2 className="text-2xl font-bold text-yellow-300">GALLERY</h2>
         <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
