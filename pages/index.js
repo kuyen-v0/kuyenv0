@@ -109,6 +109,17 @@ export default function Gallery({ result, items }) {
         <p className="mb-5px text-lg text-yellow-300">4.0k owners</p>
       </div>
 
+      <div class="relative mb-3 flex w-full flex-wrap">
+        <span class="text-blueGray-300 absolute absolute z-10 w-8 items-center justify-center rounded bg-transparent py-3 pl-3 text-center text-base font-normal leading-snug">
+          <i class="fas fa-lock"></i>
+        </span>
+        <input
+          type="text"
+          placeholder="Search"
+          class="placeholder-blueGray-300 text-blueGray-600 relative rounded border-0 bg-white bg-white px-3 py-3 pl-10 text-sm shadow outline-none focus:outline-none focus:ring"
+        />
+      </div>
+
       <div className="flex justify-center">
         <div style={{ maxWidth: "1600px" }}>
           <InfiniteScroll
