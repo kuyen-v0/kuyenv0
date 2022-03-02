@@ -68,7 +68,6 @@ export default function Gallery({ result, items }) {
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [hasMore, setHasMore] = useState(true);
   const [subset, setSubset] = useState([]);
-  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     loadCollectionNFTs(result);
@@ -88,16 +87,12 @@ export default function Gallery({ result, items }) {
     setSubset(collectionNfts.slice(0, subset.length + 4));
   };
 
-  const parseNFTName = (nftName) => {
-    const listOfWords = nftName.split("#");
-    const nftCollectionName = listOfWords.slice(0, 2);
-    const nftCollectionNumber = listOfWords.slice(2, 6);
-    return [nftCollectionName, nftCollectionNumber];
-  };
-
-  const handleFilter = (e) => {
+  const handleSearchFilter = (e) => {
     e.preventDefault();
-    setFilter(e.target.filter.value);
+    const filteredArray = collectionNfts.filter((nft) =>
+      nft.name.split("#")[1].includes(e.target.filter.value)
+    );
+    setSubset(filteredArray);
   };
 
   return (
@@ -116,7 +111,7 @@ export default function Gallery({ result, items }) {
       </div>
       <br />
       <div class="ml-4 flex items-center justify-start">
-        <form onSubmit={handleFilter}>
+        <form onSubmit={handleSearchFilter}>
           <div className="flex rounded border-2">
             <input
               type="text"
