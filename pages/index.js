@@ -22,7 +22,7 @@ const web3 = createAlchemyWeb3(
 // const app_id = process.env.MORALIS_APP_ID;
 // Moralis.start({server_url, app_id});
 
-const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"];
+const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"]
 
 export async function getStaticProps() {
   const holders = [...Array(30).keys()];
