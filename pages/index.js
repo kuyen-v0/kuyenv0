@@ -102,9 +102,10 @@ export default function Gallery({ result, items }) {
       </Head>
 
       <div className="flex items-end px-4">
-        <h2 className="text-2xl font-bold">GALLERY</h2>
-        <p className="mb-5px mx-2 text-lg">8.0k items</p>
-        <p className="mb-5px text-lg">4.0k owners</p>
+        <h2 className="text-2xl font-bold text-yellow-300">GALLERY</h2>
+        <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
+        <p className="mb-5px mx-2 text-lg text-yellow-300">8.0k items</p>
+        <p className="mb-5px text-lg text-yellow-300">4.0k owners</p>
       </div>
 
       <div className="flex justify-center">
