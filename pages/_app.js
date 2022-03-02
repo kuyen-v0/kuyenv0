@@ -21,35 +21,39 @@ function MyApp({ Component, pageProps }) {
         <nav className="navbar-expand-lg relative flex w-full flex-wrap items-center justify-between">
           <div className="container-fluid flex w-full flex-wrap items-center justify-between px-6">
             <div
-              className="collapse navbar-collapse flex-grow items-center"
+              className="collapse navbar-collapse flex-grow place-content-between items-center"
               id="navbarSupportedContent1"
             >
-              <a className="pr-2 text-xl font-semibold text-white" href="/">
-                FYAT LUX
-              </a>
-              <ul className="navbar-nav list-style-none mr-auto flex flex-col pl-0">
-                <li className="nav-item p-2">
-                  <a className="nav-link text-white" href="/">
-                    <button className="bg-white py-3 px-8 font-bold text-black duration-200 hover:scale-110">
-                      Gallery
-                    </button>
-                  </a>
-                </li>
-                <li className="nav-item p-2">
-                  <a className="nav-link p-0 text-white" href="create-item">
-                    <button className="bg-white py-3 px-8 font-bold text-black duration-200 hover:scale-110">
-                      Sell Digital Asset
-                    </button>
-                  </a>
-                </li>
-                <li className="nav-item p-2">
-                  <a className="nav-link p-0 text-white" href="my-assets">
-                    <button className="bg-yellow-400 py-3 px-8 font-bold text-black duration-200 hover:scale-110">
-                      My Digital Assets
-                    </button>
-                  </a>
-                </li>
-              </ul>
+              <div>
+                <a className="pr-2 text-xl font-semibold text-white" href="/">
+                  FYAT LUX
+                </a>
+              </div>
+              <div>
+                <ul className="navbar-nav list-style-none mr-auto flex flex-col pl-0">
+                  <li className="nav-item p-2">
+                    <a className="nav-link text-white" href="/">
+                      <button className="bg-white py-3 px-8 font-bold text-black duration-200 hover:scale-110">
+                        Gallery
+                      </button>
+                    </a>
+                  </li>
+                  <li className="nav-item p-2">
+                    <a className="nav-link p-0 text-white" href="create-item">
+                      <button className="bg-white py-3 px-8 font-bold text-black duration-200 hover:scale-110">
+                        Sell Digital Asset
+                      </button>
+                    </a>
+                  </li>
+                  <li className="nav-item p-2">
+                    <a className="nav-link p-0 text-white" href="my-assets">
+                      <button className="bg-yellow-400 py-3 px-8 font-bold text-black duration-200 hover:scale-110">
+                        My Digital Assets
+                      </button>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div className="relative flex items-center">
