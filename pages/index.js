@@ -68,6 +68,7 @@ export default function Gallery({ result, items }) {
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [hasMore, setHasMore] = useState(true);
   const [subset, setSubset] = useState([]);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     loadCollectionNFTs(result);
@@ -94,6 +95,11 @@ export default function Gallery({ result, items }) {
     return [nftCollectionName, nftCollectionNumber];
   };
 
+  const handleFilter = (e) => {
+    e.preventDefault();
+    setFilter(e.target.filter.value);
+  };
+
   return (
     <div className="flex-col justify-center">
       <Head>
@@ -108,16 +114,32 @@ export default function Gallery({ result, items }) {
         <p className="mb-5px mx-2 text-lg text-yellow-300">8.0k items</p>
         <p className="mb-5px text-lg text-yellow-300">4.0k owners</p>
       </div>
-
-      <div class="relative mb-3 flex w-full flex-wrap">
-        <span class="text-blueGray-300 absolute absolute z-10 w-8 items-center justify-center rounded bg-transparent py-3 pl-3 text-center text-base font-normal leading-snug">
-          <i class="fas fa-lock"></i>
-        </span>
-        <input
-          type="text"
-          placeholder="Search"
-          class="placeholder-blueGray-300 text-blueGray-600 relative rounded border-0 bg-white bg-white px-3 py-3 pl-10 text-sm shadow outline-none focus:outline-none focus:ring"
-        />
+      <br />
+      <div class="ml-4 flex items-center justify-start">
+        <form onSubmit={handleFilter}>
+          <div className="flex rounded border-2">
+            <input
+              type="text"
+              id="filter"
+              name="filter"
+              class="w-80 px-4 py-2"
+              placeholder="Search..."
+            />
+            <button
+              type="submit"
+              className="flex items-center justify-center border-l px-4"
+            >
+              <svg
+                className="h-6 w-6 text-gray-600"
+                fill="yellow"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+              </svg>
+            </button>
+          </div>
+        </form>
       </div>
 
       <div className="flex justify-center">
