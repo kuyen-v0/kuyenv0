@@ -5,7 +5,7 @@ import { realDB } from '../../../firebase/initFirebase'
 
 export default function handler(req, res) {
 
-  if (req.method === "POST") {
+  if (req.method === "GET") {
     const collection = req.query.collectionId;
 
     const docRef = ref(realDB, collection + "/NFTData");
@@ -32,7 +32,12 @@ export default function handler(req, res) {
               res.status(200).json(item);
             });
         });
+
+      const snapshot = await userCollectionRef.get();
+      return snapshot.docs.map(doc => doc.data());
       });
+
+      return res.status(200).json(items);
     } else {
       let traitCounts = {};
 
@@ -140,14 +145,8 @@ export default function handler(req, res) {
       }
     }
 
-
-    
-
-    //else just get owner and update database
-
-    return res.status(200).json(traitCounts);
-  } else if (req.method === "GET") {
-    
+    //
+    return res.status(200).json(items);
   }
 
   
