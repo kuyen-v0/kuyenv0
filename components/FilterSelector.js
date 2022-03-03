@@ -1,16 +1,7 @@
 import { useState } from "react";
 import FilterCheckboxes from "./FilterCheckboxes";
 
-const filters = [
-  {
-    filterName: 'Faction',
-    accessor: ['metadata', 'attributes', '13', 'value'],
-    filterType: {
-      type: 'checkboxes',
-      options: ['Fiat', 'Lux'],
-    }
-  }
-]
+import { FILTERS } from "../pages/nft-data";
 
 export function FilterOption({filter}) {
   let [hidden, setHidden] = useState(true);
@@ -24,7 +15,7 @@ export function FilterOption({filter}) {
         <h2 className="flex align-bottom">
           <button className="relative flex justify-between items-center py-3 w-full text-white" onClick={toggleHidden}>
             <div>{filter.filterName}</div>
-            <div className='mx-2'>{hidden ? '+' : '-'}</div>
+            <div className='mx-2'><b>{hidden ? '+' : '-'}</b></div>
           </button>
         </h2>
       </div>
@@ -37,6 +28,7 @@ export function FilterOption({filter}) {
 }
 
 export default function FilterSelector() {
+  const filters = JSON.parse(FILTERS);
   const filterOptions = filters.map(filter => <FilterOption filter={filter} key={filter.filterName} />);
   return (
     <div display='flex-col text-white'>
