@@ -2,10 +2,11 @@ import "../styles/globals.css";
 import Script from "next/script";
 import Head from "next/head";
 import { ChakraProvider } from "@chakra-ui/react";
+import Image from "next/image";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <div>
+    <div className="main-body-img">
       <Head>
         <link
           rel="stylesheet"
@@ -17,66 +18,42 @@ function MyApp({ Component, pageProps }) {
       <div>
         <Script src="https://unpkg.com/flowbite@1.3.3/dist/flowbite.js"></Script>
 
-        <nav className="navbar navbar-expand-lg navbar-light relative flex w-full flex-wrap items-center justify-between bg-gray-900 py-3 text-gray-200 shadow-lg">
+        <nav className="navbar-expand-lg relative flex w-full flex-wrap items-center justify-between">
           <div className="container-fluid flex w-full flex-wrap items-center justify-between px-6">
-            <button
-              className="navbar-toggler border-0 bg-transparent py-2 px-2.5 text-gray-200 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent1"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="bars"
-                className="w-6"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 448 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
-                ></path>
-              </svg>
-            </button>
             <div
-              className="collapse navbar-collapse flex-grow items-center"
+              className="collapse navbar-collapse flex-grow place-content-between items-center"
               id="navbarSupportedContent1"
             >
-              <a className="pr-2 text-xl font-semibold text-white" href="/">
-                Kuyen Marketplace
-              </a>
-              <ul className="navbar-nav list-style-none mr-auto flex flex-col pl-0">
-                <li className="nav-item p-2">
-                  <a
-                    className="nav-link text-white opacity-60 hover:opacity-80 focus:opacity-80"
-                    href="/"
-                  >
-                    Gallery
-                  </a>
-                </li>
-                <li className="nav-item p-2">
-                  <a
-                    className="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
-                    href="create-item"
-                  >
-                    Sell Digital Asset
-                  </a>
-                </li>
-                <li className="nav-item p-2">
-                  <a
-                    className="nav-link p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80"
-                    href="my-assets"
-                  >
-                    My Digital Assets
-                  </a>
-                </li>
-              </ul>
+              <div>
+                <a className="pr-2 text-xl font-semibold text-white" href="/">
+                  FYAT LUX
+                </a>
+              </div>
+              <div>
+                <ul className="navbar-nav list-style-none mr-auto flex flex-col pl-0">
+                  <li className="nav-item p-2">
+                    <a className="nav-link text-white" href="/">
+                      <button className="bg-white py-3 px-8 font-bold text-black duration-200 hover:scale-110">
+                        Gallery
+                      </button>
+                    </a>
+                  </li>
+                  <li className="nav-item p-2">
+                    <a className="nav-link p-0 text-white" href="create-item">
+                      <button className="bg-white py-3 px-8 font-bold text-black duration-200 hover:scale-110">
+                        Sell Digital Asset
+                      </button>
+                    </a>
+                  </li>
+                  <li className="nav-item p-2">
+                    <a className="nav-link p-0 text-white" href="my-assets">
+                      <button className="bg-yellow-400 py-3 px-8 font-bold text-black duration-200 hover:scale-110">
+                        My Digital Assets
+                      </button>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div className="relative flex items-center">

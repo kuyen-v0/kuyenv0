@@ -26,8 +26,10 @@ export default function TokenData() {
   }
 
   return (
-    <div className={`mx-auto my-0 box-border flex justify-around px-5 pt-7 pb-5 h-screen ${data.textcolor} ${data.background}`}>
-      <div className="md:inline-block mx-7 my-1 block w-1/2 px-7 align-top md:sticky">
+    <div
+      className={`mx-auto my-0 box-border flex h-screen justify-around px-5 pt-7 pb-5 ${data.textcolor} ${data.background}`}
+    >
+      <div className="mx-7 my-1 block w-1/2 px-7 align-top md:sticky md:inline-block">
         <iframe
           allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
           frameBorder="0"
@@ -57,20 +59,25 @@ export default function TokenData() {
         </div>
 
         <div className="mt-5">
-          <div class="font-bold text-2xl leading-24 mb-3">Properties</div>
-          <div className="rounded-12 py-1 bg-gray-4 mt-3 mb-3 overflow-hidden">
+          <div className="leading-24 mb-3 text-2xl font-bold">Properties</div>
+          <div className="rounded-12 bg-gray-4 mt-3 mb-3 overflow-hidden py-1">
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {data.metadata.attributes.map((attribute, i) => (
-                <li key={i} className="w-full flex items-center content-center py-2 px-3 bg-white bg-opacity-10">
-                  <img className="w-8 pr-2" src={`/filtericons/Black/${attribute.trait_type}.png`} />
+                <li
+                  key={i}
+                  className="flex w-full content-center items-center bg-white bg-opacity-10 py-2 px-3"
+                >
+                  <img
+                    className="w-8 pr-2"
+                    src={`/filtericons/Black/${attribute.trait_type}.png`}
+                  />
                   <div>
-                    <p className="flex items-center uppercase opacity-60 font-mono text-2xs tracking-wider mr-auto inline-block">
-                      <span className="pt-px">
-                        {attribute.trait_type}:
-                      </span>
+                    <p className="text-2xs mr-auto inline-block flex items-center font-mono uppercase tracking-wider opacity-60">
+                      <span className="pt-px">{attribute.trait_type}:</span>
                     </p>
-                    <p className="ml-auto text-xs font-600 uppercase">{attribute.value}</p>
-                    
+                    <p className="font-600 ml-auto text-xs uppercase">
+                      {attribute.value}
+                    </p>
                   </div>
                 </li>
               ))}
@@ -79,7 +86,7 @@ export default function TokenData() {
         </div>
 
         <div className="flex pt-5">
-          <button class="mr-2 mb-2 rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+          <button className="mr-2 mb-2 rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
             <a
               href={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`}
               target="_blank"
@@ -89,7 +96,7 @@ export default function TokenData() {
               VIEW ON OPENSEA
             </a>
           </button>
-          <button class="mr-2 mb-2 rounded-lg bg-purple-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+          <button className="mr-2 mb-2 rounded-lg bg-purple-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
             <a
               href={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`}
               target="_blank"
@@ -100,8 +107,6 @@ export default function TokenData() {
             </a>
           </button>
         </div>
-
-        
       </div>
     </div>
   );

@@ -11,8 +11,8 @@ export default function GalleryItem({nft}) {
         </div>
       </div>
       <div className="flex-col align-items-center">
-        <p className="text-center"><b>#{nftNum}</b></p>
-        <p className="text-center">Ξ {nft.price}</p>
+        <p className="text-center text-white"><b>#{nftNum}</b></p>
+        <p className="text-center text-white">Ξ {nft.price}</p>
       </div>
     </>
   );
