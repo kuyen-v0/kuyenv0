@@ -1,6 +1,18 @@
 import { useState } from "react";
+import FilterCheckboxes from "./FilterCheckboxes";
 
-export function FilterOption() {
+const filters = [
+  {
+    filterName: 'Faction',
+    accessor: ['metadata', 'attributes', '13', 'value'],
+    filterType: {
+      type: 'checkboxes',
+      options: ['Fiat', 'Lux'],
+    }
+  }
+]
+
+export function FilterOption({filter}) {
   let [hidden, setHidden] = useState(true);
   const toggleHidden = () => {
     setHidden(!hidden);
@@ -11,13 +23,13 @@ export function FilterOption() {
       <div>
         <h2 className="flex align-bottom">
           <button className="relative flex justify-between items-center py-3 w-full text-white" onClick={toggleHidden}>
-            <div>Accordion Item #1</div>
+            <div>{filter.filterName}</div>
             <div className='mx-2'>{hidden ? '+' : '-'}</div>
           </button>
         </h2>
       </div>
-      <div className={"border-0 collapse show" + (hidden ? ' hidden' : '')}>
-        <div className="text-white pb-4 px-4">Placeholder content for this accordion.</div>
+      <div className={"ml-4 mb-2 border-0 collapse show" + (hidden ? ' hidden' : '')}>
+        <FilterCheckboxes filter={filter} />
       </div>
       <hr className='border-stone-300' />
     </div>
@@ -25,11 +37,11 @@ export function FilterOption() {
 }
 
 export default function FilterSelector() {
+  const filterOptions = filters.map(filter => <FilterOption filter={filter} key={filter.filterName} />);
   return (
     <div display='flex-col text-white'>
       <hr className='border-stone-300' />
-      <FilterOption />
-      <FilterOption />
+      {filterOptions}
     </div>
   );
 }

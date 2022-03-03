@@ -11,6 +11,8 @@ import Head from "next/head";
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 
+import {script} from './create-filters-script';
+
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
 
