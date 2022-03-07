@@ -12,46 +12,50 @@ export default async function handler(req, res) {
 
     let items = [];
 
-    async function getItems(startToken) {
+    async function getItems() {
       const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTsForCollection`;
       const withMetadata = "true";
       var config = {};
-      if (startToken === 1) {
-        config = {
-          method: 'get',
-          url: `${baseURL}?contractAddress=${collectionId}&withMetadata=${withMetadata}`,
-          headers: { }
-        };
-      } else {
-        config = {
-          method: 'get',
-          url: `${baseURL}?contractAddress=${collectionId}&startToken=${startToken}&withMetadata=${withMetadata}`,
-          headers: { }
-        };
-      }
-      //console.log(config);
-      axios(config)
-      .then(response => {
-        console.log(items.length);
-        if (response.data.nextToken && items.length < 1000) { //comment out items.length < 1000 to do full list of NFTs
+      let startToken = 1;
+      let done = false;
+
+      do {
+        if (startToken === 1) {
+          config = {
+            method: 'get',
+            url: `${baseURL}?contractAddress=${collectionId}&withMetadata=${withMetadata}`,
+            headers: { }
+          };
+        } else {
+          config = {
+            method: 'get',
+            url: `${baseURL}?contractAddress=${collectionId}&startToken=${startToken}&withMetadata=${withMetadata}`,
+            headers: { }
+          };
+        }
+
+        const response = await axios(config);
+
+        if (response.data.nextToken) { 
           items = items.concat(response.data.nfts);
-          getItems(response.data.nextToken);
+          startToken = response.data.nextToken;
         } else {
           items = items.concat(response.data.nfts);
+          done = true;
         }
-        return;
-      })
-    } 
+        
+      } while (!done);
+      return;
+    }
 
-    getItems(1)
+    getItems()
     .then(async () => {
       items = items.map(item => nftTransform(item));
       let traits = traitTransform(items);
-      console.log(traits);
       await uploadNFTs(items);
       await uploadTraits(traits);
-    });
-    //.then(response => {return res.status(200).json(items);});
+    })
+    .then(() => {return res.status(200).json(traits);});
       
     function nftTransform(idMeta) {
       const price = 0;
@@ -59,7 +63,7 @@ export default async function handler(req, res) {
         price,
         contract: idMeta.contract.address,
         description: idMeta.description,
-        id: idMeta.id.tokenId,
+        id: parseInt(idMeta.id.tokenId).toString(),
         uri: idMeta.tokenUri.gateway,
         metadata: idMeta.metadata,
         time: idMeta.timeLastUpdated,
