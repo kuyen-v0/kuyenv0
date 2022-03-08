@@ -1,17 +1,17 @@
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import Web3Modal from "web3modal";
+// import axios from "axios";
+// import Web3Modal from "web3modal";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Link from "next/link";
-import Moralis from "moralis";
+// import Moralis from "moralis";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 
-import { script } from "./create-filters-script";
+// import { script } from "./create-filters-script";
 
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
