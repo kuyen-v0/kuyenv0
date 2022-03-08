@@ -11,7 +11,7 @@ import Head from "next/head";
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 
-import {script} from './create-filters-script';
+import { script } from "./create-filters-script";
 
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
@@ -114,11 +114,8 @@ export default function Gallery({ result, items }) {
       </Head>
       <br />
       <br />
-
-
-      <div className='flex'>
-
-        <div className='w-96 mx-4'>
+      <div className="flex">
+        <div className="mx-4 w-96">
           <div className="flex items-end">
             <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
             <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
@@ -197,9 +194,7 @@ export default function Gallery({ result, items }) {
               </InfiniteScroll>
             </div>
           </div>
-
         </div>
-
       </div>
     </div>
   );
