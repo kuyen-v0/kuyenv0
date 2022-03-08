@@ -26,7 +26,22 @@ export default function TokenData() {
   if (!data) {
     return (
       <>
-        <LoadingPage />
+        <div>
+          <div>
+            <div>
+              <LoadingPage />
+            </div>
+            <style global jsx>{`
+              html,
+              body,
+              body > div:first-child,
+              div#__next,
+              div#__next > div {
+                height: 100%;
+              }
+            `}</style>
+          </div>
+        </div>
       </>
     );
   }
