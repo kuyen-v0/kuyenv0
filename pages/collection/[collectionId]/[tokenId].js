@@ -96,10 +96,10 @@ export default function TokenData() {
                     key={i}
                     className="flex w-full content-center items-center bg-white bg-opacity-10 py-2 px-3"
                   >
-                    <img
+                    {/* <img
                       className="w-8 pr-2"
                       src={`/filtericons/Black/${attribute.trait_type}.png`}
-                    />
+                    /> */}
                     <div>
                       <p className="text-2xs mr-auto inline-block flex items-center font-mono uppercase tracking-wider opacity-60">
                         <span className="pt-px">{attribute.trait_type}:</span>

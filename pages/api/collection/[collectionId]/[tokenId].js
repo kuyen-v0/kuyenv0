@@ -1,9 +1,12 @@
-import { useRouter } from 'next/router'
-import Moralis from "moralis"
+// import { useRouter } from 'next/router'
+// import Moralis from "moralis"
+import Moralis from 'moralis/node';
 
-const serverUrl = process.env.MORALIS_SERVER_URL;
-const appId = process.env.MORALIS_APP_ID;
-Moralis.start({serverUrl, appId});
+// const serverUrl = process.env.MORALIS_SERVER_URL;
+// const appId = process.env.MORALIS_APP_ID;
+// Moralis.start({serverUrl, appId});
+
+
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 const web3 = createAlchemyWeb3(
   `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
@@ -49,16 +52,20 @@ export default async function tokenMetadata(req, res) {
                       item.palette == 'whitenight' ||
                       item.palette == 'obedience') ? 'text-white' : 'text-black';
 
-    const options = { address: collection, token_id: tokenId, chain: "eth" };
-    const tokenIdOwners = await Moralis.Web3API.token.getTokenIdOwners(options);
-    item.owner = tokenIdOwners.result[0].owner_of;
+    // const options = { address: collection, token_id: tokenId, chain: "eth" };
+    // const tokenIdOwners = await Moralis.Web3API.token.getTokenIdOwners(options);
+    // item.owner = tokenIdOwners.result[0].owner_of;
+    // console.log(item.owner);
 
-    fetch("https://api.opensea.io/user/" + item.owner + "?format=json")
-      .then(res => res.json())
-      .then(responseJSON => {
-        item.owner_name = responseJSON.username;
-        res.status(200).json(item);
-      });
+    // fetch("https://api.opensea.io/user/" + item.owner + "?format=json")
+    //   .then(res => res.json())
+    //   .then(responseJSON => {
+    //     item.owner_name = responseJSON.username;
+    //     res.status(200).json(item);
+    //   });
+
+    item.owner_name = 'PLACEHOLDER';
+    res.status(200).json(item);
 
   }
   catch (err) {
