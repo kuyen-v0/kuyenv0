@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
             >
               <div>
                 <a className="pr-2 text-xl font-semibold text-white" href="/">
-                  FYAT LUX
+                  <img className="logo-fyat" src="https://pbs.twimg.com/profile_images/1469164041558007808/FRqpXQX5_400x400.jpg"></img>
                 </a>
               </div>
               <div>
