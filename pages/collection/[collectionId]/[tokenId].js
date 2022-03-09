@@ -110,7 +110,7 @@ export default function TokenData() {
             ></iframe>
           </div>
 
-          <div className="mt-1 w-1/2 px-10">
+          <div className="mt-1 w-1/2 px-10 overflow-y-scroll">
             <div className="items-center justify-start bg-white bg-opacity-20 px-3 py-2 rounded">
               <p className="mb-2 text-4xl"><b>{`#${query.tokenId}`} //</b></p>
               <p className="mb-2 text-xs">Fyat Lux</p>
@@ -140,9 +140,9 @@ export default function TokenData() {
             </div>
 
             <div className="mt-5">
-              <div className="leading-24 text-2xl font-bold">Properties</div>
-              <div className="rounded-12 bg-gray-4 mt-1 mb-3 overflow-hidden py-1 overflow-visible">
-                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 overflow-visible">
+              <div className="leading-24 text-2xl font-bold">Properties //</div>
+              <div className="rounded-12 bg-gray-4 mt-1 mb-3 py-1">
+                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-3">
                   {data.metadata.attributes.map((attribute, i) => (
                     <li
                       key={i}
