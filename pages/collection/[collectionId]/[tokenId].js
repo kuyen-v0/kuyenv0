@@ -5,6 +5,7 @@ import useSWR from "swr";
 import LoadingPage from "../../../components/LoadingPage";
 import PageTemplate from "../../../components/PageTemplate";
 import OpenSeaButton from "../../../components/OpenSeaButton";
+import EtherscanButton from "../../../components/EtherscanButton";
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -118,16 +119,7 @@ export default function TokenData() {
 
             <div className="flex pt-5">
               <OpenSeaButton link={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`} />
-              <button className="mr-2 mb-2 rounded-lg bg-purple-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-                <a
-                  href={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`}
-                  target="_blank"
-                  title="View Activity on Etherscan"
-                  className="back-green button view-etherscan"
-                >
-                  VIEW ON ETHERSCAN
-                </a>
-              </button>
+              <EtherscanButton link={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`} />
             </div>
           </div>
         </div>
