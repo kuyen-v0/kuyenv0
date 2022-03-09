@@ -85,10 +85,11 @@ export default function TokenData() {
       </>
     );
   } else {
+    console.log(data.textcolor);
     page = (
       <>
         <div
-          className={`mx-auto my-0 box-border flex h-screen justify-around px-5 pt-7 pb-5 ${data.textcolor} ${data.background}`}
+          className={`m-0 flex h-screen justify-around ${data.textcolor} ${data.background}`}
         >
           <Head>
             <title>NFT Details</title>
@@ -97,7 +98,8 @@ export default function TokenData() {
               content="initial-scale=1.0, width=device-width"
             />
           </Head>
-          <div className="mx-7 my-1 block w-1/2 px-7 align-top md:sticky md:inline-block">
+
+          <div className="block w-1/2 align-top md:sticky md:inline-block">
             <iframe
               allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
               frameBorder="0"
@@ -108,11 +110,11 @@ export default function TokenData() {
             ></iframe>
           </div>
 
-          <div className="mt-1 w-1/2 px-20">
-            <div className="mb-3 items-center justify-start">
+          <div className="mt-1 w-1/2 px-10">
+            <div className="items-center justify-start bg-white bg-opacity-20 px-3 py-2 rounded">
+              <p className="mb-2 text-4xl"><b>{`#${query.tokenId}`} //</b></p>
               <p className="mb-2 text-xs">Fyat Lux</p>
-              <p className="mb-2 text-4xl">{`#${query.tokenId}`}</p>
-              <div className="flex text-sm">
+              {data.owner_name && <div className="flex text-sm">
                 <span className="font-bold">{data.faction}</span>
                 <p>&nbsp;owned by&nbsp;</p>
                 <a
@@ -123,17 +125,28 @@ export default function TokenData() {
                 >
                   {data.owner_name}
                 </a>
+              </div>}
+            </div>
+
+            <div className="flex pt-5">
+              <div className='mr-4 flex items-center'>
+                <OpenSeaButton link={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`} />
+                <p className='ml-1 text-sm'>View on OpenSea</p>
+              </div>
+              <div className='flex items-center'>
+                <EtherscanButton link={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`} />
+                <p className="ml-1 text-sm">View on Etherscan</p>
               </div>
             </div>
 
             <div className="mt-5">
-              <div className="leading-24 mb-3 text-2xl font-bold">Properties</div>
-              <div className="rounded-12 bg-gray-4 mt-3 mb-3 overflow-hidden py-1 overflow-visible">
+              <div className="leading-24 text-2xl font-bold">Properties</div>
+              <div className="rounded-12 bg-gray-4 mt-1 mb-3 overflow-hidden py-1 overflow-visible">
                 <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 overflow-visible">
                   {data.metadata.attributes.map((attribute, i) => (
                     <li
                       key={i}
-                      className="flex w-full content-center items-center bg-white bg-opacity-20 py-2 px-2 shadow-2xl"
+                      className="flex w-full content-center items-center bg-white bg-opacity-20 py-2 px-2 shadow-2xl rounded duration-300 hover:scale-105"
                     >
                       <FontAwesomeIcon icon={traitTypeToIcon[attribute.trait_type] ?? faGem} />
                       <div className='ml-2'>
@@ -150,10 +163,6 @@ export default function TokenData() {
               </div>
             </div>
 
-            <div className="flex pt-5">
-              <OpenSeaButton link={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`} />
-              <EtherscanButton link={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`} />
-            </div>
           </div>
         </div>
       </>
