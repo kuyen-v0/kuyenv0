@@ -143,6 +143,6 @@ export default function TokenData() {
     );
   }
   return (
-    <PageTemplate page={page} navProps={{bg: 'bg-black'}} />
+    <PageTemplate page={page} navProps={{bg: data?.background ?? 'bg-black'}} />
   );
 }
