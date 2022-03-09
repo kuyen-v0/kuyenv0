@@ -2,10 +2,46 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Head from "next/head";
 import useSWR from "swr";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faPalette, 
+  faPerson, 
+  faHandFist,
+  faPersonWalking,
+  faMasksTheater,
+  faSprayCan,
+  faHatWizard,
+  faGem,
+  faUserTie,
+  faSuitcase,
+  faUserNinja,
+  faShirt,
+  faUserGroup,
+  faHandshake,
+ } from '@fortawesome/free-solid-svg-icons';
+
 import LoadingPage from "../../../components/LoadingPage";
 import PageTemplate from "../../../components/PageTemplate";
 import OpenSeaButton from "../../../components/OpenSeaButton";
 import EtherscanButton from "../../../components/EtherscanButton";
+
+const traitTypeToIcon = {
+  Palette: faPalette, // color
+  Build: faPerson, // body
+  Clan: faHandFist, // ??
+  Pose: faPersonWalking, // pose
+  Mask: faMasksTheater, // Mask
+  Cans: faSprayCan, // Can?
+  'Front Floatie': faHatWizard, // Headdress
+  'Side Floatie': faUserNinja, // ??
+  Collar: faUserTie, // Collar
+  Backpack: faSuitcase, // Backpack
+  Accessory: faGem, // Accessory
+  Uniform: faShirt, // Clothes?
+  Chtara: faUserGroup, // ??
+  Faction: faHandshake, // Faction
+}
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -97,18 +133,15 @@ export default function TokenData() {
                   {data.metadata.attributes.map((attribute, i) => (
                     <li
                       key={i}
-                      className="flex w-full content-center items-center bg-white bg-opacity-20 py-2 px-3 shadow-2xl"
+                      className="flex w-full content-center items-center bg-white bg-opacity-20 py-2 px-2 shadow-2xl"
                     >
-                      {/* <img
-                        className="w-8 pr-2"
-                        src={`/filtericons/Black/${attribute.trait_type}.png`}
-                      /> */}
-                      <div>
-                        <p className="text-2xs mr-auto inline-block flex items-center font-mono uppercase tracking-wider opacity-60">
+                      <FontAwesomeIcon icon={traitTypeToIcon[attribute.trait_type] ?? faGem} />
+                      <div className='ml-2'>
+                        <p className="text-2xs mr-auto inline-block flex items-center tracking-wider opacity-60">
                           <span className="pt-px">{attribute.trait_type}:</span>
                         </p>
                         <p className="font-600 ml-auto text-xs uppercase">
-                          {attribute.value}
+                          <b>{attribute.value}</b>
                         </p>
                       </div>
                     </li>
