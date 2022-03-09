@@ -90,12 +90,12 @@ export default function TokenData() {
 
             <div className="mt-5">
               <div className="leading-24 mb-3 text-2xl font-bold">Properties</div>
-              <div className="rounded-12 bg-gray-4 mt-3 mb-3 overflow-hidden py-1">
-                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="rounded-12 bg-gray-4 mt-3 mb-3 overflow-hidden py-1 overflow-visible">
+                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 overflow-visible">
                   {data.metadata.attributes.map((attribute, i) => (
                     <li
                       key={i}
-                      className="flex w-full content-center items-center bg-white bg-opacity-10 py-2 px-3"
+                      className="flex w-full content-center items-center bg-white bg-opacity-20 py-2 px-3 shadow-2xl"
                     >
                       {/* <img
                         className="w-8 pr-2"
@@ -143,6 +143,6 @@ export default function TokenData() {
     );
   }
   return (
-    <PageTemplate page={page} navProps={{bg: data?.background ?? 'bg-black'}} />
+    <PageTemplate page={page} navProps={{bg: data?.background}} />
   );
 }
