@@ -159,7 +159,7 @@ export default function Gallery({ result, items }) {
                 </div>
               </form>
 
-              <div className="ml-6 flex rounded border-2">
+              {/* <div className="ml-6 flex rounded border-2">
                 <select
                   className="form-select dropdown relative block w-full w-80 px-4 py-2"
                   name="price"
@@ -168,7 +168,7 @@ export default function Gallery({ result, items }) {
                 >
                   <option value="rarity">Rarity</option>
                 </select>
-              </div>
+              </div> */}
             </div>
 
             <div className="flex justify-center">

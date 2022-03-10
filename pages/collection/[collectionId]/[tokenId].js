@@ -148,7 +148,7 @@ export default function TokenData() {
             <div className="flex pt-5">
               <div className='mr-4 flex items-center'>
                 <OpenSeaButton link={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`} />
-                <p className='ml-1 text-sm'>View on OpenSea</p>
+                <p className='ml-1 text-sm'>Buy on OpenSea</p>
               </div>
               <div className='flex items-center'>
                 <EtherscanButton link={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`} />
