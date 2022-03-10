@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import useSWR from "swr";
 
@@ -25,6 +25,7 @@ import LoadingPage from "../../../components/LoadingPage";
 import PageTemplate from "../../../components/PageTemplate";
 import OpenSeaButton from "../../../components/OpenSeaButton";
 import EtherscanButton from "../../../components/EtherscanButton";
+import { Snackbar, SnackbarContent } from "@mui/material";
 
 const traitTypeToIcon = {
   Palette: faPalette, // color
@@ -60,7 +61,7 @@ export default function TokenData() {
     fetcher
   );
 
-  useEffect(() => {}, []);
+  const [showSnackbar, setShowSnackbar] = useState(true);
 
   let page;
   if (!data) {
@@ -85,7 +86,6 @@ export default function TokenData() {
       </>
     );
   } else {
-    console.log(data.textcolor);
     page = (
       <>
         <div
@@ -100,6 +100,23 @@ export default function TokenData() {
           </Head>
 
           <div className="block w-1/2 align-top md:sticky md:inline-block">
+
+            <Snackbar
+              open={showSnackbar}
+              autoHideDuration={4000}
+              onClose={() => setShowSnackbar(false)}
+              action={() => {}}
+            >
+              <SnackbarContent
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.8)",
+                  color: "black",
+                  opacity: "20"
+                }}
+                message="Click and drag to move me around!" 
+              />
+            </Snackbar>
+
             <iframe
               allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
               frameBorder="0"
