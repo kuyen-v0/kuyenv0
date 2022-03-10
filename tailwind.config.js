@@ -10,10 +10,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Space Grotesk", ...defaultTheme.fontFamily.sans],
+      },
       colors: {
-        fontFamily: {
-          sans: ["Space Grotesk", ...defaultTheme.fontFamily.sans],
-        },
         transparent: "transparent",
         current: "currentColor",
         angel: "#E63B2E",
