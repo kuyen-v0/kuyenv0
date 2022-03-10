@@ -11,7 +11,7 @@ import Head from "next/head";
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 
-import {script} from './create-filters-script';
+// import { script } from "./create-filters-script";
 
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
@@ -101,16 +101,7 @@ export default function Gallery({ result, items }) {
   const handleDropdownFilter = (e) => {
     const selectedValue = e.value;
 
-    if (selectedValue === "lowhigh") {
-      collectionNfts.sort((a, b) => {
-        return a.price - b.price;
-      });
-      setSubset(collectionNfts);
-    } else if (selectedValue === "highlow") {
-      collectionNfts.sort((a, b) => {
-        return b.price - a.price;
-      });
-    } else {
+    if (selectedValue === "rarity") {
       setSubset(collectionNfts.reverse());
     }
   };
@@ -123,11 +114,8 @@ export default function Gallery({ result, items }) {
       </Head>
       <br />
       <br />
-
-
-      <div className='flex'>
-
-        <div className='w-96 mx-4'>
+      <div className="flex">
+        <div className="mx-4 w-96">
           <div className="flex items-end">
             <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
             <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
@@ -140,8 +128,6 @@ export default function Gallery({ result, items }) {
           <div className="flex items-end px-4">
             <h2 className="text-2xl font-bold text-yellow-300">GALLERY</h2>
             <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
-            <p className="mb-5px mx-2 text-lg text-yellow-300">8.0k items</p>
-            <p className="mb-5px text-lg text-yellow-300">4.0k owners</p>
           </div>
           <br />
 
@@ -178,9 +164,7 @@ export default function Gallery({ result, items }) {
                 id="price"
                 onChange={handleDropdownFilter}
               >
-                <option value="lowhigh">Price: Low To High</option>
-                <option value="highLow">Price: High To Low</option>
-                <option value="recentlyListed">Recently Listed</option>
+                <option value="rarity">Rarity</option>
               </select>
             </div>
           </div>
@@ -210,9 +194,7 @@ export default function Gallery({ result, items }) {
               </InfiniteScroll>
             </div>
           </div>
-
         </div>
-
       </div>
     </div>
   );
