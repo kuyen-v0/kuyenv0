@@ -13,6 +13,10 @@ import FilterSelector from "../components/FilterSelector";
 
 import {script} from './create-filters-script';
 
+import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";  
+
+
+
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
 
@@ -25,56 +29,50 @@ const web3 = createAlchemyWeb3(
 // const app_id = process.env.MORALIS_APP_ID;
 // Moralis.start({server_url, app_id});
 
-const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"];
+//const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"];
 
 export async function getStaticProps() {
-  const holders = [...Array(30).keys()];
-  // console.log(NFTs.result[0]);
-  const items = await Promise.all(
-    holders.map(async (i) => {
-      const meta = await web3.alchemy.getNftMetadata({
-        contractAddress: collectionContracts[0],
-        tokenId: (i + 1).toString(),
-      });
-      const price = 0;
-      const item = {
-        price,
-        tokenAddr: collectionContracts[0],
-        tokenId: parseInt(meta.id.tokenId),
-        image: meta.metadata.image,
-        name: meta.title,
-        description: meta.description,
-      };
-      return item;
-    })
-  );
-  let result = items.filter((item) => item.image !== undefined);
-  result = result.map((item) => {
-    item.image = "http://cloudflare-ipfs.com/ipfs/" + item.image.slice(7);
-    return item;
-  });
-  // const nftOwners = await Moralis.Web3API.token.getNFTOwners({chain: "eth", address: collectionContracts[0]});
-  // let total = nftOwners.total;
+  let collectionId = process.env.TOKEN_CONTRACT;
+  //get total, placeholder for now
+  const querySnapshot = await getDocs(collection(db, collectionId, "NFTData", "NFTs"));
+  const collectionSize = querySnapshot.length;
+
+
+  // Query the first page of docs
+  const first = query(collection(db, collectionId, "NFTData", "NFTs"), orderBy("id"), limit(20));
+  const firstResult = await getDocs(first);
+  const firstItems = firstResult.map(result => result.data);
+
+  // Get the last visible document
+  const lastVisible = firstResult.docs[firstResult.docs.length-1];
+  console.log("last", lastVisible);
+
+  // Construct a new query starting at this document,
+  // get the next 25 cities.
+  
 
   return {
     props: {
-      result,
-      // total
+      firstItems,
+      lastVisible,
+      collectionSize
     },
   };
 }
 
-export default function Gallery({ result, items }) {
-  const [listedNfts, setListedNfts] = useState([]);
+export default function Gallery({ firstItems, lastVisible, collectionSize }) {
   const [collectionNfts, setCollectionNfts] = useState([]);
   const [total, setTotal] = useState(0);
+  const [lastVisible, setLastVisible] = useState();
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [hasMore, setHasMore] = useState(true);
   const [subset, setSubset] = useState([]);
+  const [selectedChoices, setSelectedChoices] = useState([]);
 
   useEffect(() => {
-    loadCollectionNFTs(result);
-    setTotal(items);
+    loadCollectionNFTs(firstItems);
+    setLastVisible(lastVisible);
+    setTotal(collectionSize);
   }, []);
 
   async function loadCollectionNFTs(altItems) {
@@ -84,11 +82,28 @@ export default function Gallery({ result, items }) {
   }
 
   const getMoreListings = () => {
-    if (subset.length === collectionNfts.length) {
+    if (collectionNfts.length === total) {
       setHasMore(false);
     }
-    setSubset(collectionNfts.slice(0, subset.length + 4));
+    const next = query(collection(db, collectionId, "NFTData", "NFTs"), 
+      orderBy("id"), 
+      startAfter(lastVisible),
+      limit(20));
+
+    const nextResult = await getDocs(next);
+    const nextItems = nextResult.map(result => result.data());
+
+    // Get the last visible document
+    const lastVisible = nextResult.docs[nextResult.docs.length-1];
+    setLastVisible(lastVisible);
+    setCollectionNfts(collectionNfts.concat(nextItems));
+    //setSubset(collectionNfts.slice(0, subset.length + 4));
   };
+
+  const handleCheckFilter = (e) => {
+    setSelectedChoices()
+
+  }
 
   const handleSearchFilter = (e) => {
     e.preventDefault();
@@ -133,7 +148,7 @@ export default function Gallery({ result, items }) {
             <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
           </div>
           <br />
-          <FilterSelector />
+          <FilterSelector onChangeFilter={this.handleCheckFilter}/>
         </div>
 
         <div>
@@ -188,7 +203,7 @@ export default function Gallery({ result, items }) {
           <div className="flex justify-center">
             <div style={{ maxWidth: "1600px" }}>
               <InfiniteScroll
-                dataLength={subset.length}
+                dataLength={collectionNfts.length}
                 next={getMoreListings}
                 hasMore={hasMore}
                 loader={<h3> Collection Loading...</h3>}
@@ -196,7 +211,7 @@ export default function Gallery({ result, items }) {
               >
                 <br />
                 <div className="grid grid-cols-1 gap-4 p-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
-                  {subset.map((nft, i) => (
+                  {collectionNfts.map((nft, i) => (
                     <Link
                       key={i}
                       href={`collection/${nft.tokenAddr}/${nft.tokenId}`}
