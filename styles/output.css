@@ -42,7 +42,7 @@ html {
   -o-tab-size: 4;
   tab-size: 4;
   /* 3 */
-  font-family: Inter, sans-serif;
+  font-family: var(--font-family-space_grotesk);
   /* 4 */
 }
 
@@ -123,7 +123,7 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, monospace;
+  font-family: var(--font-family-space_grotesk);
   /* 1 */
   font-size: 1em;
   /* 2 */
@@ -183,7 +183,7 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: inherit;
+  font-family: var(--font-family-space_grotesk);
   /* 1 */
   font-size: 100%;
   /* 1 */
@@ -937,7 +937,7 @@ input:checked + .toggle-bg {
     rgba(255, 255, 255, 0.15),
     rgba(255, 255, 255, 0)
   );
-  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-family: var(--font-family-space_grotesk);
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
@@ -957,7 +957,7 @@ input:checked + .toggle-bg {
   --font-size-xs: 12px;
   --font-size-xxs: 10px;
   --font-size-xxxs: 1px;
-  --font-family-space_grotesk: "Space Grotesk", Helvetica;
+  --font-family-space_grotesk: "Space Grotesk";
   --font-family-yukarimobile-regular: "Yukarimobile-Regular", Helvetica;
 }
 
@@ -1402,7 +1402,7 @@ textarea.form-control.is-invalid {
   z-index: 1080;
   display: block;
   margin: 0;
-  font-family: var(--bs-font-sans-serif);
+  font-family: var(--font-family-space_grotesk);
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -1534,7 +1534,7 @@ textarea.form-control.is-invalid {
   z-index: 1070;
   display: block;
   max-width: 276px;
-  font-family: var(--bs-font-sans-serif);
+  font-family: var(--font-family-space_grotesk);
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
