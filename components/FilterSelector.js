@@ -25,21 +25,15 @@ export async function getStaticProps() {
 
   return {
     props: {
-      filters
+      data
     },
   };
 }
 
-export function FilterOption({filter}) {
+export function FilterOption({filter, setOptionCallback}) {
   let [hidden, setHidden] = useState(true);
-  let [checked, setChecked] = useState([]);
   const toggleHidden = () => {
     setHidden(!hidden);
-  }
-
-  const toggleChecked = () => {
-    //if wasn't checked before
-    setChecked(checked.concat())
   }
 
   return (
@@ -53,17 +47,23 @@ export function FilterOption({filter}) {
         </h2>
       </div>
       <div className={"ml-4 mb-2 border-0 collapse show" + (hidden ? ' hidden' : '')}>
-        <FilterCheckboxes filter={filter} onClick={toggleChecked}/>
+        <FilterCheckboxes filter={filter} setOptionCallback={setOptionCallback}/>
       </div>
       <hr className='border-stone-300' />
     </div>
   );
 }
 
-export default function FilterSelector({ filters }) {
+export default function FilterSelector({ filters, onChangeFilter }) {
   //fetch filters from API
   //const filters = JSON.parse(FILTERS);
-  const filterOptions = filters.map(filter => <FilterOption filter={filter} key={filter.filterName} />);
+  let [optionsSelected, setOptionsSelected] = useState({}); //{Palette: ["Cold Blue"], Pose: [""]}
+  const filterOptions = filters.map(filter => <FilterOption filter={filter} key={filter.filterName} setOptionCallback={(options) => {
+    let o = {...optionsSelected};
+    o[filter.filterName] = options
+    setOptionsSelected(o);
+    onChangeFilter(o);
+  }}/>);
   return (
     <div display='flex-col text-white'>
       <hr className='border-stone-300' />

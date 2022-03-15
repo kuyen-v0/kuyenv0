@@ -1,5 +1,5 @@
 
-export default function FilterCheckboxes({filter}) {
+export default function FilterCheckboxes({filter, setOptionCallback}) {
   const optionKeys = Object.keys(filter.options);
 
   let [checked, setChecked] = useState([]);
@@ -10,6 +10,7 @@ export default function FilterCheckboxes({filter}) {
     } else {
       setChecked(checked.concat(e.target.value));
     }
+    setOptionCallback(checked);
   }
 
   const options = optionKeys.map(option => (

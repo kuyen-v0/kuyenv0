@@ -34,8 +34,8 @@ const web3 = createAlchemyWeb3(
 export async function getStaticProps() {
   let collectionId = process.env.TOKEN_CONTRACT;
   //get total, placeholder for now
-  const querySnapshot = await getDocs(collection(db, collectionId, "NFTData", "NFTs"));
-  const collectionSize = querySnapshot.length;
+  //const querySnapshot = await getDocs(collection(db, collectionId, "NFTData", "NFTs"));
+  //const collectionSize = querySnapshot.length;
 
 
   // Query the first page of docs
@@ -44,8 +44,8 @@ export async function getStaticProps() {
   const firstItems = firstResult.map(result => result.data);
 
   // Get the last visible document
-  const lastVisible = firstResult.docs[firstResult.docs.length-1];
-  console.log("last", lastVisible);
+  const last = firstResult.docs[firstResult.docs.length-1];
+  console.log("last", last);
 
   // Construct a new query starting at this document,
   // get the next 25 cities.
@@ -54,13 +54,13 @@ export async function getStaticProps() {
   return {
     props: {
       firstItems,
-      lastVisible,
+      last,
       collectionSize
     },
   };
 }
 
-export default function Gallery({ firstItems, lastVisible, collectionSize }) {
+export default function Gallery({ firstItems, last, collectionSize }) {
   const [collectionNfts, setCollectionNfts] = useState([]);
   const [total, setTotal] = useState(0);
   const [lastVisible, setLastVisible] = useState();
@@ -71,7 +71,7 @@ export default function Gallery({ firstItems, lastVisible, collectionSize }) {
 
   useEffect(() => {
     loadCollectionNFTs(firstItems);
-    setLastVisible(lastVisible);
+    setLastVisible(last);
     setTotal(collectionSize);
   }, []);
 
@@ -81,7 +81,7 @@ export default function Gallery({ firstItems, lastVisible, collectionSize }) {
     setLoadingState("loaded");
   }
 
-  const getMoreListings = () => {
+  const getMoreListings = async () => {
     if (collectionNfts.length === total) {
       setHasMore(false);
     }
@@ -100,9 +100,9 @@ export default function Gallery({ firstItems, lastVisible, collectionSize }) {
     //setSubset(collectionNfts.slice(0, subset.length + 4));
   };
 
-  const handleCheckFilter = (e) => {
-    setSelectedChoices()
-
+  const handleCheckFilter = (o) => {
+    setSelectedChoices(o);
+    //re-call getting the list of NFTs
   }
 
   const handleSearchFilter = (e) => {
@@ -148,7 +148,7 @@ export default function Gallery({ firstItems, lastVisible, collectionSize }) {
             <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
           </div>
           <br />
-          <FilterSelector onChangeFilter={this.handleCheckFilter}/>
+          <FilterSelector onChangeFilter={handleCheckFilter}/>
         </div>
 
         <div>
