@@ -55,6 +55,7 @@ export default function MyAssets() {
   }
   return (
     <div className="flex justify-center">
+      <div className="bg-coldblue"></div>
       <div className="bg-indigo"></div> 
       <div className="bg-angel"></div> 
       <div className="bg-greenvelvet"></div> 

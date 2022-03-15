@@ -5,7 +5,6 @@
 
 .header-button {
     color: var(--white);
-    font-family: var(--font-family-space_grotesk);
     font-size: 23px;
     font-weight: 700;
     letter-spacing: 0;
@@ -16,6 +15,18 @@
   }
   
   .main-body-img {
-      background-image: url("hero.jpeg");
-      background-color: #ec0000;
+      background-image: url("opac_hero.png");
+      background-color: #f87a7a;
+  }
+
+  .logo-fyat {
+    background-image: url("https://pbs.twimg.com/profile_images/1469164041558007808/FRqpXQX5_400x400.jpg");
+    background-color: #ec0000;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-radius: 50%;
+    margin-top: 15%;
+    height: 100px;
+    width: 100px;
   }

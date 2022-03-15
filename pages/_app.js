@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 import Script from "next/script";
 import Head from "next/head";
-import { ChakraProvider } from "@chakra-ui/react";
-import Image from "next/image";
+// import { ChakraProvider } from "@chakra-ui/react";
+// import Image from "next/image";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -26,29 +26,28 @@ function MyApp({ Component, pageProps }) {
             >
               <div>
                 <a className="pr-2 text-xl font-semibold text-white" href="/">
-                  FYAT LUX
+                  <img
+                    className="logo-fyat"
+                    src="https://pbs.twimg.com/profile_images/1469164041558007808/FRqpXQX5_400x400.jpg"
+                  ></img>
                 </a>
               </div>
               <div>
                 <ul className="navbar-nav list-style-none mr-auto flex flex-col pl-0">
                   <li className="nav-item p-2">
-                    <a className="nav-link text-white" href="/">
-                      <button className="bg-white py-3 px-8 font-bold text-black duration-200 hover:scale-110">
-                        Gallery
-                      </button>
-                    </a>
-                  </li>
-                  <li className="nav-item p-2">
-                    <a className="nav-link p-0 text-white" href="create-item">
-                      <button className="bg-white py-3 px-8 font-bold text-black duration-200 hover:scale-110">
-                        Sell Digital Asset
+                    <a
+                      className="nav-link text-white"
+                      href="https://discord.gg/fyatlux"
+                    >
+                      <button className="bg-black py-4 px-12 text-2xl font-bold text-white duration-200 hover:scale-110">
+                        Join Our Discord
                       </button>
                     </a>
                   </li>
                   <li className="nav-item p-2">
                     <a className="nav-link p-0 text-white" href="my-assets">
-                      <button className="bg-yellow-400 py-3 px-8 font-bold text-black duration-200 hover:scale-110">
-                        My Digital Assets
+                      <button className="bg-yellow-400 py-4 px-12 text-2xl font-bold text-black duration-200 hover:scale-110">
+                        My Collection
                       </button>
                     </a>
                   </li>
