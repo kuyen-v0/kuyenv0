@@ -1,10 +1,10 @@
-// import { ethers } from "ethers";
+//import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-// import axios from "axios";
-// import Web3Modal from "web3modal";
+//import axios from "axios";
+//import Web3Modal from "web3modal";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Link from "next/link";
-// import Moralis from "moralis";
+//import Moralis from "moralis";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 
@@ -26,7 +26,7 @@ const web3 = createAlchemyWeb3(
 // const app_id = process.env.MORALIS_APP_ID;
 // Moralis.start({server_url, app_id});
 
-const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"];
+const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"]
 
 export async function getStaticProps() {
   const holders = [...Array(30).keys()];
