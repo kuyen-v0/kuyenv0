@@ -12,6 +12,7 @@ import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 
 import {script} from './create-filters-script';
+import { FilterPills } from "../components/FilterPill";
 
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
@@ -183,6 +184,10 @@ export default function Gallery({ result, items }) {
                 <option value="recentlyListed">Recently Listed</option>
               </select>
             </div>
+          </div>
+
+          <div className='ml-4'>
+            <FilterPills />
           </div>
 
           <div className="flex justify-center">
