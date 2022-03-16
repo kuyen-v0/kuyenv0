@@ -1,13 +1,13 @@
 import Badge from "./Badge";
 
 export default function GalleryItem({ nft }) {
-  const nftNum = nft.name.split("#")[1];
+  const nftNum = nft.metadata.name.split("#")[1];
   return (
     <>
       <div className="relative shadow-2xl duration-300 hover:scale-105">
         <img
           className="aspect-square rounded-md object-cover object-top"
-          alt={nft.tokenId}
+          alt={nft.id}
           src={nft.image}
         />
         <div className="absolute inset-x-0 top-0 w-full py-2 px-2 text-right text-xs leading-4 text-white">

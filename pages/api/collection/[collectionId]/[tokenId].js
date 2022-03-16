@@ -1,5 +1,6 @@
 import { writeBatch, collection, doc, getDoc, addDoc } from 'firebase/firestore';
 import Moralis from "moralis"
+import { db} from '../../../../firebase/initFirebase'
 
 const serverUrl = process.env.MORALIS_SERVER_URL;
 const appId = process.env.MORALIS_APP_ID;
