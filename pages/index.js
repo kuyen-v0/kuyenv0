@@ -172,6 +172,10 @@ export default function Gallery({ result, items }) {
               </div> */}
             </div>
 
+            <div className="ml-4">
+              <FilterPills />
+            </div>
+
             <div className="flex justify-center">
               <div style={{ maxWidth: "1600px" }}>
                 <InfiniteScroll
@@ -181,7 +185,6 @@ export default function Gallery({ result, items }) {
                   loader={<h3> Collection Loading...</h3>}
                   endMessage={<h4></h4>}
                 >
-                  <br />
                   <div className="grid grid-cols-1 gap-4 p-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
                     {subset.map((nft, i) => (
                       <Link
