@@ -19,16 +19,20 @@ export default async function tokenMetadata(req, res) {
 
     const item = docSnap.data();
 
-    const options = { address: collection, token_id: tokenId, chain: "eth" };
-    const tokenIdOwners = await Moralis.Web3API.token.getTokenIdOwners(options);
-    item.owner = tokenIdOwners.result[0].owner_of;
+    // const options = { address: collection, token_id: tokenId, chain: "eth" };
+    // const tokenIdOwners = await Moralis.Web3API.token.getTokenIdOwners(options);
+    // item.owner = tokenIdOwners.result[0].owner_of;
+    // console.log(item.owner);
 
-    fetch("https://api.opensea.io/user/" + item.owner + "?format=json")
-      .then(res => res.json())
-      .then(responseJSON => {
-        item.owner_name = responseJSON.username;
-        res.status(200).json(item);
-      });
+    // fetch("https://api.opensea.io/user/" + item.owner + "?format=json")
+    //   .then(res => res.json())
+    //   .then(responseJSON => {
+    //     item.owner_name = responseJSON.username;
+    //     res.status(200).json(item);
+    //   });
+
+    item.owner_name = 'PLACEHOLDER';
+    res.status(200).json(item);
 
   }
   catch (err) {

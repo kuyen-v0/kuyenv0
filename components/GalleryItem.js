@@ -4,7 +4,7 @@ export default function GalleryItem({ nft }) {
   const nftNum = nft.metadata.name.split("#")[1];
   return (
     <>
-      <div className="relative shadow-2xl duration-300 hover:scale-105">
+      <div className="relative shadow-xl duration-300 hover:scale-105">
         <img
           className="aspect-square rounded-md object-cover object-top"
           alt={nft.id}
@@ -18,7 +18,7 @@ export default function GalleryItem({ nft }) {
         <p className="text-center text-white">
           <b>#{nftNum}</b>
         </p>
-        <p className="text-center text-white">Ξ {nft.price}</p>
+        {/* <p className="text-center text-white">Ξ {nft.price}</p> */}
       </div>
     </>
   );
