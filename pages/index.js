@@ -1,18 +1,20 @@
-//import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-//import axios from "axios";
-//import Web3Modal from "web3modal";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Link from "next/link";
 //import Moralis from "moralis";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
+import { db} from '../firebase/initFirebase'
 
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 import PageTemplate from "../components/PageTemplate";
 
 // import { script } from "./create-filters-script";
+
+import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";  
+
+
 
 // import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
@@ -26,70 +28,111 @@ const web3 = createAlchemyWeb3(
 // const app_id = process.env.MORALIS_APP_ID;
 // Moralis.start({server_url, app_id});
 
-const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"]
+//const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"];
+
+const fetcher = async (url) => {
+  const res = await fetch(url);
+  const data = await res.json();
+
+  if (res.status !== 200) {
+    throw new Error(data.error);
+  }
+  return data;
+};
 
 export async function getStaticProps() {
-  const holders = [...Array(30).keys()];
-  // console.log(NFTs.result[0]);
-  const items = await Promise.all(
-    holders.map(async (i) => {
-      const meta = await web3.alchemy.getNftMetadata({
-        contractAddress: collectionContracts[0],
-        tokenId: (i + 1).toString(),
-      });
-      const price = 0;
-      const item = {
-        price,
-        tokenAddr: collectionContracts[0],
-        tokenId: parseInt(meta.id.tokenId),
-        image: meta.metadata.image,
-        name: meta.title,
-        description: meta.description,
-      };
-      return item;
-    })
-  );
-  let result = items.filter((item) => item.image !== undefined);
-  result = result.map((item) => {
-    item.image = "http://cloudflare-ipfs.com/ipfs/" + item.image.slice(7);
-    return item;
-  });
-  // const nftOwners = await Moralis.Web3API.token.getNFTOwners({chain: "eth", address: collectionContracts[0]});
-  // let total = nftOwners.total;
+  let collectionId = process.env.TOKEN_CONTRACT;
+  //get total, placeholder for now
+  //const querySnapshot = await getDocs(collection(db, collectionId, "NFTData", "NFTs"));
+  //const collectionSize = querySnapshot.length;
+  let collectionSize = 8080;
+
+
+  // Query the first page of docs
+  const first = query(collection(db, collectionId, "NFTData", "NFTs"), orderBy("id"), limit(20));
+  const firstResult = await getDocs(first);
+  //console.log(firstResult);
+  let firstItems = [];
+  firstResult.forEach((doc) => firstItems.push(doc.data()));
+  //const firstItems = firstResult.map(result => result.data);
+
+  // Get the last visible document
+  const last = firstResult.docs[firstResult.docs.length-1].data();
+  //console.log("last", last);
+
+  // Construct a new query starting at this document,
+  // get the next 25 cities.
+  const res = await fetch('http://localhost:3000/api/traits/0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d');
+  const traits = await res.json();
+  
 
   return {
     props: {
-      result,
-      // total
+      firstItems,
+      last,
+      collectionSize,
+      traits
     },
   };
 }
 
-export default function Gallery({ result, items }) {
-  const [listedNfts, setListedNfts] = useState([]);
+export default function Gallery({ firstItems, last, collectionSize, traits }) {
   const [collectionNfts, setCollectionNfts] = useState([]);
   const [total, setTotal] = useState(0);
+  const [lastVisible, setLastVisible] = useState();
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [hasMore, setHasMore] = useState(true);
   const [subset, setSubset] = useState([]);
+  const [selectedChoices, setSelectedChoices] = useState([]);
+  const [collectionTraits, setCollectionTraits] = useState([]);
+
+  // const { query } = useRouter();
+  // const { traits } = useSWR(
+  //   `/api/traits/${process.env.TOKEN_CONTRACT}`,
+  //   fetcher
+  // );
+  // console.log(traits);
+
 
   useEffect(() => {
-    loadCollectionNFTs(result);
-    setTotal(items);
+    console.log(firstItems);
+    loadCollectionNFTs(firstItems);
+    setLastVisible(last);
+    setTotal(collectionSize);
+    setCollectionTraits(traits);
   }, []);
 
   async function loadCollectionNFTs(altItems) {
     setCollectionNfts(altItems);
     setSubset(altItems.slice());
     setLoadingState("loaded");
+    console.log(collectionNfts);
   }
 
-  const getMoreListings = () => {
-    if (subset.length === collectionNfts.length) {
+  const getMoreListings = async () => {
+    if (collectionNfts.length === total) {
       setHasMore(false);
     }
-    setSubset(collectionNfts.slice(0, subset.length + 4));
+    const next = query(collection(db, collectionId, "NFTData", "NFTs"), 
+      orderBy("id"), 
+      startAfter(lastVisible),
+      limit(20));
+
+    const nextResult = await getDocs(next);
+    const nextItems = nextResult.map(result => result.data());
+
+    // Get the last visible document
+    const lastVisible = nextResult.docs[nextResult.docs.length-1];
+    setLastVisible(lastVisible);
+    setCollectionNfts(collectionNfts.concat(nextItems));
+    //setSubset(collectionNfts.slice(0, subset.length + 4));
   };
+
+  const handleCheckFilter = (o) => {
+    console.log(selectedChoices);
+    setSelectedChoices(o);
+    //re-call getting the list of NFTs
+  }
 
   const handleSearchFilter = (e) => {
     e.preventDefault();
@@ -171,6 +214,20 @@ export default function Gallery({ result, items }) {
               </div> */}
             </div>
 
+            <div className="ml-4 mr-4 flex items-center justify-start">
+              {selectedChoices.map((filterObject) => (
+                <div key={filterObject.filterName}>
+                  {filterObject["options"].map(value => (
+                    <div key={value}>
+                      {filterObject.filterName}: {value}
+                    </div>
+                  ))}
+
+                </div>
+                    
+              ))}
+            </div>
+          
             <div className="flex justify-center">
               <div style={{ maxWidth: "1600px" }}>
                 <InfiniteScroll
@@ -185,7 +242,7 @@ export default function Gallery({ result, items }) {
                     {subset.map((nft, i) => (
                       <Link
                         key={i}
-                        href={`collection/${nft.tokenAddr}/${nft.tokenId}`}
+                        href={`collection/${nft.contract}/${nft.id}`}
                       >
                         <a>
                           <GalleryItem nft={nft} />

@@ -52,6 +52,7 @@ export default async function handler(req, res) {
     .then(async () => {
       items = items.map(item => nftTransform(item));
       let traits = traitTransform(items);
+      items = items.map(item => rarityTransform(item, traits));
       await uploadNFTs(items);
       await uploadTraits(traits);
     })
@@ -63,7 +64,7 @@ export default async function handler(req, res) {
         price,
         contract: idMeta.contract.address,
         description: idMeta.description,
-        id: parseInt(idMeta.id.tokenId).toString(),
+        id: parseInt(idMeta.id.tokenId),
         uri: idMeta.tokenUri.gateway,
         metadata: idMeta.metadata,
         time: idMeta.timeLastUpdated,
@@ -107,6 +108,15 @@ export default async function handler(req, res) {
         });
       });
       return traitCounts;
+    }
+
+    function rarityTransform(item, traitJSON) {
+      let rarity = 1;
+      item.metadata.attributes.forEach(attribute => {
+        rarity *= (traitJSON[attribute.trait_type][attribute.value]);
+      });
+      item.rarity=rarity;
+      return item;
     }
 
     async function uploadNFTs(items) {
