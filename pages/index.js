@@ -76,7 +76,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [hasMore, setHasMore] = useState(true);
   const [subset, setSubset] = useState([]);
-  const [selectedChoices, setSelectedChoices] = useState([]);
+  const [selectedFilters, setselectedFilters] = useState([]);
   const [collectionTraits, setCollectionTraits] = useState([]);
 
   let collectionId = process.env.TOKEN_CONTRACT;
@@ -149,7 +149,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
               <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
             </div>
             <br />
-            <FilterSelector onChangeFilter={selectedChoices => setSelectedChoices(selectedChoices)} />
+            <FilterSelector onChangeFilter={selectedFilters => setselectedFilters(selectedFilters)} />
           </div>
 
           {/* Right Search/Pills/Gallery */}
@@ -190,7 +190,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
 
             {/* Filter Pills */}
             <div className="ml-4">
-              <FilterPills />
+              <FilterPills selectedFilters={selectedFilters} />
             </div>
 
             {/* Gallery */}
