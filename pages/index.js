@@ -1,26 +1,17 @@
 import { useEffect, useState } from "react";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Link from "next/link";
-//import Moralis from "moralis";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 import { db} from '../firebase/initFirebase'
+import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";  
 
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 import PageTemplate from "../components/PageTemplate";
-
-// import {script} from './create-filters-script';
 import { FilterPills } from "../components/FilterPill";
 
-import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";  
-
-
-
-// import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
-// import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
-
-console.log(`${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
+// console.log(`${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
 
 const web3 = createAlchemyWeb3(
   `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
@@ -90,14 +81,6 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
 
   let collectionId = process.env.TOKEN_CONTRACT;
 
-  // const { query } = useRouter();
-  // const { traits } = useSWR(
-  //   `/api/traits/${process.env.TOKEN_CONTRACT}`,
-  //   fetcher
-  // );
-  // console.log(traits);
-
-
   useEffect(() => {
     console.log(firstItems);
     loadCollectionNFTs(firstItems);
@@ -158,6 +141,8 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
         <br />
         <br />
         <div className="flex">
+
+          {/* Left Filter */}
           <div className="mx-4 w-96">
             <div className="flex items-end">
               <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
@@ -167,6 +152,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
             <FilterSelector onChangeFilter={selectedChoices => setSelectedChoices(selectedChoices)} />
           </div>
 
+          {/* Right Search/Pills/Gallery */}
           <div>
             <div className="flex items-end px-4">
               <h2 className="text-2xl font-bold text-yellow-300">GALLERY</h2>
@@ -174,6 +160,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
             </div>
             <br />
 
+            {/* Search */}
             <div className="ml-4 mr-4 flex items-center justify-start">
               <form onSubmit={handleSearchFilter}>
                 <div className="flex rounded border-2">
@@ -201,24 +188,12 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
               </form>
             </div>
 
+            {/* Filter Pills */}
             <div className="ml-4">
               <FilterPills />
             </div>
 
-            <div className="ml-4 mr-4 flex items-center justify-start">
-              {selectedChoices.map((filterObject) => (
-                <div key={filterObject.filterName}>
-                  {filterObject["options"].map(value => (
-                    <div key={value}>
-                      {filterObject.filterName}: {value}
-                    </div>
-                  ))}
-
-                </div>
-                    
-              ))}
-            </div>
-          
+            {/* Gallery */}
             <div className="flex justify-center">
               <div style={{ maxWidth: "1600px" }}>
                 <InfiniteScroll
@@ -243,6 +218,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
                 </InfiniteScroll>
               </div>
             </div>
+
           </div>
         </div>
       </div>
