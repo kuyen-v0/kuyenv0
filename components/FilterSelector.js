@@ -27,11 +27,17 @@ export default function FilterSelector({ selectedFilters, setSelectedFilters }) 
     setSelectedFilters(newSelectedFilters);
   }
 
-  const filterOptions = traits.map(filter => 
+  const filterNameToFilter = {};
+  selectedFilters.forEach(filter => {
+    filterNameToFilter[filter.filterName] = filter;
+  });
+
+  const filterOptions = traits.map(trait => 
     <FilterOption 
-      filter={filter} 
-      key={filter.filterName} 
-      setOptionCallback={(newOptions) => updateSelectedFilters(filter.filterName, newOptions)}
+      trait={trait}
+      filter={filterNameToFilter[trait.filterName] ?? {filterName: trait.filterName, options: []}}
+      key={trait.filterName} 
+      setOptionCallback={(newOptions) => updateSelectedFilters(trait.filterName, newOptions)}
     />
   );
 
