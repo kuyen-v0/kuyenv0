@@ -149,7 +149,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
               <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
             </div>
             <br />
-            <FilterSelector onChangeFilter={selectedFilters => setSelectedFilters(selectedFilters)} />
+            <FilterSelector selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
           </div>
 
           {/* Right Search/Pills/Gallery */}
