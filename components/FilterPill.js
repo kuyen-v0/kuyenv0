@@ -11,26 +11,62 @@ export default function FilterPill({ option, onClick=()=>{} }) {
   );
 }
 
-export function FilterPills({
-  selectedFilters, // This should be a state variable from the parent page
-  setSelectedFilters, // This should be passed in from the parent page to update the state variable appropriately
-}) {
-
-  const selectedOptions = selectedFilters.map(
+/*
+  Convert selectedFilters to format: [ {filterName: str, optionName: str}, ... ]
+  Inverse of packSelectedOptions
+*/
+const unpackSelectedFilters = selectedFilters => {
+  return selectedFilters.map(
     filter => filter.options.map(
       option => ({filterName: filter.filterName, optionName: option})
     )
   ).flat();
+}
 
-  // const updateSelectedFilters = removedOption => {
-  //   const newSelectedOptions = [];
-  //   selectedOptions.forEach()
-  // }
+/*
+  Convert selectedOptions to format: [ {filterName: str, options:[ list of all optionNames under filterName ] } ]
+  Inverse of unpackSelectedFilters
+*/
+const packSelectedOptions = selectedOptions => {
+  const filterNamesToOptionNames = {};
+  selectedOptions.forEach(option => {
+    if (!Object.keys(filterNamesToOptionNames).includes(option.filterName)) {
+      filterNamesToOptionNames[option.filterName] = [];
+    }
+    filterNamesToOptionNames[option.filterName].push(option.optionName);
+  });
+
+  const selectedFilters = [];
+  Object.keys(filterNamesToOptionNames).forEach(filterName => {
+    selectedFilters.push({
+      filterName,
+      options: filterNamesToOptionNames[filterName],
+    });
+  });
+  return selectedFilters;
+}
+
+export function FilterPills({
+  selectedFilters, // This should be a state variable from the parent page
+  setSelectedFilters, // This should be passed in from the parent page to update the state variable appropriately
+}) {
+  const selectedOptions = unpackSelectedFilters(selectedFilters);
+
+  const updateSelectedFilters = removedOption => {
+    const newSelectedOptions = [];
+    selectedOptions.forEach(option => {
+      if (!(option.filterName == removedOption.filterName && option.optionName == removedOption.optionName)) {
+        newSelectedOptions.push(option);
+      }
+    });
+    const newSelectedFilters = packSelectedOptions(newSelectedOptions);
+    setSelectedFilters(newSelectedFilters);
+  }
 
   return (
     <div className='flex items-center pt-4'>
       {selectedOptions.map(option => (
-        <FilterPill option={option} onClick={() => onPillClick(option)} key={JSON.stringify(option)} />
+        <FilterPill option={option} onClick={updateSelectedFilters} key={JSON.stringify(option)} />
       ))}
     </div>
   )
