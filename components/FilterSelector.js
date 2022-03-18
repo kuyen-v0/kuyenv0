@@ -35,6 +35,7 @@ export default function FilterSelector({ selectedFilters, setSelectedFilters }) 
   const filterOptions = traits.map(trait => 
     <FilterOption 
       trait={trait}
+      // If filter exists, use that. Else, put in default empty filter
       filter={filterNameToFilter[trait.filterName] ?? {filterName: trait.filterName, options: []}}
       key={trait.filterName} 
       setOptionCallback={(newOptions) => updateSelectedFilters(trait.filterName, newOptions)}
