@@ -1,17 +1,23 @@
-import { writeBatch, collection, doc, getDoc, addDoc } from 'firebase/firestore';
-import Moralis from "moralis"
-import { db} from '../../../../firebase/initFirebase'
+import {
+  writeBatch,
+  collection,
+  doc,
+  getDoc,
+  addDoc,
+} from "firebase/firestore";
+import Moralis from "moralis";
+import { db } from "../../../../firebase/initFirebase";
 
 const serverUrl = process.env.MORALIS_SERVER_URL;
 const appId = process.env.MORALIS_APP_ID;
-Moralis.start({serverUrl, appId});
+Moralis.start({ serverUrl, appId });
 // import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 // const web3 = createAlchemyWeb3(
 //   `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
 // );
 
 export default async function tokenMetadata(req, res) {
-  try {    
+  try {
     const collection = req.query.collectionId;
     const tokenId = req.query.tokenId;
     const docRef = doc(db, collection, "NFTData", "NFTs", tokenId);
@@ -23,7 +29,6 @@ export default async function tokenMetadata(req, res) {
     // const tokenIdOwners = await Moralis.Web3API.token.getTokenIdOwners(options);
     // item.owner = tokenIdOwners.result[0].owner_of;
     // console.log(item.owner);
-    
 
     // fetch("https://api.opensea.io/user/" + item.owner + "?format=json")
     //   .then(res => res.json())
@@ -37,11 +42,9 @@ export default async function tokenMetadata(req, res) {
     //     res.status(200).json(item);
     //   });
 
-    item.owner_name = 'PLACEHOLDER';
+    item.owner_name = "PLACEHOLDER";
     res.status(200).json(item);
-
-  }
-  catch (err) {
-    res.status(500).json({ error: err })
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
 }
