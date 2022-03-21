@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import useSWR from "swr";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faPalette, 
-  faPerson, 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPalette,
+  faPerson,
   faHandFist,
   faPersonWalking,
   faMasksTheater,
@@ -19,7 +19,7 @@ import {
   faShirt,
   faUserGroup,
   faHandshake,
- } from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 
 import LoadingPage from "../../../components/LoadingPage";
 import PageTemplate from "../../../components/PageTemplate";
@@ -34,15 +34,15 @@ const traitTypeToIcon = {
   Pose: faPersonWalking, // pose
   Mask: faMasksTheater, // Mask
   Cans: faSprayCan, // Can?
-  'Front Floatie': faHatWizard, // Headdress
-  'Side Floatie': faUserNinja, // ??
+  "Front Floatie": faHatWizard, // Headdress
+  "Side Floatie": faUserNinja, // ??
   Collar: faUserTie, // Collar
   Backpack: faSuitcase, // Backpack
   Accessory: faGem, // Accessory
   Uniform: faShirt, // Clothes?
   Chtara: faUserGroup, // ??
   Faction: faHandshake, // Faction
-}
+};
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -100,7 +100,6 @@ export default function TokenData() {
           </Head>
 
           <div className="block w-1/2 align-top md:sticky md:inline-block">
-
             <Snackbar
               open={showSnackbar}
               autoHideDuration={4000}
@@ -111,9 +110,9 @@ export default function TokenData() {
                 style={{
                   backgroundColor: "rgba(255, 255, 255, 0.8)",
                   color: "black",
-                  opacity: "20"
+                  opacity: "20",
                 }}
-                message="Click and drag to move me around!" 
+                message="Click and drag to move me around!"
               />
             </Snackbar>
 
@@ -127,31 +126,39 @@ export default function TokenData() {
             ></iframe>
           </div>
 
-          <div className="mt-1 w-1/2 px-10 overflow-y-scroll">
-            <div className="items-center justify-start bg-white bg-opacity-20 px-3 py-2 rounded">
-              <p className="mb-2 text-4xl"><b>{`#${query.tokenId}`} //</b></p>
+          <div className="mt-1 w-1/2 overflow-y-scroll px-10">
+            <div className="items-center justify-start rounded bg-white bg-opacity-20 px-3 py-2">
+              <p className="mb-2 text-4xl">
+                <b>{`#${query.tokenId}`} //</b>
+              </p>
               <p className="mb-2 text-xs">Fyat Lux</p>
-              {data.owner_name && <div className="flex text-sm">
-                <span className="font-bold">{data.faction}</span>
-                <p>&nbsp;owned by&nbsp;</p>
-                <a
-                  href={`https://opensea.io/${data.owner_name}`}
-                  target="_blank"
-                  title="View Owner on OpenSea"
-                  className="italic no-underline hover:underline"
-                >
-                  {data.owner_name}
-                </a>
-              </div>}
+              {data.owner_name && (
+                <div className="flex text-sm">
+                  <span className="font-bold">{data.faction}</span>
+                  <p>&nbsp;owned by&nbsp;</p>
+                  <a
+                    href={`https://opensea.io/${data.owner_name}`}
+                    target="_blank"
+                    title="View Owner on OpenSea"
+                    className="italic no-underline hover:underline"
+                  >
+                    {data.owner_name}
+                  </a>
+                </div>
+              )}
             </div>
 
             <div className="flex pt-5">
-              <div className='mr-4 flex items-center'>
-                <OpenSeaButton link={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`} />
-                <p className='ml-1 text-sm'>Buy on OpenSea</p>
+              <div className="mr-4 flex items-center">
+                <OpenSeaButton
+                  link={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`}
+                />
+                <p className="ml-1 text-sm">Buy on OpenSea</p>
               </div>
-              <div className='flex items-center'>
-                <EtherscanButton link={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`} />
+              <div className="flex items-center">
+                <EtherscanButton
+                  link={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`}
+                />
                 <p className="ml-1 text-sm">View on Etherscan</p>
               </div>
             </div>
@@ -163,10 +170,12 @@ export default function TokenData() {
                   {data.metadata.attributes.map((attribute, i) => (
                     <li
                       key={i}
-                      className="flex w-full content-center items-center bg-white bg-opacity-20 py-2 px-2 shadow-2xl rounded duration-300 hover:scale-105"
+                      className="flex w-full content-center items-center rounded bg-white bg-opacity-20 py-2 px-2 shadow-2xl duration-300 hover:scale-105"
                     >
-                      <FontAwesomeIcon icon={traitTypeToIcon[attribute.trait_type] ?? faGem} />
-                      <div className='ml-2'>
+                      <FontAwesomeIcon
+                        icon={traitTypeToIcon[attribute.trait_type] ?? faGem}
+                      />
+                      <div className="ml-2">
                         <p className="text-2xs mr-auto inline-block flex items-center tracking-wider opacity-60">
                           <span className="pt-px">{attribute.trait_type}:</span>
                         </p>
@@ -179,13 +188,10 @@ export default function TokenData() {
                 </ul>
               </div>
             </div>
-
           </div>
         </div>
       </>
     );
   }
-  return (
-    <PageTemplate page={page} navProps={{bg: data?.background}} />
-  );
+  return <PageTemplate page={page} navProps={{ bg: data?.background }} />;
 }

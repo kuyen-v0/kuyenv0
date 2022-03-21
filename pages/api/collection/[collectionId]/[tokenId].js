@@ -1,10 +1,4 @@
-import {
-  writeBatch,
-  collection,
-  doc,
-  getDoc,
-  addDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import Moralis from "moralis";
 import { db } from "../../../../firebase/initFirebase";
 
