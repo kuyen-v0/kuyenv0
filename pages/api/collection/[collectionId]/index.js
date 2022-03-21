@@ -39,6 +39,7 @@ export default async function handler(req, res) {
         if (response.data.nextToken) { 
           items = items.concat(response.data.nfts);
           startToken = response.data.nextToken;
+          console.log(items.length);
         } else {
           items = items.concat(response.data.nfts);
           done = true;
@@ -54,7 +55,7 @@ export default async function handler(req, res) {
       let traits = traitTransform(items);
       items = items.map(item => rarityTransform(item, traits));
       await uploadNFTs(items);
-      await uploadTraits(traits);
+      //await uploadTraits(traits);
     })
     .then(() => {return res.status(200).json(traits);});
       
@@ -115,6 +116,8 @@ export default async function handler(req, res) {
       item.metadata.attributes.forEach(attribute => {
         rarity *= (traitJSON[attribute.trait_type][attribute.value]);
       });
+      rarity = Math.round(rarity/Math.pow(10,30));
+      //console.log(rarity);
       item.rarity=rarity;
       return item;
     }
@@ -124,13 +127,15 @@ export default async function handler(req, res) {
       batchArray.push(writeBatch(db));
       let operationCounter = 0;
       let batchIndex = 0;
+      console.log('reached here');
 
       items.forEach((item) => {
-        const docRef = doc(db, collectionId, "NFTData", "NFTs", item.id); 
+        const docRef = doc(db, collectionId, "NFTData", "NFTs", item.id.toString()); 
         batchArray[batchIndex].set(docRef, item);
         operationCounter++;
 
         if (operationCounter === 499) {
+          console.log(batchIndex);
           batchArray.push(writeBatch(db));
           batchIndex++;
           operationCounter = 0;

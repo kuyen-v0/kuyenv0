@@ -166,7 +166,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
               <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
             </div>
             <br />
-            <FilterSelector />
+            <FilterSelector onChangeFilter={handleCheckFilter}/>
           </div>
 
           <div>
