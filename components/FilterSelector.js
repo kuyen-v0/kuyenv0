@@ -1,53 +1,47 @@
 import { useState } from "react";
-import FilterCheckboxes from "./FilterCheckboxes";
 import FilterOption from "./FilterOptions.js";
-import { useRouter } from "next/router";
-import useSWR from "swr";
-import { useEffect } from "react";
 
 import { FILTERS } from "../pages/nft-data";
 
 
-export default function FilterSelector({onChangeFilter}) {
-  //fetch filters from API
-  //const filters = JSON.parse(FILTERS);
-  //console.log(traits);
-  //console.log(onChangeFilter);
-
-
-  //console.log(filters);
-
-  //useEffect(() => {}, []);
-
+export default function FilterSelector({ selectedFilters, setSelectedFilters }) {
   const traits = JSON.parse(FILTERS);
 
-  // if (!filters) return (
-  //   <div display='flex-col text-white'>
-  //     <hr className='border-stone-300' />
-  //     Loading...
-  //   </div>
-  // );
-  //console.log(`/api/traits/${process.env.TOKEN_CONTRACT}`);
-  //console.log(filters);
-  let [optionsSelected, setOptionsSelected] = useState([]); //[{Palette: ["Cold Blue"]}, {Pose: [""]}]
-  const filterOptions = traits.map(filter => <FilterOption filter={filter} key={filter.filterName} setOptionCallback={(options) => {
-    console.log(options);
+  const updateSelectedFilters = (filterName, newFilterValue) => {
+    const updatedFilter = {filterName, options: newFilterValue};
 
-    let filterIndex = optionsSelected.findIndex((obj => obj.filterName == filter.filterName));
-    let o = optionsSelected.slice();
-    console.log(o);
-    if (filterIndex === -1) {
-      o.push({filterName: filter.filterName, options: options});
-    } else {
-      o[filterIndex] = {filterName: filter.filterName, options: options};
+    const newSelectedFilters = [];
+    // Update filter if already in selectedFilters
+    selectedFilters.forEach(filter => {
+      if (filter.filterName === filterName) {
+        newSelectedFilters.push(updatedFilter);
+      } else {
+        newSelectedFilters.push(filter);
+      }
+    });
+    // Add filter if not already in selectedFilters
+    if (!newSelectedFilters.map(filter => filter.filterName).includes(filterName)) {
+      newSelectedFilters.push(updatedFilter);
     }
-    //find Index of filterName
-    //let o = {...optionsSelected};
-    //ilterName] = options
-    console.log(o);
-    setOptionsSelected(o);
-    onChangeFilter(o);
-  }}/>);
+
+    setSelectedFilters(newSelectedFilters);
+  }
+
+  const filterNameToFilter = {};
+  selectedFilters.forEach(filter => {
+    filterNameToFilter[filter.filterName] = filter;
+  });
+
+  const filterOptions = traits.map(trait => 
+    <FilterOption 
+      trait={trait}
+      // If filter exists, use that. Else, put in default empty filter
+      filter={filterNameToFilter[trait.filterName] ?? {filterName: trait.filterName, options: []}}
+      key={trait.filterName} 
+      setOptionCallback={(newOptions) => updateSelectedFilters(trait.filterName, newOptions)}
+    />
+  );
+
   return (
     <div display='flex-col text-white'>
       <hr className='border-stone-300' />

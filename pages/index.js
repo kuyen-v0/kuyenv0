@@ -1,25 +1,17 @@
 import { useEffect, useState } from "react";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Link from "next/link";
-//import Moralis from "moralis";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 import { db} from '../firebase/initFirebase'
+import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";  
 
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 import PageTemplate from "../components/PageTemplate";
+import { FilterPills } from "../components/FilterPill";
 
-// import { script } from "./create-filters-script";
-
-import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";  
-
-
-
-// import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
-// import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
-
-console.log(`${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
+// console.log(`${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
 
 const web3 = createAlchemyWeb3(
   `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
@@ -57,7 +49,8 @@ export async function getStaticProps() {
   //const firstItems = firstResult.map(result => result.data);
 
   // Get the last visible document
-  const last = firstResult.docs[firstResult.docs.length-1].data();
+  console.log(firstResult.docs);
+  const last = firstResult.docs.length !== 0 ? firstResult.docs[firstResult.docs.length-1].data() : null;
   //console.log("last", last);
 
   // Construct a new query starting at this document,
@@ -83,16 +76,10 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [hasMore, setHasMore] = useState(true);
   const [subset, setSubset] = useState([]);
-  const [selectedChoices, setSelectedChoices] = useState([]);
+  const [selectedFilters, setSelectedFilters] = useState([]);
   const [collectionTraits, setCollectionTraits] = useState([]);
 
-  // const { query } = useRouter();
-  // const { traits } = useSWR(
-  //   `/api/traits/${process.env.TOKEN_CONTRACT}`,
-  //   fetcher
-  // );
-  // console.log(traits);
-
+  let collectionId = process.env.TOKEN_CONTRACT;
 
   useEffect(() => {
     console.log(firstItems);
@@ -128,12 +115,6 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
     //setSubset(collectionNfts.slice(0, subset.length + 4));
   };
 
-  const handleCheckFilter = (o) => {
-    console.log(selectedChoices);
-    setSelectedChoices(o);
-    //re-call getting the list of NFTs
-  }
-
   const handleSearchFilter = (e) => {
     e.preventDefault();
     const filteredArray = collectionNfts.filter((nft) =>
@@ -160,15 +141,18 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
         <br />
         <br />
         <div className="flex">
+
+          {/* Left Filter */}
           <div className="mx-4 w-96">
             <div className="flex items-end">
               <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
               <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
             </div>
             <br />
-            <FilterSelector onChangeFilter={handleCheckFilter}/>
+            <FilterSelector selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
           </div>
 
+          {/* Right Search/Pills/Gallery */}
           <div>
             <div className="flex items-end px-4">
               <h2 className="text-2xl font-bold text-yellow-300">GALLERY</h2>
@@ -176,6 +160,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
             </div>
             <br />
 
+            {/* Search */}
             <div className="ml-4 mr-4 flex items-center justify-start">
               <form onSubmit={handleSearchFilter}>
                 <div className="flex rounded border-2">
@@ -201,33 +186,14 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
                   </button>
                 </div>
               </form>
-
-              {/* <div className="ml-6 flex rounded border-2">
-                <select
-                  className="form-select dropdown relative block w-full w-80 px-4 py-2"
-                  name="price"
-                  id="price"
-                  onChange={handleDropdownFilter}
-                >
-                  <option value="rarity">Rarity</option>
-                </select>
-              </div> */}
             </div>
 
-            <div className="ml-4 mr-4 flex items-center justify-start">
-              {selectedChoices.map((filterObject) => (
-                <div key={filterObject.filterName}>
-                  {filterObject["options"].map(value => (
-                    <div key={value}>
-                      {filterObject.filterName}: {value}
-                    </div>
-                  ))}
-
-                </div>
-                    
-              ))}
+            {/* Filter Pills */}
+            <div className="ml-4">
+              <FilterPills selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
             </div>
-          
+
+            {/* Gallery */}
             <div className="flex justify-center">
               <div style={{ maxWidth: "1600px" }}>
                 <InfiniteScroll
@@ -237,7 +203,6 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
                   loader={<h3> Collection Loading...</h3>}
                   endMessage={<h4></h4>}
                 >
-                  <br />
                   <div className="grid grid-cols-1 gap-4 p-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
                     {subset.map((nft, i) => (
                       <Link
@@ -253,6 +218,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
                 </InfiniteScroll>
               </div>
             </div>
+
           </div>
         </div>
       </div>
