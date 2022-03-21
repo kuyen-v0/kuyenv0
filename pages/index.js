@@ -4,7 +4,7 @@ import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 import { db} from '../firebase/initFirebase'
-import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";  
+import { collection, query, where, orderBy, startAfter, limit, getDocs } from "firebase/firestore";  
 
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
@@ -41,16 +41,7 @@ export async function getStaticProps() {
 
 
   // Query the first page of docs
-  const first = query(collection(db, collectionId, "NFTData", "NFTs"), orderBy("id"), limit(20));
-  const firstResult = await getDocs(first);
-  //console.log(firstResult);
-  let firstItems = [];
-  firstResult.forEach((doc) => firstItems.push(doc.data()));
-  //const firstItems = firstResult.map(result => result.data);
-
-  // Get the last visible document
-  console.log(firstResult.docs);
-  const last = firstResult.docs.length !== 0 ? firstResult.docs[firstResult.docs.length-1].data() : null;
+  
   //console.log("last", last);
 
   // Construct a new query starting at this document,
@@ -61,37 +52,73 @@ export async function getStaticProps() {
 
   return {
     props: {
-      firstItems,
-      last,
       collectionSize,
       traits
     },
   };
 }
 
-export default function Gallery({ firstItems, last, collectionSize, traits }) {
+export default function Gallery({ collectionSize, traits }) {
   const [collectionNfts, setCollectionNfts] = useState([]);
   const [total, setTotal] = useState(0);
-  const [lastVisible, setLastVisible] = useState();
+  const [lastVisible, setLastVisible] = useState(undefined);
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [hasMore, setHasMore] = useState(true);
   const [subset, setSubset] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [collectionTraits, setCollectionTraits] = useState([]);
 
-  let collectionId = process.env.TOKEN_CONTRACT;
+  let collectionId = "0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d";
+
 
   useEffect(() => {
-    console.log(firstItems);
-    loadCollectionNFTs(firstItems);
-    setLastVisible(last);
+    setLoadingState("not-loaded");
+    setCollectionNfts([]);
+    loadCollectionNFTs();
     setTotal(collectionSize);
     setCollectionTraits(traits);
-  }, []);
+  }, [selectedFilters]);
 
-  async function loadCollectionNFTs(altItems) {
-    setCollectionNfts(altItems);
-    setSubset(altItems.slice());
+
+
+  async function loadCollectionNFTs() {
+    //refresh everytime selectedFilters is changed
+    const unpackSelectedFilters = selectedFilters => {
+      return selectedFilters.map(
+        filter => filter.options.map(
+          option => ({"trait_type": filter.filterName, "value": option})
+        )
+      ).flat();
+    }
+    const selectedOptions = unpackSelectedFilters(selectedFilters);
+
+    let first;
+    console.log(collectionId);
+    if (selectedOptions.length === 0) {
+      first = query(collection(db, collectionId, "NFTData", "NFTs"), 
+        orderBy("id"), 
+        limit(20));
+      console.log(first);
+    } else {
+      first = query(collection(db, collectionId, "NFTData", "NFTs"),
+        where("metadata.attributes", "array-contains-any", selectedOptions),
+        orderBy("id"), 
+        limit(20)); 
+    }
+    const firstResult = await getDocs(first);
+    let firstItems = [];
+    firstResult.forEach((doc) => {firstItems.push(doc.data())});
+    //console.log()
+    console.log(firstItems);
+    setCollectionNfts(firstItems);
+    console.log(collectionNfts);
+    //const firstItems = firstResult.map(result => result.data);
+  
+    // Get the last visible document
+    const last = firstResult.docs.length !== 0 ? firstResult.docs[firstResult.docs.length-1] : null;
+    console.log(last);
+    setLastVisible(last); 
+
     setLoadingState("loaded");
     console.log(collectionNfts);
   }
@@ -100,17 +127,41 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
     if (collectionNfts.length === total) {
       setHasMore(false);
     }
-    const next = query(collection(db, collectionId, "NFTData", "NFTs"), 
-      orderBy("id"), 
-      startAfter(lastVisible),
-      limit(20));
+    const unpackSelectedFilters = selectedFilters => {
+      return selectedFilters.map(
+        filter => filter.options.map(
+          option => ({"trait_type": filter.filterName, "value": option})
+        )
+      ).flat();
+    }
+    const selectedOptions = unpackSelectedFilters(selectedFilters);
+
+    let next;
+
+    if (selectedOptions.length === 0) {
+      next = query(collection(db, collectionId, "NFTData", "NFTs"), 
+        orderBy("id"), 
+        startAfter(lastVisible),
+        limit(20));
+      console.log(first);
+    } else {
+      next = query(collection(db, collectionId, "NFTData", "NFTs"),
+        where("metadata.attributes", "array-contains-any", selectedOptions),
+        orderBy("id"), 
+        startAfter(lastVisible),
+        limit(20)); 
+    }
 
     const nextResult = await getDocs(next);
     const nextItems = nextResult.map(result => result.data());
 
+    if (nextItems.length < 20) {
+      setHasMore(false);
+    }
+
     // Get the last visible document
-    const lastVisible = nextResult.docs[nextResult.docs.length-1];
-    setLastVisible(lastVisible);
+    const last = nextResult.docs[nextResult.docs.length-1];
+    setLastVisible(last);
     setCollectionNfts(collectionNfts.concat(nextItems));
     //setSubset(collectionNfts.slice(0, subset.length + 4));
   };
@@ -197,14 +248,14 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
             <div className="flex justify-center">
               <div style={{ maxWidth: "1600px" }}>
                 <InfiniteScroll
-                  dataLength={subset.length}
+                  dataLength={collectionNfts.length}
                   next={getMoreListings}
                   hasMore={hasMore}
                   loader={<h3> Collection Loading...</h3>}
                   endMessage={<h4></h4>}
                 >
                   <div className="grid grid-cols-1 gap-4 p-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {subset.map((nft, i) => (
+                    {collectionNfts.map((nft, i) => (
                       <Link
                         key={i}
                         href={`collection/${nft.contract}/${nft.id}`}
