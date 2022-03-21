@@ -61,7 +61,7 @@ export async function getStaticProps() {
 export default function Gallery({ collectionSize, traits }) {
   const [collectionNfts, setCollectionNfts] = useState([]);
   const [total, setTotal] = useState(0);
-  const [lastVisible, setLastVisible] = useState(undefined);
+  const [lastVisible, setLastVisible] = useState();
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [hasMore, setHasMore] = useState(true);
   const [subset, setSubset] = useState([]);
@@ -143,7 +143,6 @@ export default function Gallery({ collectionSize, traits }) {
         orderBy("id"), 
         startAfter(lastVisible),
         limit(20));
-      console.log(first);
     } else {
       next = query(collection(db, collectionId, "NFTData", "NFTs"),
         where("metadata.attributes", "array-contains-any", selectedOptions),
@@ -153,7 +152,8 @@ export default function Gallery({ collectionSize, traits }) {
     }
 
     const nextResult = await getDocs(next);
-    const nextItems = nextResult.map(result => result.data());
+    let nextItems = [];
+    nextResult.forEach((doc) => {nextItems.push(doc.data())});
 
     if (nextItems.length < 20) {
       setHasMore(false);
