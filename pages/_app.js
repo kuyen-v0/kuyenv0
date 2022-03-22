@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }) {
 
       <div>
         <Script src="https://unpkg.com/flowbite@1.3.3/dist/flowbite.js"></Script>
-        
+
         <Component {...pageProps} />
       </div>
     </div>
