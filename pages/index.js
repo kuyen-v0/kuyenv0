@@ -177,7 +177,6 @@ export default function Gallery({ collectionSize, traits }) {
     const last = nextResult.docs[nextResult.docs.length - 1];
     setLastVisible(last);
     setCollectionNfts(collectionNfts.concat(nextItems));
-    // setSubset(collectionNfts.slice(0, subset.length + 4));
   };
 
   const handleSearchFilter = (e) => {

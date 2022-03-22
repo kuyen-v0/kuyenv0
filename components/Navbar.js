@@ -2,7 +2,12 @@ import BigButton from "./BigButton";
 
 export default function Navbar({ bg }) {
   return (
-    <nav className={"navbar-expand-lg relative flex w-full flex-wrap items-center justify-between " + (bg ?? "")}>
+    <nav
+      className={
+        "navbar-expand-lg relative flex w-full flex-wrap items-center justify-between " +
+        (bg ?? "")
+      }
+    >
       <div className="container-fluid flex w-full flex-wrap items-center justify-between px-6">
         <div
           className="collapse navbar-collapse flex-grow place-content-between items-center"
@@ -23,12 +28,19 @@ export default function Navbar({ bg }) {
                   className="nav-link text-white"
                   href="https://discord.gg/fyatlux"
                 >
-                  <BigButton text='Join Our Discord' />
+                  <BigButton text="Join Our Discord" />
                 </a>
               </li>
               <li className="nav-item p-2">
-                <a className="nav-link p-0 text-white" href="https://collection.fyatlux.com/">
-                  <BigButton text='My Collection' bg='bg-yellow-400' textColor={'text-black'} />
+                <a
+                  className="nav-link p-0 text-white"
+                  href="https://collection.fyatlux.com/"
+                >
+                  <BigButton
+                    text="My Collection"
+                    bg="bg-yellow-400"
+                    textColor={"text-black"}
+                  />
                 </a>
               </li>
             </ul>

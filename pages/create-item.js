@@ -14,7 +14,6 @@ import createStatsCollector from "mocha/lib/stats-collector";
 const client = create({ url: "https://ipfs.infura.io:5001/api/v0" });
 
 export default function CreateItem() {
-  // this is the component being exported
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, updateFormInput] = useState({
     price: "",
