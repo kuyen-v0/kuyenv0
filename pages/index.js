@@ -97,14 +97,12 @@ export default function Gallery({ collectionSize, traits }) {
     const selectedOptions = unpackSelectedFilters(selectedFilters);
 
     let first;
-    console.log(collectionId);
     if (selectedOptions.length === 0) {
       first = query(
         collection(db, collectionId, "NFTData", "NFTs"),
         orderBy("id"),
         limit(20)
       );
-      console.log(first);
     } else {
       first = query(
         collection(db, collectionId, "NFTData", "NFTs"),
@@ -118,22 +116,16 @@ export default function Gallery({ collectionSize, traits }) {
     firstResult.forEach((doc) => {
       firstItems.push(doc.data());
     });
-    // console.log()
-    console.log(firstItems);
     setCollectionNfts(firstItems);
-    console.log(collectionNfts);
-    // const firstItems = firstResult.map(result => result.data);
 
     // Get the last visible document
     const last =
       firstResult.docs.length !== 0
         ? firstResult.docs[firstResult.docs.length - 1]
         : null;
-    console.log(last);
     setLastVisible(last);
 
     setLoadingState("loaded");
-    console.log(collectionNfts);
   }
 
   const getMoreListings = async () => {

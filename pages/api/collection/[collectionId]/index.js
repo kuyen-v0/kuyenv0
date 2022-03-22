@@ -39,7 +39,6 @@ export default async function handler(req, res) {
         if (response.data.nextToken) {
           items = items.concat(response.data.nfts);
           startToken = response.data.nextToken;
-          console.log(items.length);
         } else {
           items = items.concat(response.data.nfts);
           done = true;
@@ -137,7 +136,6 @@ export default async function handler(req, res) {
       batchArray.push(writeBatch(db));
       let operationCounter = 0;
       let batchIndex = 0;
-      console.log("reached here");
 
       items.forEach((item) => {
         const docRef = doc(
@@ -151,7 +149,6 @@ export default async function handler(req, res) {
         operationCounter++;
 
         if (operationCounter === 499) {
-          console.log(batchIndex);
           batchArray.push(writeBatch(db));
           batchIndex++;
           operationCounter = 0;
