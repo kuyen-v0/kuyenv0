@@ -27,7 +27,7 @@ export default function Navbar({ bg }) {
                 </a>
               </li>
               <li className="nav-item p-2">
-                <a className="nav-link p-0 text-white" href="my-assets">
+                <a className="nav-link p-0 text-white" href="https://collection.fyatlux.com/">
                   <BigButton text='My Collection' bg='bg-yellow-400' textColor={'text-black'} />
                 </a>
               </li>
