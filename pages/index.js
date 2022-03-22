@@ -4,6 +4,8 @@ import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 import { db } from "../firebase/initFirebase";
+import LoadingPage from "../components/LoadingPage";
+
 import {
   collection,
   query,
@@ -273,7 +275,7 @@ export default function Gallery({ collectionSize, traits }) {
                     dataLength={collectionNfts.length}
                     next={getMoreListings}
                     hasMore={hasMore}
-                    loader={<h3> Collection Loading...</h3>}
+                    loader={<LoadingPage />}
                     endMessage={<h4></h4>}
                   >
                     <div className="grid grid-cols-1 gap-4 p-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
