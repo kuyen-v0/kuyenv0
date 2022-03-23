@@ -1,9 +1,6 @@
 import "../styles/globals.css";
 import Script from "next/script";
 import Head from "next/head";
-import Navbar from "../components/Navbar";
-// import { ChakraProvider } from "@chakra-ui/react";
-// import Image from "next/image";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -18,7 +15,7 @@ function MyApp({ Component, pageProps }) {
 
       <div>
         <Script src="https://unpkg.com/flowbite@1.3.3/dist/flowbite.js"></Script>
-        
+
         <Component {...pageProps} />
       </div>
     </div>
