@@ -42,19 +42,29 @@ const fetcher = async (url) => {
 
 export async function getStaticProps() {
   const collectionId = process.env.TOKEN_CONTRACT;
-  // get total, placeholder for now
-  // const querySnapshot = await getDocs(collection(db, collectionId, "NFTData", "NFTs"));
-  // const collectionSize = querySnapshot.length;
+  collectionId = "0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d";
+  //get total, placeholder for now
+  //const querySnapshot = await getDocs(collection(db, collectionId, "NFTData", "NFTs"));
+  //const collectionSize = querySnapshot.length;
   const collectionSize = 8080;
+
+  let traits = [];
+
+  const querySnapshot = await getDocs(collection(db, collectionId, "TraitData", "Traits"));
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      traits.push({ filterName: doc.id, options: doc.data() });
+    });
 
   // Query the first page of docs
 
   // Construct a new query starting at this document,
   // get the next 25 cities.
-  const res = await fetch(
-    "http://localhost:3000/api/traits/0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"
-  );
-  const traits = await res.json();
+
+  // const res = await fetch(
+  //  "http://localhost:3000/api/traits/0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"
+  // );
+  // const traits = await res.json();
 
   return {
     props: {
@@ -118,6 +128,11 @@ export default function Gallery({ collectionSize, traits }) {
     firstResult.forEach((doc) => {
       firstItems.push(doc.data());
     });
+    if (firstItems.length < 20) {
+      setHasMore(false);
+    } else {
+      setHasMore(true);
+    }
     setCollectionNfts(firstItems);
 
     // Get the last visible document
@@ -219,6 +234,7 @@ export default function Gallery({ collectionSize, traits }) {
               </div>
               <br />
               <FilterSelector
+                traitJSON={collectionTraits}
                 selectedFilters={selectedFilters}
                 setSelectedFilters={setSelectedFilters}
               />

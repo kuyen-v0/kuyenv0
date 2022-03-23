@@ -2,11 +2,22 @@ import FilterOption from "./FilterOptions.js";
 
 import { FILTERS } from "../pages/nft-data";
 
-export default function FilterSelector({
-  selectedFilters,
-  setSelectedFilters,
+export default function FilterSelector({ 
+  traitJSON, 
+  selectedFilters, 
+  setSelectedFilters 
 }) {
-  const traits = JSON.parse(FILTERS);
+  const traits = traitJSON;
+
+  if (traits === undefined) {
+    return (
+      <div display='flex-col text-white'>
+        <hr className='border-stone-300' />
+        Loading...
+      </div>
+    );
+  }
+
 
   const updateSelectedFilters = (filterName, newFilterValue) => {
     const updatedFilter = { filterName, options: newFilterValue };
