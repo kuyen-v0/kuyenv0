@@ -1,7 +1,4 @@
 import FilterOption from "./FilterOptions.js";
-
-import { FILTERS } from "../pages/nft-data";
-
 export default function FilterSelector({ 
   traitJSON, 
   selectedFilters, 
