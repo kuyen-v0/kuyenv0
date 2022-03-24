@@ -32,7 +32,7 @@
     "magic-sdk": "^8.0.1",
     "moralis": "^1.2.6",
     "next": "12.0.10",
-    "postcss": "^8.4.6",
+    "postcss": "^8.4.12",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-firebase-hooks": "^5.0.3",
