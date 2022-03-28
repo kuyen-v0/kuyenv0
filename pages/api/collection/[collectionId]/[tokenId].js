@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
-import Moralis from "moralis";
+import Moralis from "moralis/node.js";
 import { db } from "../../../../firebase/initFirebase";
 import axios from "axios";
 
