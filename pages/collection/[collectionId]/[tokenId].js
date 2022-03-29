@@ -64,6 +64,7 @@ export default function TokenData() {
   const [showSnackbar, setShowSnackbar] = useState(true);
 
   let page;
+  console.log(data);
   if (!data) {
     page = (
       <>
@@ -72,7 +73,7 @@ export default function TokenData() {
             <div>
               <LoadingPage />
             </div>
-            <style global jsx>{`
+            <style output jsx>{`
               html,
               body,
               body > div:first-child,

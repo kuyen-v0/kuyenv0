@@ -30,3 +30,38 @@
     height: 100px;
     width: 100px;
   }
+
+  .bg-angel {
+    --tw-bg-opacity: 1;
+    background-color: rgb(230 59 46 / var(--tw-bg-opacity));
+  }
+  
+  .bg-greenvelvet {
+    --tw-bg-opacity: 1;
+    background-color: rgb(145 36 41 / var(--tw-bg-opacity));
+  }
+  
+  .bg-pearlranger {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 219 41 / var(--tw-bg-opacity));
+  }
+  
+  .bg-violetstorm {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 84 191 / var(--tw-bg-opacity));
+  }
+  
+  .bg-akira {
+    --tw-bg-opacity: 1;
+    background-color: rgb(199 196 204 / var(--tw-bg-opacity));
+  }
+  
+  .bg-black {
+    --tw-bg-opacity: 1;
+    background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  }
+  
+  .bg-coldblue {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 130 38 / var(--tw-bg-opacity));
+  }
