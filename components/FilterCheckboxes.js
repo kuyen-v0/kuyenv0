@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as gtag from "../lib/gtag";
 
 export default function FilterCheckboxes({ filter, setOptionCallback }) {
   const optionKeys = Object.keys(filter.options);
@@ -9,12 +10,23 @@ export default function FilterCheckboxes({ filter, setOptionCallback }) {
       return;
     }
     if (checked.includes(e)) {
+      gtag.event({
+        action: 'unselect_filter',
+        category: filter.filterName,
+        label: e,
+      });
+
       const result = checked.filter((option) => option !== e);
       setChecked(result);
       setOptionCallback(result);
     } else {
       const checkedCopy = checked.slice();
       checkedCopy.push(e);
+      gtag.event({
+        action: 'select_filter',
+        category: filter.filterName,
+        label: e,
+      });
       setChecked(checkedCopy);
       setOptionCallback(checkedCopy);
     }

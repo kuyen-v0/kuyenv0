@@ -4,6 +4,7 @@ import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 import { db } from "../firebase/initFirebase";
+import * as gtag from "../lib/gtag";
 import { collection, query, where, orderBy, startAfter, limit, getDocs} from "firebase/firestore";
 
 import GalleryItem from "../components/GalleryItem";
@@ -201,6 +202,11 @@ export default function Gallery({ collectionSize, traits }) {
 
   const handleSearchFilter = (e) => {
     e.preventDefault();
+    gtag.event({
+      action: 'search',
+      category: 'filtering',
+      label: e.target.filter.value,
+    });
     const filteredArray = collectionNfts.filter((nft) =>
       nft.name.split("#")[1].includes(e.target.filter.value)
     );

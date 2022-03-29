@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Head from "next/head";
 import useSWR from "swr";
+import * as gtag from "../../../lib/gtag";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -62,6 +63,22 @@ export default function TokenData() {
   );
 
   const [showSnackbar, setShowSnackbar] = useState(true);
+
+  const handleOpenseaClick = e => {
+    gtag.event({
+      action: 'view_opensea',
+      category: 'token',
+      label: query.tokenId,
+    })
+  };
+
+  const handleEtherscanClick = e => {
+    gtag.event({
+      action: 'view_etherscan',
+      category: 'token',
+      label: query.tokenId,
+    })
+  };
 
   let page;
   console.log(data);
@@ -153,12 +170,14 @@ export default function TokenData() {
               <div className="mr-4 flex items-center">
                 <OpenSeaButton
                   link={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`}
+                  onClick={handleOpenseaClick}
                 />
                 <p className="ml-1 text-sm">Buy on OpenSea</p>
               </div>
               <div className="flex items-center">
                 <EtherscanButton
                   link={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`}
+                  onClick={handleEtherscanClick}
                 />
                 <p className="ml-1 text-sm">View on Etherscan</p>
               </div>
