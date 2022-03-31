@@ -118,6 +118,22 @@ export default function Gallery({ collectionSize, traits }) {
         orderBy("id"),
         limit(20)
       );
+
+      /*
+      await client.connect();
+      const database = client.db("sample_mflix");
+      const movies = database.collection("movies");
+
+
+      for each option in selected filters
+      get list of selected options for the filtername
+      get id for the filtername
+      query["metadata.attributes." + id + ".value"] = {$in: listOfOptions};
+      const sort = {id: 1};
+      const currentCount = await movies.countDocuments(query);
+      const cursor = collection.find(query).sort(sort).limit(limit);
+      */
+
     }
     const firstResult = await getDocs(first);
     let firstItems = [];
