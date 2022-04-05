@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function MyAssets() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
