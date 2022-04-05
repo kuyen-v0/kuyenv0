@@ -74,6 +74,7 @@ export default function Gallery({ collectionSize, traits }) {
   const [total, setTotal] = useState(0);
   const [lastVisible, setLastVisible] = useState();
   const [loadingState, setLoadingState] = useState("not-loaded");
+  const [searchValue, setSearchValue] = useState("");
   const [hasMore, setHasMore] = useState(true);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [collectionTraits, setCollectionTraits] = useState([]);
@@ -217,8 +218,10 @@ export default function Gallery({ collectionSize, traits }) {
 
   const handleSearchFilter = (e) => {
     e.preventDefault();
-    const filteredArray = collectionNfts.filter((nft) =>
-      nft.name.split("#")[1].includes(e.target.filter.value)
+    //console.log(collectionNfts);
+    const filteredArray = collectionNfts.filter((nft) => {
+      //console.log(nft);
+      nft.metadata.name.split("#")[1].includes(e.target.filter.value);}
     );
     setCollectionNfts(filteredArray);
   };
@@ -268,32 +271,7 @@ export default function Gallery({ collectionSize, traits }) {
               <br />
 
               {/* Search */}
-              <div className="ml-4 mr-4 flex items-center justify-start">
-                <form onSubmit={handleSearchFilter}>
-                  <div className="flex rounded border-2">
-                    <input
-                      type="text"
-                      id="filter"
-                      name="filter"
-                      className="w-80 px-4 py-2"
-                      placeholder="Search..."
-                    />
-                    <button
-                      type="submit"
-                      className="flex items-center justify-center border-l px-4"
-                    >
-                      <svg
-                        className="h-6 w-6 text-gray-600"
-                        fill="yellow"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-                      </svg>
-                    </button>
-                  </div>
-                </form>
-              </div>
+              
 
               {/* Filter Pills */}
               <div className="ml-4">
