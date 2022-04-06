@@ -10,6 +10,7 @@ import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 import PageTemplate from "../components/PageTemplate";
 import { FilterPills } from "../components/FilterPill";
+import MobileFilterSelector from "../components/MobileFilterSelector";
 
 // console.log(`${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
 
@@ -143,7 +144,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
         <div className="flex">
 
           {/* Left Filter */}
-          <div className="mx-4 w-96">
+          <div className="hidden lg:block mx-4 w-96">
             <div className="flex items-end">
               <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
               <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
@@ -151,6 +152,9 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
             <br />
             <FilterSelector selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
           </div>
+          {/* <div className="lg:hidden fixed bg-white w-full">
+            <MobileFilterSelector />
+          </div> */}
 
           {/* Right Search/Pills/Gallery */}
           <div>
@@ -168,7 +172,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
                     type="text"
                     id="filter"
                     name="filter"
-                    className="w-80 px-4 py-2"
+                    className="max-w-80 px-4 py-2"
                     placeholder="Search..."
                   />
                   <button
@@ -186,6 +190,7 @@ export default function Gallery({ firstItems, last, collectionSize, traits }) {
                   </button>
                 </div>
               </form>
+              {/* <div className='lg:hidden'>asdf</div> */}
             </div>
 
             {/* Filter Pills */}
