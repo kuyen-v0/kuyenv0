@@ -90,7 +90,7 @@ export default function TokenData() {
     page = (
       <>
         <div
-          className={`m-0 flex h-screen justify-around ${data.textcolor} ${data.background}`}
+          className={`m-0 flex h-screen justify-around ${data.textcolor} ${data.backgroundcolor}`}
         >
           <Head>
             <title>NFT Details</title>
@@ -135,7 +135,7 @@ export default function TokenData() {
               <p className="mb-2 text-xs">Fyat Lux</p>
               {data.owner_name && (
                 <div className="flex text-sm">
-                  <span className="font-bold">{data.faction}</span>
+                  <span className="font-bold">{data.name}</span>
                   <p>&nbsp;owned by&nbsp;</p>
                   <a
                     href={`https://opensea.io/${data.owner_name}`}

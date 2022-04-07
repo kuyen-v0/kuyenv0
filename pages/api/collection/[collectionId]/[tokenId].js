@@ -1,6 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import Moralis from "moralis/node.js";
 import { db } from "../../../../firebase/initFirebase";
+import clientPromise from '../../../../lib/mongodb';
 import axios from "axios";
 
 const serverUrl = process.env.MORALIS_SERVER_URL;
@@ -15,10 +16,15 @@ export default async function tokenMetadata(req, res) {
   try {
     const collection = req.query.collectionId;
     const tokenId = req.query.tokenId;
-    const docRef = doc(db, collection, "NFTData", "NFTs", tokenId);
-    const docSnap = await getDoc(docRef);
 
-    const item = docSnap.data();
+    const client = await clientPromise;
+    const database = client.db("collectionData");
+    const foods = database.collection("NFTs");
+
+    // Query for a movie that has the title 'The Room'
+    const query = { id: parseInt(req.query.tokenId) };
+
+    const item = await foods.findOne(query);
 
     const options = { address: collection, token_id: tokenId, chain: "eth" };
     const tokenIdOwners = await Moralis.Web3API.token.getTokenIdOwners(options);
