@@ -4,7 +4,8 @@ import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 import { db } from "../firebase/initFirebase";
-import { collection, query, where, orderBy, startAfter, limit, getDocs} from "firebase/firestore";
+import clientPromise from "../lib/mongodb";
+import { collection, where, orderBy, startAfter, getDocs} from "firebase/firestore";
 
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
@@ -42,13 +43,26 @@ export async function getStaticProps() {
 
   let traits = [];
 
-  const querySnapshot = await getDocs(
-    collection(db, collectionId, "TraitData", "Traits")
-  );
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    traits.push({ filterName: doc.id, options: doc.data() });
-  });
+  const client = await clientPromise;
+  const database = client.db("collectionData");
+  const traitCol = database.collection("Traits");
+
+  //const item = await foods.findOne(query);
+
+  const cursor = traitCol.find({});
+
+  await cursor.forEach((doc) => {
+    //console.log(doc);
+    traits.push({ filterName: doc.attribute_name, options: doc.attribute_counts });
+  })
+
+  //const querySnapshot = await getDocs(
+  //  collection(db, collectionId, "TraitData", "Traits")
+  //);
+  //querySnapshot.forEach((doc) => {
+  //  // doc.data() is never undefined for query doc snapshots
+  //  traits.push({ filterName: doc.id, options: doc.data() });
+  //});
 
   //console.log(traits);
 
@@ -85,9 +99,9 @@ export default function Gallery({ collectionSize, traits }) {
     setLoadingState("not-loaded");
     setCollectionNfts([]);
     loadCollectionNFTs();
-    setTotal(collectionSize);
+    //setTotal(collectionSize);
     setCollectionTraits(traits);
-  }, [selectedFilters]);
+  }, [selectedFilters, searchValue]);
 
   async function loadCollectionNFTs() {
     //refresh everytime selectedFilters is changed
@@ -103,48 +117,49 @@ export default function Gallery({ collectionSize, traits }) {
     };
     const selectedOptions = unpackSelectedFilters(selectedFilters);
 
-    let first;
+    const client = await clientPromise;
+    const database = client.db("collectionData");
+    const foods = database.collection("NFTs");
+
+    const filterList = ["Palette", "Build", "Clan", "Pose", "Mask", "Cans", "Front Floatie", "Collar", "Backpack", "Accessory", "Uniform", "Chtara", "Faction", ]
+
+    //let first;
     console.log(collectionId);
-    if (selectedOptions.length === 0) {
-      first = query(
-        collection(db, collectionId, "NFTData", "NFTs"),
-        orderBy("id"),
-        limit(20)
-      );
-      console.log(first);
-    } else {
-      first = query(
-        collection(db, collectionId, "NFTData", "NFTs"),
-        where("metadata.attributes", "array-contains-any", selectedOptions),
-        orderBy("id"),
-        limit(20)
-      );
-
-      /*
-      await client.connect();
-      const database = client.db("sample_mflix");
-      const movies = database.collection("movies");
-
-
-      for each option in selected filters
-      get list of selected options for the filtername
-      get id for the filtername
-      query["metadata.attributes." + id + ".value"] = {$in: listOfOptions};
-      const sort = {id: 1};
-      const currentCount = await movies.countDocuments(query);
-      const cursor = collection.find(query).sort(sort).limit(limit);
-      */
-
+    let andList = [];
+    if (searchValue !== "") {
+      andList.push({ $text: { $search: searchValue } });
     }
-    const firstResult = await getDocs(first);
+    if (selectedOptions.length !== 0) {
+      selectedFilters.forEach((filter) => {
+        let filter_list = filter.options.map((option) => ({
+          trait_type: filter.filterName,
+          value: option,
+        }));
+        andList.push({"metadata.attributes": { $in: filter_list}});
+
+      })
+    }
+    let query = {};
+    if (andList.length > 0) {
+      query = {$and: andList};
+    }
+    const currentCount = await movies.countDocuments(query);
+    setTotal(currentCount);
+    const sort = { id: 1 };
+    const limit = 20;
+    const cursor = foods.find(query).sort(sort).limit(limit);
+    //const firstResult = await getDocs(first);
     let firstItems = [];
-    firstResult.forEach((doc) => {
-      firstItems.push(doc.data());
-    });
-    if (firstItems.length < 20) {
-      setHasMore(false);
-    } else {
+    await cursor.forEach((doc) => {
+      firstItems.push(doc);
+    })
+    //firstResult.forEach((doc) => {
+    //  firstItems.push(doc.data());
+    //});
+    if (firstItems.length < currentCount) {
       setHasMore(true);
+    } else {
+      setHasMore(false);
     }
     //console.log()
     console.log(firstItems);
@@ -153,12 +168,12 @@ export default function Gallery({ collectionSize, traits }) {
     //const firstItems = firstResult.map(result => result.data);
 
     // Get the last visible document
-    const last =
-      firstResult.docs.length !== 0
-        ? firstResult.docs[firstResult.docs.length - 1]
-        : null;
-    console.log(last);
-    setLastVisible(last);
+    // const last =
+    //   firstResult.docs.length !== 0
+    //     ? firstResult.docs[firstResult.docs.length - 1]
+    //     : null;
+    // console.log(last);
+    // setLastVisible(last);
 
     setLoadingState("loaded");
     console.log(collectionNfts);
@@ -182,36 +197,47 @@ export default function Gallery({ collectionSize, traits }) {
 
     let next;
 
-    if (selectedOptions.length === 0) {
-      next = query(
-        collection(db, collectionId, "NFTData", "NFTs"),
-        orderBy("id"),
-        startAfter(lastVisible),
-        limit(20)
-      );
-    } else {
-      next = query(
-        collection(db, collectionId, "NFTData", "NFTs"),
-        where("metadata.attributes", "array-contains-any", selectedOptions),
-        orderBy("id"),
-        startAfter(lastVisible),
-        limit(20)
-      );
+    const sort = { id: 1 };
+    const limit = 20;
+    const skipAmt = collectionNfts.length;
+    //let query = {};
+    let andList = [];
+    if (searchValue !== "") {
+      andList.push({ $text: { $search: searchValue } });
+    }
+    if (selectedOptions.length !== 0) {
+      selectedFilters.forEach((filter) => {
+        let filter_list = filter.options.map((option) => ({
+          trait_type: filter.filterName,
+          value: option,
+        }));
+        andList.push({"metadata.attributes": { $in: filter_list}});
+
+      })
+    }
+    let query = {};
+    if (andList.length > 0) {
+      query = {$and: andList};
     }
 
-    const nextResult = await getDocs(next);
-    let nextItems = [];
-    nextResult.forEach((doc) => {
-      nextItems.push(doc.data());
-    });
+    const cursor = foods.find(query).sort(sort).skip(skipAmt).limit(limit);
 
-    if (nextItems.length < 20) {
+    //const nextResult = await getDocs(next);
+
+    let nextItems = [];
+    await cursor.forEach((doc) => {
+      nextItems.push(doc);
+    })
+
+    if (nextItems.length + collectionNfts.length < total) {
+      setHasMore(true);
+    } else {
       setHasMore(false);
     }
 
     // Get the last visible document
-    const last = nextResult.docs[nextResult.docs.length - 1];
-    setLastVisible(last);
+    // const last = nextResult.docs[nextResult.docs.length - 1];
+    // setLastVisible(last);
     setCollectionNfts(collectionNfts.concat(nextItems));
     //setSubset(collectionNfts.slice(0, subset.length + 4));
   };
@@ -265,12 +291,38 @@ export default function Gallery({ collectionSize, traits }) {
             {/* Right Search/Pills/Gallery */}
             <div>
               <div className="flex items-end px-4">
-                <h2 className="text-2xl font-bold text-yellow-300">GALLERY</h2>
+                <h2 className="text-2xl font-bold text-yellow-300">GALLERY // {total}</h2>
                 <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
               </div>
               <br />
 
               {/* Search */}
+              <div className="ml-4 mr-4 flex items-center justify-start">
+                <form onSubmit={handleSearchFilter}>
+                  <div className="flex rounded border-2">
+                    <input
+                      type="text"
+                      id="filter"
+                      name="filter"
+                      className="w-80 px-4 py-2"
+                      placeholder="Search..."
+                    />
+                    <button
+                      type="submit"
+                      className="flex items-center justify-center border-l px-4"
+                    >
+                      <svg
+                        className="h-6 w-6 text-gray-600"
+                        fill="yellow"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+                      </svg>
+                    </button>
+                  </div>
+                </form>
+              </div>
               
 
               {/* Filter Pills */}

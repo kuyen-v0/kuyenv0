@@ -194,5 +194,5 @@ export default function TokenData() {
       </>
     );
   }
-  return <PageTemplate page={page} navProps={{ bg: data?.background }} />;
+  return <PageTemplate page={page} navProps={{ bg: data?.backgroundcolor }} />;
 }
