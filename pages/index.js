@@ -11,6 +11,7 @@ import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 import PageTemplate from "../components/PageTemplate";
 import { FilterPills } from "../components/FilterPill";
+import useSWR from "swr";
 
 // console.log(`${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
 
@@ -23,8 +24,13 @@ const web3 = createAlchemyWeb3(
 
 //const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"];
 
-const fetcher = async (url) => {
-  const res = await fetch(url);
+const fetcher = async (url, filterData) => {
+  const res = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(filterData)
+  });
   const data = await res.json();
 
   if (res.status !== 200) {
@@ -86,12 +92,12 @@ export async function getStaticProps() {
 export default function Gallery({ collectionSize, traits }) {
   const [collectionNfts, setCollectionNfts] = useState([]);
   const [total, setTotal] = useState(0);
-  const [lastVisible, setLastVisible] = useState();
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [searchValue, setSearchValue] = useState("");
   const [hasMore, setHasMore] = useState(true);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [collectionTraits, setCollectionTraits] = useState([]);
+  const [sortBy, setSortBy] = useState("tokenId");
 
   let collectionId = "0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d";
 
@@ -103,148 +109,56 @@ export default function Gallery({ collectionSize, traits }) {
     setCollectionTraits(traits);
   }, [selectedFilters, searchValue]);
 
-  async function loadCollectionNFTs() {
-    //refresh everytime selectedFilters is changed
-    const unpackSelectedFilters = (selectedFilters) => {
-      return selectedFilters
-        .map((filter) =>
-          filter.options.map((option) => ({
-            trait_type: filter.filterName,
-            value: option,
-          }))
-        )
-        .flat();
-    };
-    const selectedOptions = unpackSelectedFilters(selectedFilters);
+  async function loadCollectionNFTs(moreListings = false) {
+    //re-call everytime selectedFilters is changed
+    const stringFilters = JSON.stringify(selectedFilters);
+    const skipAmt = moreListings ? collectionNfts.length : 0;
 
-    const client = await clientPromise;
-    const database = client.db("collectionData");
-    const foods = database.collection("NFTs");
+    const { firstItems, currentCount } = useSWR(
+      [`/api/collection/${collectionId}?searchValue=${searchValue}&sortBy=${sortBy}&limit=20&skip=${skipAmt}`, stringFilters],
+      fetcher
+    );
 
-    const filterList = ["Palette", "Build", "Clan", "Pose", "Mask", "Cans", "Front Floatie", "Collar", "Backpack", "Accessory", "Uniform", "Chtara", "Faction", ]
-
-    //let first;
-    console.log(collectionId);
-    let andList = [];
-    if (searchValue !== "") {
-      andList.push({ $text: { $search: searchValue } });
+    let currNfts, currCount;
+    if (!moreListings) {
+      currNfts = [];
+      currCount = currentCount;
+    } else {
+      currNfts = collectionNfts;
+      currCount = total;
     }
-    if (selectedOptions.length !== 0) {
-      selectedFilters.forEach((filter) => {
-        let filter_list = filter.options.map((option) => ({
-          trait_type: filter.filterName,
-          value: option,
-        }));
-        andList.push({"metadata.attributes": { $in: filter_list}});
-
-      })
-    }
-    let query = {};
-    if (andList.length > 0) {
-      query = {$and: andList};
-    }
-    const currentCount = await movies.countDocuments(query);
-    setTotal(currentCount);
-    const sort = { id: 1 };
-    const limit = 20;
-    const cursor = foods.find(query).sort(sort).limit(limit);
-    //const firstResult = await getDocs(first);
-    let firstItems = [];
-    await cursor.forEach((doc) => {
-      firstItems.push(doc);
-    })
-    //firstResult.forEach((doc) => {
-    //  firstItems.push(doc.data());
-    //});
-    if (firstItems.length < currentCount) {
+    if (firstItems.length + currNfts.length < currCount) {
       setHasMore(true);
     } else {
       setHasMore(false);
     }
-    //console.log()
-    console.log(firstItems);
-    setCollectionNfts(firstItems);
-    console.log(collectionNfts);
-    //const firstItems = firstResult.map(result => result.data);
-
-    // Get the last visible document
-    // const last =
-    //   firstResult.docs.length !== 0
-    //     ? firstResult.docs[firstResult.docs.length - 1]
-    //     : null;
-    // console.log(last);
-    // setLastVisible(last);
+    setTotal(currCount);
+    setCollectionNfts(currNfts.concat(firstItems))
 
     setLoadingState("loaded");
-    console.log(collectionNfts);
   }
 
-  const getMoreListings = async () => {
-    if (collectionNfts.length === total) {
-      setHasMore(false);
-    }
-    const unpackSelectedFilters = (selectedFilters) => {
-      return selectedFilters
-        .map((filter) =>
-          filter.options.map((option) => ({
-            trait_type: filter.filterName,
-            value: option,
-          }))
-        )
-        .flat();
-    };
-    const selectedOptions = unpackSelectedFilters(selectedFilters);
+  const getMoreListings = async (moreListings=false) => {
 
-    let next;
+    const stringFilters = JSON.stringify(selectedFilters);
+    const skipAmt = moreListings ? collectionNfts.length : 0;
 
-    const sort = { id: 1 };
-    const limit = 20;
-    const skipAmt = collectionNfts.length;
-    //let query = {};
-    let andList = [];
-    if (searchValue !== "") {
-      andList.push({ $text: { $search: searchValue } });
-    }
-    if (selectedOptions.length !== 0) {
-      selectedFilters.forEach((filter) => {
-        let filter_list = filter.options.map((option) => ({
-          trait_type: filter.filterName,
-          value: option,
-        }));
-        andList.push({"metadata.attributes": { $in: filter_list}});
-
-      })
-    }
-    let query = {};
-    if (andList.length > 0) {
-      query = {$and: andList};
-    }
-
-    const cursor = foods.find(query).sort(sort).skip(skipAmt).limit(limit);
-
-    //const nextResult = await getDocs(next);
-
-    let nextItems = [];
-    await cursor.forEach((doc) => {
-      nextItems.push(doc);
-    })
-
+    const { nextItems, currentCount } = useSWR(
+      [`/api/collection/${collectionId}?searchValue=${searchValue}&sortBy=${sortBy}&limit=20&skip=${skipAmt}`, stringFilters],
+      fetcher
+    );
     if (nextItems.length + collectionNfts.length < total) {
       setHasMore(true);
     } else {
       setHasMore(false);
     }
-
-    // Get the last visible document
-    // const last = nextResult.docs[nextResult.docs.length - 1];
-    // setLastVisible(last);
     setCollectionNfts(collectionNfts.concat(nextItems));
-    //setSubset(collectionNfts.slice(0, subset.length + 4));
   };
 
   const handleSearchFilter = (e) => {
     e.preventDefault();
     //console.log(collectionNfts);
+    setSearchValue(e.target.filter.value);
     const filteredArray = collectionNfts.filter((nft) => {
       //console.log(nft);
       nft.metadata.name.split("#")[1].includes(e.target.filter.value);}
@@ -254,10 +168,7 @@ export default function Gallery({ collectionSize, traits }) {
 
   const handleDropdownFilter = (e) => {
     const selectedValue = e.value;
-
-    if (selectedValue === "rarity") {
-      setCollectionNfts(collectionNfts.reverse());
-    }
+    setSortBy(selectedValue);
   };
 
   return (
@@ -296,7 +207,7 @@ export default function Gallery({ collectionSize, traits }) {
               </div>
               <br />
 
-              {/* Search */}
+              {/* Search + Sort */}
               <div className="ml-4 mr-4 flex items-center justify-start">
                 <form onSubmit={handleSearchFilter}>
                   <div className="flex rounded border-2">
@@ -322,6 +233,18 @@ export default function Gallery({ collectionSize, traits }) {
                     </button>
                   </div>
                 </form>
+
+                <div className="ml-6 flex rounded border-2">
+                  <select
+                    className="form-select dropdown relative block w-full w-80 px-4 py-2"
+                    name="price"
+                    id="price"
+                    onChange={handleDropdownFilter}
+                  >
+                    <option value="rarity">Rarity</option>
+                    <option value="tokenId">Token ID</option>
+                  </select>
+                </div>
               </div>
               
 
@@ -338,7 +261,7 @@ export default function Gallery({ collectionSize, traits }) {
                 <div style={{ maxWidth: "1600px" }}>
                   <InfiniteScroll
                     dataLength={collectionNfts.length}
-                    next={getMoreListings}
+                    next={() => getMoreListings(true)}
                     hasMore={hasMore}
                     loader={<h3> Collection Loading...</h3>}
                     endMessage={<h4></h4>}
