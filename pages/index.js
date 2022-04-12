@@ -133,8 +133,6 @@ export default function Gallery({ traits }) {
       currCount = total;
     }
 
-    
-
     if (firstItems.length + currNfts.length < currCount) {
       setHasMore(true);
     } else {
