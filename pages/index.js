@@ -3,9 +3,7 @@ import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
-import { db } from "../firebase/initFirebase";
 import clientPromise from "../lib/mongodb";
-import { collection, where, orderBy, startAfter, getDocs} from "firebase/firestore";
 
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
@@ -25,13 +23,10 @@ const web3 = createAlchemyWeb3(
 //const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"];
 
 const fetcher = async (url, filterData) => {
-  const res = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(filterData)
-  });
+  console.log(filterData);
+  const res = await fetch(url);
   const data = await res.json();
+  console.log(data);
 
   if (res.status !== 200) {
     throw new Error(data.error);
@@ -45,7 +40,6 @@ export async function getStaticProps() {
   //get total, placeholder for now
   //const querySnapshot = await getDocs(collection(db, collectionId, "NFTData", "NFTs"));
   //const collectionSize = querySnapshot.length;
-  let collectionSize = 8080;
 
   let traits = [];
 
@@ -62,34 +56,14 @@ export async function getStaticProps() {
     traits.push({ filterName: doc.attribute_name, options: doc.attribute_counts });
   })
 
-  //const querySnapshot = await getDocs(
-  //  collection(db, collectionId, "TraitData", "Traits")
-  //);
-  //querySnapshot.forEach((doc) => {
-  //  // doc.data() is never undefined for query doc snapshots
-  //  traits.push({ filterName: doc.id, options: doc.data() });
-  //});
-
-  //console.log(traits);
-
-  // Query the first page of docs
-
-  //console.log("last", last);
-
-  // Construct a new query starting at this document,
-  // get the next 25 cities.
-  //const res = await fetch('http://localhost:3000/api/traits/0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d');
-  //const traits = await res.json();
-
   return {
     props: {
-      collectionSize,
-      traits,
+      traits
     },
   };
 }
 
-export default function Gallery({ collectionSize, traits }) {
+export default function Gallery({ traits }) {
   const [collectionNfts, setCollectionNfts] = useState([]);
   const [total, setTotal] = useState(0);
   const [loadingState, setLoadingState] = useState("not-loaded");
@@ -100,23 +74,54 @@ export default function Gallery({ collectionSize, traits }) {
   const [sortBy, setSortBy] = useState("tokenId");
 
   let collectionId = "0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d";
+  let skipAmt = 0;
+  //setCollectionTraits(traits);
+  const stringFilters = JSON.stringify(selectedFilters);
+  console.log(stringFilters);
+
+  let url = searchValue === "" 
+            ? `/api/collection/${collectionId}?sortBy=${sortBy}&limit=20&skip=${skipAmt}&filters=${stringFilters}`
+            : `/api/collection/${collectionId}?searchValue=${searchValue}&sortBy=${sortBy}&limit=20&skip=${skipAmt}&filters=${stringFilters}`;
+
+  const { data } = useSWR(url, fetcher);
+
+  console.log(`/api/collection/${collectionId}?sortBy=${sortBy}&limit=20&skip=${skipAmt}`);
+
+  if (typeof(data) !== "undefined" && loadingState === "not-loaded") {
+    let firstItems = data.items;
+    let currentCount = data.total;
+
+    console.log(firstItems);
+    console.log('here');
+    if (firstItems.length < currentCount) {
+      setHasMore(true);
+    } else {
+      setHasMore(false);
+    }
+    setTotal(currentCount);
+    setCollectionNfts(firstItems);
+  
+    setLoadingState("loaded");
+  }
+  
+
+
 
   useEffect(() => {
     setLoadingState("not-loaded");
-    setCollectionNfts([]);
-    loadCollectionNFTs();
-    //setTotal(collectionSize);
+    //setCollectionNfts([]);
+    //loadCollectionNFTs();
+    // //setTotal(collectionSize);
     setCollectionTraits(traits);
-  }, [selectedFilters, searchValue]);
+  }, [selectedFilters, searchValue, sortBy]);
 
   async function loadCollectionNFTs(moreListings = false) {
     //re-call everytime selectedFilters is changed
     const stringFilters = JSON.stringify(selectedFilters);
     const skipAmt = moreListings ? collectionNfts.length : 0;
 
-    const { firstItems, currentCount } = useSWR(
-      [`/api/collection/${collectionId}?searchValue=${searchValue}&sortBy=${sortBy}&limit=20&skip=${skipAmt}`, stringFilters],
-      fetcher
+    const { firstItems, currentCount } = fetch(
+      `/api/collection/${collectionId}?searchValue=${searchValue}&sortBy=${sortBy}&limit=20&skip=${skipAmt}&filters=${stringFilters}`
     );
 
     let currNfts, currCount;
@@ -127,6 +132,9 @@ export default function Gallery({ collectionSize, traits }) {
       currNfts = collectionNfts;
       currCount = total;
     }
+
+    
+
     if (firstItems.length + currNfts.length < currCount) {
       setHasMore(true);
     } else {
@@ -138,15 +146,20 @@ export default function Gallery({ collectionSize, traits }) {
     setLoadingState("loaded");
   }
 
-  const getMoreListings = async (moreListings=false) => {
+  const getMoreListings = async () => {
 
     const stringFilters = JSON.stringify(selectedFilters);
-    const skipAmt = moreListings ? collectionNfts.length : 0;
+    const skipAmt = collectionNfts.length;
 
-    const { nextItems, currentCount } = useSWR(
-      [`/api/collection/${collectionId}?searchValue=${searchValue}&sortBy=${sortBy}&limit=20&skip=${skipAmt}`, stringFilters],
-      fetcher
-    );
+    let url = searchValue === "" 
+            ? `/api/collection/${collectionId}?sortBy=${sortBy}&limit=20&skip=${skipAmt}&filters=${stringFilters}`
+            : `/api/collection/${collectionId}?searchValue=${searchValue}&sortBy=${sortBy}&limit=20&skip=${skipAmt}&filters=${stringFilters}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    let nextItems = data.items;
+
     if (nextItems.length + collectionNfts.length < total) {
       setHasMore(true);
     } else {
@@ -167,7 +180,8 @@ export default function Gallery({ collectionSize, traits }) {
   };
 
   const handleDropdownFilter = (e) => {
-    const selectedValue = e.value;
+    console.log(e.target.value);
+    const selectedValue = e.target.value;
     setSortBy(selectedValue);
   };
 
@@ -236,13 +250,13 @@ export default function Gallery({ collectionSize, traits }) {
 
                 <div className="ml-6 flex rounded border-2">
                   <select
-                    className="form-select dropdown relative block w-full w-80 px-4 py-2"
+                    className="form-select dropdown relative block w-full w-120 px-4 py-2"
                     name="price"
                     id="price"
                     onChange={handleDropdownFilter}
                   >
-                    <option value="rarity">Rarity</option>
                     <option value="tokenId">Token ID</option>
+                    <option value="rarity">Rarity (most to least)</option>
                   </select>
                 </div>
               </div>
