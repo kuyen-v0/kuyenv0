@@ -106,7 +106,6 @@ export default function Gallery({ traits }) {
   
 
 
-
   useEffect(() => {
     setLoadingState("not-loaded");
     //setCollectionNfts([]);
