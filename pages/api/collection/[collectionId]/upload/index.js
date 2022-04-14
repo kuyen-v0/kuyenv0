@@ -51,7 +51,7 @@ export default async function handler(req, res) {
         const traits = traitTransform(items);
         items = items.map((item) => rarityTransform(item, traits));
         await uploadNFTs(items);
-        await uploadTraits(traits);
+        //await uploadTraits(traits);
       })
       .then((traits) => {
         return res.status(200).json(traits);
@@ -143,7 +143,7 @@ export default async function handler(req, res) {
       item.metadata.attributes.forEach((attribute) => {
         rarity *= traitJSON[attribute.trait_type][attribute.value];
       });
-      item.rarity = Math.round(Math.pow(rarity, (1/length(item.metadata.attributes))))
+      item.rarity = Math.round(Math.pow(rarity, (1/item.metadata.attributes.length)));
       return item;
     }
 
