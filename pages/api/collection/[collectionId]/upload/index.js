@@ -51,7 +51,7 @@ export default async function handler(req, res) {
         const traits = traitTransform(items);
         items = items.map((item) => rarityTransform(item, traits));
         await uploadNFTs(items);
-        //await uploadTraits(traits);
+        await uploadTraits(traits);
       })
       .then((traits) => {
         return res.status(200).json(traits);
