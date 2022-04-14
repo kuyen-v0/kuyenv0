@@ -16,6 +16,23 @@ import OpenSeaButton from "../../../components/OpenSeaButton";
 import EtherscanButton from "../../../components/EtherscanButton";
 import { Snackbar, SnackbarContent } from "@mui/material";
 
+const traitTypeIconString = {
+  Palette: "palette", // color
+  Build: "person", // body
+  Clan: "hand-fist", // ??
+  Pose: "person-walking", // pose
+  Mask: "masks-theater", // Mask
+  Cans: "spray-can", // Can?
+  "Front Floatie": "hat-wizard", // Headdress
+  "Side Floatie": "user-ninja", // ??
+  Collar: "user-tie", // Collar
+  Backpack: "suitcase", // Backpack
+  Accessory: "gem", // Accessory
+  Uniform: "shirt", // Clothes?
+  Chtara: "user-group", // ??
+  Faction: "handshake", // Faction
+}
+
 const fetcher = async (url) => {
   const res = await fetch(url);
   const data = await res.json();
@@ -144,7 +161,7 @@ export default function TokenData() {
                       className="flex w-full content-center items-center rounded bg-white bg-opacity-20 py-2 px-2 shadow-2xl duration-300 hover:scale-105"
                     >
                       <FontAwesomeIcon
-                         icon = {icon(findIconDefinition({ iconName: attribute.trait_type.toLowerCase() }))}
+                         icon = {icon(findIconDefinition({ iconName: traitTypeIconString[attribute.trait_type] }))}
 
                       />
                       <div className="ml-2">
