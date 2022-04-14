@@ -143,7 +143,7 @@ export default async function handler(req, res) {
       item.metadata.attributes.forEach((attribute) => {
         rarity *= traitJSON[attribute.trait_type][attribute.value];
       });
-      item.rarity = Math.round(Math.pow(rarity, (1/length(item.metadata.attributes))))
+      item.rarity = Math.round(Math.pow(rarity, (1/item.metadata.attributes.length)));
       return item;
     }
 
