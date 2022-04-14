@@ -43,6 +43,7 @@
     "react-firebaseui": "^6.0.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-moralis": "^1.2.2",
+    "styled-components": "^5.3.5",
     "swr": "^1.2.1",
     "tailwindcss": "^3.0.18",
     "tls": "^0.0.1",

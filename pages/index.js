@@ -75,9 +75,7 @@ export default function Gallery({ traits }) {
 
   let collectionId = "0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d";
   let skipAmt = 0;
-  //setCollectionTraits(traits);
   const stringFilters = JSON.stringify(selectedFilters);
-  console.log(stringFilters);
 
   let url = searchValue === "" 
             ? `/api/collection/${collectionId}?sortBy=${sortBy}&limit=20&skip=${skipAmt}&filters=${stringFilters}`
@@ -85,14 +83,10 @@ export default function Gallery({ traits }) {
 
   const { data } = useSWR(url, fetcher);
 
-  console.log(`/api/collection/${collectionId}?sortBy=${sortBy}&limit=20&skip=${skipAmt}`);
-
   if (typeof(data) !== "undefined" && loadingState === "not-loaded") {
     let firstItems = data.items;
     let currentCount = data.total;
 
-    console.log(firstItems);
-    console.log('here');
     if (firstItems.length < currentCount) {
       setHasMore(true);
     } else {
@@ -100,48 +94,14 @@ export default function Gallery({ traits }) {
     }
     setTotal(currentCount);
     setCollectionNfts(firstItems);
-  
     setLoadingState("loaded");
   }
   
-
-
   useEffect(() => {
     setLoadingState("not-loaded");
-    //setCollectionNfts([]);
-    //loadCollectionNFTs();
-    // //setTotal(collectionSize);
     setCollectionTraits(traits);
   }, [selectedFilters, searchValue, sortBy]);
 
-  async function loadCollectionNFTs(moreListings = false) {
-    //re-call everytime selectedFilters is changed
-    const stringFilters = JSON.stringify(selectedFilters);
-    const skipAmt = moreListings ? collectionNfts.length : 0;
-
-    const { firstItems, currentCount } = fetch(
-      `/api/collection/${collectionId}?searchValue=${searchValue}&sortBy=${sortBy}&limit=20&skip=${skipAmt}&filters=${stringFilters}`
-    );
-
-    let currNfts, currCount;
-    if (!moreListings) {
-      currNfts = [];
-      currCount = currentCount;
-    } else {
-      currNfts = collectionNfts;
-      currCount = total;
-    }
-
-    if (firstItems.length + currNfts.length < currCount) {
-      setHasMore(true);
-    } else {
-      setHasMore(false);
-    }
-    setTotal(currCount);
-    setCollectionNfts(currNfts.concat(firstItems))
-
-    setLoadingState("loaded");
-  }
 
   const getMoreListings = async () => {
 
@@ -167,13 +127,7 @@ export default function Gallery({ traits }) {
 
   const handleSearchFilter = (e) => {
     e.preventDefault();
-    //console.log(collectionNfts);
     setSearchValue(e.target.filter.value);
-    const filteredArray = collectionNfts.filter((nft) => {
-      //console.log(nft);
-      nft.metadata.name.split("#")[1].includes(e.target.filter.value);}
-    );
-    setCollectionNfts(filteredArray);
   };
 
   const handleDropdownFilter = (e) => {
@@ -182,6 +136,8 @@ export default function Gallery({ traits }) {
     setSortBy(selectedValue);
   };
 
+  let plural = (total > 1) ? "RESULTS" : "RESULT";
+  
   return (
     <PageTemplate
       page={
@@ -213,7 +169,7 @@ export default function Gallery({ traits }) {
             {/* Right Search/Pills/Gallery */}
             <div>
               <div className="flex items-end px-4">
-                <h2 className="text-2xl font-bold text-yellow-300">GALLERY // {total}</h2>
+                <h2 className="text-2xl font-bold text-yellow-300">GALLERY // {total} {plural}</h2>
                 <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
               </div>
               <br />

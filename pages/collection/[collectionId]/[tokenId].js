@@ -64,7 +64,6 @@ export default function TokenData() {
   const [showSnackbar, setShowSnackbar] = useState(true);
 
   let page;
-  console.log(data);
   if (!data) {
     page = (
       <>

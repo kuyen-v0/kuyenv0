@@ -1,5 +1,3 @@
-import { writeBatch, doc } from "firebase/firestore";
-import { db } from "../../../../../firebase/initFirebase";
 import clientPromise from '../../../../../lib/mongodb';
 import axios from "axios";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
@@ -80,25 +78,25 @@ export default async function handler(req, res) {
 
       const definingTraits = {trait_naming: "Faction", trait_colorscheme: "Palette"};
       const schemeMapping = [{"trait_value": "angel", "textcolor": "white", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "death", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "taffy", "textcolor": "white", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "forest", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "bananas", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "coldblue", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "greenvelvet", "textcolor": "white", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "militant", "textcolor": "white", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "goldcharm", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "silvercharm", "textcolor": "white", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "pearlranger", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "violetstorm", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "akira", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "whitenight", "textcolor": "white", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "bluepill", "textcolor": "white", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "obedience", "textcolor": "white", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "cherryblossom", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "zen", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "phoenixrising", "textcolor": "black", "backgroundcolor": "#E63B2E"},
-                            {"trait_value": "indigo", "textcolor": "black", "backgroundcolor": "#E63B2E"}]
+                            {"trait_value": "death", "textcolor": "black", "backgroundcolor": "#70808A"},
+                            {"trait_value": "taffy", "textcolor": "white", "backgroundcolor": "#242485"},
+                            {"trait_value": "forest", "textcolor": "black", "backgroundcolor": "#2B7DA3"},
+                            {"trait_value": "bananas", "textcolor": "black", "backgroundcolor": "#24C2FC"},
+                            {"trait_value": "coldblue", "textcolor": "black", "backgroundcolor": "#FF8226"},
+                            {"trait_value": "greenvelvet", "textcolor": "white", "backgroundcolor": "#912429"},
+                            {"trait_value": "militant", "textcolor": "white", "backgroundcolor": "#A63026"},
+                            {"trait_value": "goldcharm", "textcolor": "black", "backgroundcolor": "#DEE0FF"},
+                            {"trait_value": "silvercharm", "textcolor": "white", "backgroundcolor": "#1C383D"},
+                            {"trait_value": "pearlranger", "textcolor": "black", "backgroundcolor": "#FFDB29"},
+                            {"trait_value": "violetstorm", "textcolor": "black", "backgroundcolor": "#FF54BF"},
+                            {"trait_value": "akira", "textcolor": "black", "backgroundcolor": "#C7C4CC"},
+                            {"trait_value": "whitenight", "textcolor": "white", "backgroundcolor": "#000000"},
+                            {"trait_value": "bluepill", "textcolor": "white", "backgroundcolor": "#4A4A54"},
+                            {"trait_value": "obedience", "textcolor": "white", "backgroundcolor": "#636357"},
+                            {"trait_value": "cherryblossom", "textcolor": "black", "backgroundcolor": "#CFD9E6"},
+                            {"trait_value": "zen", "textcolor": "black", "backgroundcolor": "#ADBAC2"},
+                            {"trait_value": "phoenixrising", "textcolor": "black", "backgroundcolor": "#6B8F94"},
+                            {"trait_value": "indigo", "textcolor": "black", "backgroundcolor": "#4D525C"}]
 
       item.name = item.metadata.attributes.filter(
         (attribute) => attribute.trait_type === definingTraits["trait_naming"]
@@ -108,24 +106,14 @@ export default async function handler(req, res) {
         .value.toLowerCase();
 
       let paletteNew = palette.replace(/ +/g, "");
-      item.backgroundcolor = "bg-" + paletteNew;
-      console.log(palette);
       item.textcolor = "text-" + schemeMapping
         .filter((traitMapping) => traitMapping["trait_value"] === paletteNew)[0]
         .textcolor.toLowerCase();
 
+      item.backgroundcolor = "bg-[" + schemeMapping
+        .filter((traitMapping) => traitMapping["trait_value"] === paletteNew)[0]
+        .backgroundcolor + "]";
 
-      // item.textcolor =
-      //   item.palette === "angel" ||
-      //   item.palette === "greenvelvet" ||
-      //   item.palette === "taffy" ||
-      //   item.palette === "militant" ||
-      //   item.palette === "bluepill" ||
-      //   item.palette === "silvercharm" ||
-      //   item.palette === "whitenight" ||
-      //   item.palette === "obedience"
-      //     ? "text-white"
-      //     : "text-black";
       return item;
     }
 
@@ -155,8 +143,7 @@ export default async function handler(req, res) {
       item.metadata.attributes.forEach((attribute) => {
         rarity *= traitJSON[attribute.trait_type][attribute.value];
       });
-      rarity = Math.round(rarity / Math.pow(10, 30));
-      item.rarity = rarity;
+      item.rarity = Math.round(Math.pow(rarity, (1/length(item.metadata.attributes))))
       return item;
     }
 

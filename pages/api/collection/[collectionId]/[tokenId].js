@@ -1,16 +1,10 @@
-import { doc, getDoc } from "firebase/firestore";
 import Moralis from "moralis/node.js";
-import { db } from "../../../../firebase/initFirebase";
 import clientPromise from '../../../../lib/mongodb';
 import axios from "axios";
 
 const serverUrl = process.env.MORALIS_SERVER_URL;
 const appId = process.env.MORALIS_APP_ID;
 Moralis.start({ serverUrl, appId });
-// import { createAlchemyWeb3 } from "@alch/alchemy-web3";
-// const web3 = createAlchemyWeb3(
-//   `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
-// );
 
 export default async function tokenMetadata(req, res) {
   try {
