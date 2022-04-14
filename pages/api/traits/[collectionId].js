@@ -1,25 +1,22 @@
-import { getDocs, collection } from "firebase/firestore";
-import { createAlchemyWeb3 } from "@alch/alchemy-web3";
-import { db } from "../../../firebase/initFirebase";
-const web3 = createAlchemyWeb3(
-  `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
-);
+import clientPromise from '../../../lib/mongodb';
+
 
 export default async function traitMetadata(req, res) {
   try {
-    const collectionId = req.query.collectionId;
 
-    const traitJSON = [];
+    let traits = [];
 
-    const querySnapshot = await getDocs(
-      collection(db, collectionId, "TraitData", "Traits")
-    );
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      traitJSON.push({ filterName: doc.id, options: doc.data() });
-    });
+    const client = await clientPromise;
+    const database = client.db("collectionData");
+    const traitCol = database.collection("Traits");
 
-    res.status(200).json(traitJSON);
+    const cursor = traitCol.find({});
+
+    await cursor.forEach((doc) => {
+      traits.push({ filterName: doc.attribute_name, options: doc.attribute_counts });
+    })
+
+    res.status(200).json(traits);
   } catch (err) {
     res.status(500).json({ error: err });
   }

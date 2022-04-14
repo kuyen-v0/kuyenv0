@@ -1,6 +1,4 @@
-import { writeBatch, doc } from "firebase/firestore";
-import { db } from "../../../../firebase/initFirebase";
-import axios from "axios";
+import clientPromise from '../../../../lib/mongodb';
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 const web3 = createAlchemyWeb3(
   `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
@@ -10,161 +8,78 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     const collectionId = req.query.collectionId;
 
-    let items = [];
+    const selectedFilters = JSON.parse(req.query.filters);
 
-    async function getItems() {
-      const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTsForCollection`;
-      const withMetadata = "true";
-      let config = {};
-      let startToken = 1;
-      let done = false;
+    const client = await clientPromise;
+    const database = client.db("collectionData");
+    const foods = database.collection("NFTs");
 
-      do {
-        if (startToken === 1) {
-          config = {
-            method: "get",
-            url: `${baseURL}?contractAddress=${collectionId}&withMetadata=${withMetadata}`,
-            headers: {},
-          };
-        } else {
-          config = {
-            method: "get",
-            url: `${baseURL}?contractAddress=${collectionId}&startToken=${startToken}&withMetadata=${withMetadata}`,
-            headers: {},
-          };
-        }
+    const sortBy = req.query.sortBy;
+    const limit = parseInt(req.query.limit);
 
-        const response = await axios(config);
 
-        if (response.data.nextToken) {
-          items = items.concat(response.data.nfts);
-          startToken = response.data.nextToken;
-        } else {
-          items = items.concat(response.data.nfts);
-          done = true;
-        }
-      } while (!done);
+    const unpackSelectedFilters = (selectedFilters) => {
+      return selectedFilters
+        .map((filter) =>
+          filter.options.map((option) => ({
+            value: option,
+            trait_type: filter.filterName
+          }))
+        )
+        .flat();
+    };
+    const selectedOptions = unpackSelectedFilters(selectedFilters);
+
+    let andList = [];
+    if ("searchValue" in req.query) {
+      andList.push({ title: {$regex: req.query.searchValue}})
     }
+    if (selectedOptions.length !== 0) {
+      selectedFilters.forEach((filter) => {
+        let filter_list = filter.options.map((option) => ({
+          value: option,
+          trait_type: filter.filterName
+        }));
+        andList.push({"metadata.attributes": {$in: filter_list}});
 
-    getItems()
-      .then(async () => {
-        items = items.map((item) => nftTransform(item));
-        const traits = traitTransform(items);
-        items = items.map((item) => rarityTransform(item, traits));
-        await uploadNFTs(items);
       })
-      .then((traits) => {
-        return res.status(200).json(traits);
-      });
-
-    function nftTransform(idMeta) {
-      const price = 0;
-      const item = {
-        price,
-        contract: idMeta.contract.address,
-        description: idMeta.description,
-        id: parseInt(idMeta.id.tokenId),
-        uri: idMeta.tokenUri.gateway,
-        metadata: idMeta.metadata,
-        time: idMeta.timeLastUpdated,
-        title: idMeta.title,
-      };
-      item.image =
-        "http://cloudflare-ipfs.com/ipfs/" + item.metadata.image.slice(7);
-
-      item.metadata.attributes = item.metadata.attributes.filter(
-        (attribute) => attribute.value !== "None"
-      );
-
-      item.faction = item.metadata.attributes.filter(
-        (attribute) => attribute.trait_type === "Faction"
-      )[0].value;
-      item.palette = item.metadata.attributes
-        .filter((attribute) => attribute.trait_type === "Palette")[0]
-        .value.toLowerCase();
-
-      item.palette = item.palette.replace(/ +/g, "");
-      item.background = "bg-" + item.palette;
-
-      item.textcolor =
-        item.palette === "angel" ||
-        item.palette === "greenvelvet" ||
-        item.palette === "taffy" ||
-        item.palette === "militant" ||
-        item.palette === "bluepill" ||
-        item.palette === "silvercharm" ||
-        item.palette === "whitenight" ||
-        item.palette === "obedience"
-          ? "text-white"
-          : "text-black";
-      return item;
+    }
+    let query = {};
+    if (andList.length > 1) {
+      query = {$and: andList};
+    } else if (andList.length == 1) {
+      query = andList[0];
     }
 
-    function traitTransform(items) {
-      const traitCounts = {};
-      items.forEach((item) => {
-        item.metadata.attributes.forEach((attribute) => {
-          if (traitCounts.hasOwnProperty(attribute.trait_type)) {
-            if (
-              traitCounts[attribute.trait_type].hasOwnProperty(attribute.value)
-            ) {
-              traitCounts[attribute.trait_type][attribute.value]++;
-            } else {
-              traitCounts[attribute.trait_type][attribute.value] = 1;
-            }
-          } else {
-            traitCounts[attribute.trait_type] = {};
-            traitCounts[attribute.trait_type][attribute.value] = 1;
-          }
-        });
-      });
-      return traitCounts;
+    let currentCount;
+    let sort;
+    if (sortBy === "rarity") {
+      sort = { rarity : 1};
+    } else {
+      sort = { id : 1};
+    }
+    let cursor;
+    if ("skip" in req.query) {
+      const skipAmt = parseInt(req.query.skip);
+      cursor = foods.find(query).sort(sort).skip(skipAmt).limit(limit);
+      currentCount = await foods.countDocuments(query);
+    } else {
+      cursor = foods.find(query).sort(sort).limit(limit);
+      currentCount = await foods.countDocuments(query);
     }
 
-    function rarityTransform(item, traitJSON) {
-      let rarity = 1;
-      item.metadata.attributes.forEach((attribute) => {
-        rarity *= traitJSON[attribute.trait_type][attribute.value];
-      });
-      rarity = Math.round(rarity / Math.pow(10, 30));
-      item.rarity = rarity;
-      return item;
-    }
+    let firstItems = [];
+    await cursor.forEach((doc) => {
+      firstItems.push(doc);
+    });
 
-    async function uploadNFTs(items) {
-      const batchArray = [];
-      batchArray.push(writeBatch(db));
-      let operationCounter = 0;
-      let batchIndex = 0;
+    const data = {
+      items: firstItems,
+      total: currentCount
+    };
 
-      items.forEach((item) => {
-        const docRef = doc(
-          db,
-          collectionId,
-          "NFTData",
-          "NFTs",
-          item.id.toString()
-        );
-        batchArray[batchIndex].set(docRef, item);
-        operationCounter++;
+    res.json(data);
 
-        if (operationCounter === 499) {
-          batchArray.push(writeBatch(db));
-          batchIndex++;
-          operationCounter = 0;
-        }
-      });
-
-      batchArray.forEach(async (batch) => await batch.commit());
-    }
-
-    async function uploadTraits(traits) {
-      const traitBatch = writeBatch(db);
-      for (const [key, value] of Object.entries(traits)) {
-        const traitRef = doc(db, collectionId, "TraitData", "Traits", key);
-        traitBatch.set(traitRef, value);
-      }
-      await traitBatch.commit();
-    }
+    
   }
 }
