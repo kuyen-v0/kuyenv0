@@ -1,13 +1,40 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import BigButton from "./BigButton";
 
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+
 export default function Navbar({ bg }) {
+  const [showMobileOptions, setShowMobileOptions] = useState(false);
   return (
-    <nav
-      className={
-        "navbar-expand-lg relative flex w-full flex-wrap items-center justify-between " +
-        (bg ?? "")
-      }
-    >
+    <>
+    {/* Mobile */}
+    <nav className="lg:hidden flex flex-wrap items-center justify-between w-full px-4">
+      <div className='flex flex-wrap items-center justify-between w-full'>
+        <div>
+          <a className="pr-2 text-xl font-semibold text-white" href="/">
+            <img
+              className="logo-fyat"
+              src="https://pbs.twimg.com/profile_images/1469164041558007808/FRqpXQX5_400x400.jpg"
+            ></img>
+          </a>
+        </div>
+        <FontAwesomeIcon icon={faBars} onClick={() => setShowMobileOptions(!showMobileOptions)} />
+      </div>
+      <div className={(showMobileOptions ? '' : 'hidden') + ' flex flex-wrap items-center justify-end w-full'}>
+        <ul>
+          <li>
+            <a className="md:p-4 py-2 block" href="https://discord.gg/fyatlux">Join Our Discord</a>
+          </li>
+          <li>
+            <a className="md:p-4 py-2 block" href="my-assets">My Collection</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    {/* Desktop */}
+    <nav className={"navbar-expand-lg hidden lg:flex relative flex w-full flex-wrap items-center justify-between " + (bg ?? "")}>
       <div className="container-fluid flex w-full flex-wrap items-center justify-between px-6">
         <div
           className="collapse navbar-collapse flex-grow place-content-between items-center"
@@ -28,7 +55,7 @@ export default function Navbar({ bg }) {
                   className="nav-link text-white"
                   href="https://discord.gg/fyatlux"
                 >
-                  <BigButton text="Join Our Discord" />
+                  <BigButton text='Join Our Discord' />
                 </a>
               </li>
               <li className="nav-item p-2">
@@ -47,23 +74,8 @@ export default function Navbar({ bg }) {
           </div>
         </div>
 
-        <div className="relative flex items-center">
-          <div className="dropdown relative">
-            <a
-              className="dropdown-toggle hidden-arrow flex items-center"
-              href="/"
-              id="dropdownMenuButton2"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            ></a>
-            <ul
-              className="dropdown-menu absolute left-auto right-0 z-50 float-left m-0 mt-1 hidden hidden min-w-max list-none rounded-lg border-none bg-white bg-clip-padding py-2 text-left text-base shadow-lg"
-              aria-labelledby="dropdownMenuButton2"
-            ></ul>
-          </div>
-        </div>
       </div>
     </nav>
+    </>
   );
 }

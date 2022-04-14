@@ -121,7 +121,7 @@ export default function Gallery({ traits }) {
   return (
     <PageTemplate
       page={
-        <div className="flex-col justify-center">
+        <div className="flex-col justify-center max-w-full">
           <Head>
             <title>NFT Gallery</title>
             <meta
@@ -129,11 +129,9 @@ export default function Gallery({ traits }) {
               content="initial-scale=1.0, width=device-width"
             />
           </Head>
-          <br />
-          <br />
-          <div className="flex">
+          <div className="flex max-w-full">
             {/* Left Filter */}
-            <div className="mx-4 w-96">
+            <div className="mx-4 w-96 hidden lg:block">
               <div className="flex items-end">
                 <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
                 <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
@@ -162,7 +160,7 @@ export default function Gallery({ traits }) {
                       type="text"
                       id="filter"
                       name="filter"
-                      className="w-80 px-4 py-2"
+                      className="min-w-0 max-w-80 px-4 py-2"
                       placeholder="Search..."
                     />
                     <button
@@ -181,7 +179,7 @@ export default function Gallery({ traits }) {
                   </div>
                 </form>
 
-                <div className="ml-6 flex rounded border-2">
+                <div className="hidden lg:flex ml-6 rounded border-2">
                   <select
                     className="form-select dropdown relative block w-full w-120 px-4 py-2"
                     name="price"
