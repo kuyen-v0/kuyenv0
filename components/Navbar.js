@@ -2,7 +2,7 @@ import { useState } from "react";
 import BigButton from "./BigButton";
 
 export default function Navbar({ bg }) {
-  const [showMobileOptions, setShowMobileOptions] = useState(true);
+  const [showMobileOptions, setShowMobileOptions] = useState(false);
   return (
     <>
     {/* Mobile */}
@@ -33,13 +33,13 @@ export default function Navbar({ bg }) {
           />
         </svg>
       </div>
-      <div className={(showMobileOptions ? '' : 'hidden')}>
+      <div className={(showMobileOptions ? '' : 'hidden') + ' flex flex-wrap items-center justify-end w-full'}>
         <ul>
           <li>
-            <a class="md:p-4 py-2 block" href="#">Join Our Discord</a>
+            <a className="md:p-4 py-2 block" href="https://discord.gg/fyatlux">Join Our Discord</a>
           </li>
           <li>
-            <a class="md:p-4 py-2 block" href="#">My Collection</a>
+            <a className="md:p-4 py-2 block" href="my-assets">My Collection</a>
           </li>
         </ul>
       </div>
