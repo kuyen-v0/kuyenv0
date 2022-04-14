@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
@@ -11,22 +10,10 @@ import PageTemplate from "../components/PageTemplate";
 import { FilterPills } from "../components/FilterPill";
 import useSWR from "swr";
 
-// console.log(`${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
 
-const web3 = createAlchemyWeb3(
-  `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
-);
-// const server_url = process.env.MORALIS_SERVER_URL;
-// const app_id = process.env.MORALIS_APP_ID;
-// Moralis.start({server_url, app_id});
-
-//const collectionContracts = ["0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d"];
-
-const fetcher = async (url, filterData) => {
-  console.log(filterData);
+const fetcher = async (url) => {
   const res = await fetch(url);
   const data = await res.json();
-  console.log(data);
 
   if (res.status !== 200) {
     throw new Error(data.error);
@@ -37,9 +24,6 @@ const fetcher = async (url, filterData) => {
 export async function getStaticProps() {
   let collectionId = process.env.TOKEN_CONTRACT;
   collectionId = "0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d";
-  //get total, placeholder for now
-  //const querySnapshot = await getDocs(collection(db, collectionId, "NFTData", "NFTs"));
-  //const collectionSize = querySnapshot.length;
 
   let traits = [];
 
@@ -47,12 +31,9 @@ export async function getStaticProps() {
   const database = client.db("collectionData");
   const traitCol = database.collection("Traits");
 
-  //const item = await foods.findOne(query);
-
   const cursor = traitCol.find({});
 
   await cursor.forEach((doc) => {
-    //console.log(doc);
     traits.push({ filterName: doc.attribute_name, options: doc.attribute_counts });
   })
 
@@ -131,13 +112,12 @@ export default function Gallery({ traits }) {
   };
 
   const handleDropdownFilter = (e) => {
-    console.log(e.target.value);
     const selectedValue = e.target.value;
     setSortBy(selectedValue);
   };
 
   let plural = (total > 1) ? "RESULTS" : "RESULT";
-  
+
   return (
     <PageTemplate
       page={
@@ -228,7 +208,7 @@ export default function Gallery({ traits }) {
                 <div style={{ maxWidth: "1600px" }}>
                   <InfiniteScroll
                     dataLength={collectionNfts.length}
-                    next={() => getMoreListings(true)}
+                    next={getMoreListings}
                     hasMore={hasMore}
                     loader={<h3> Collection Loading...</h3>}
                     endMessage={<h4></h4>}
