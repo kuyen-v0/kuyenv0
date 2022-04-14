@@ -2,47 +2,19 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Head from "next/head";
 import useSWR from "swr";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPalette,
-  faPerson,
-  faHandFist,
-  faPersonWalking,
-  faMasksTheater,
-  faSprayCan,
-  faHatWizard,
-  faGem,
-  faUserTie,
-  faSuitcase,
-  faUserNinja,
-  faShirt,
-  faUserGroup,
-  faHandshake,
-} from "@fortawesome/free-solid-svg-icons";
+import { findIconDefinition, library, icon } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+
+library.add(fas, far, fab);
 
 import LoadingPage from "../../../components/LoadingPage";
 import PageTemplate from "../../../components/PageTemplate";
 import OpenSeaButton from "../../../components/OpenSeaButton";
 import EtherscanButton from "../../../components/EtherscanButton";
 import { Snackbar, SnackbarContent } from "@mui/material";
-
-const traitTypeToIcon = {
-  Palette: faPalette, // color
-  Build: faPerson, // body
-  Clan: faHandFist, // ??
-  Pose: faPersonWalking, // pose
-  Mask: faMasksTheater, // Mask
-  Cans: faSprayCan, // Can?
-  "Front Floatie": faHatWizard, // Headdress
-  "Side Floatie": faUserNinja, // ??
-  Collar: faUserTie, // Collar
-  Backpack: faSuitcase, // Backpack
-  Accessory: faGem, // Accessory
-  Uniform: faShirt, // Clothes?
-  Chtara: faUserGroup, // ??
-  Faction: faHandshake, // Faction
-};
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -88,9 +60,8 @@ export default function TokenData() {
     );
   } else {
     page = (
-      <>
         <div
-          className={`m-0 flex h-screen justify-around ${data.textcolor} ${data.background}`}
+          className={`m-0 flex h-screen justify-around bg-[#fafafa]`}
         >
           <Head>
             <title>NFT Details</title>
@@ -99,7 +70,6 @@ export default function TokenData() {
               content="initial-scale=1.0, width=device-width"
             />
           </Head>
-
           <div className="block w-1/2 align-top md:sticky md:inline-block">
             <Snackbar
               open={showSnackbar}
@@ -174,7 +144,8 @@ export default function TokenData() {
                       className="flex w-full content-center items-center rounded bg-white bg-opacity-20 py-2 px-2 shadow-2xl duration-300 hover:scale-105"
                     >
                       <FontAwesomeIcon
-                        icon={traitTypeToIcon[attribute.trait_type] ?? faGem}
+                         icon = {icon(findIconDefinition({ iconName: attribute.trait_type.toLowerCase() }))}
+
                       />
                       <div className="ml-2">
                         <p className="text-2xs mr-auto inline-block flex items-center tracking-wider opacity-60">
@@ -191,7 +162,6 @@ export default function TokenData() {
             </div>
           </div>
         </div>
-      </>
     );
   }
   return <PageTemplate page={page} navProps={{ bg: data?.background }} />;
