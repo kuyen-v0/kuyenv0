@@ -1,8 +1,6 @@
 import Badge from "./Badge";
 
 export default function GalleryItem({ nft }) {
-  console.log(nft.metadata);
-  console.log(nft);
   const nftNum = nft.metadata.name.split("#")[1];
   return (
     <>
