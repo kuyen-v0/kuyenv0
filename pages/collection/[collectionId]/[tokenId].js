@@ -11,45 +11,11 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 
 library.add(fas, far, fab);
 
-// import {
-//   faPalette,
-//   faPerson,
-//   faHandFist,
-//   faPersonWalking,
-//   faMasksTheater,
-//   faSprayCan,
-//   faHatWizard,
-//   faGem,
-//   faUserTie,
-//   faSuitcase,
-//   faUserNinja,
-//   faShirt,
-//   faUserGroup,
-//   faHandshake,
-// } from "@fortawesome/free-solid-svg-icons";
-
 import LoadingPage from "../../../components/LoadingPage";
 import PageTemplate from "../../../components/PageTemplate";
 import OpenSeaButton from "../../../components/OpenSeaButton";
 import EtherscanButton from "../../../components/EtherscanButton";
 import { Snackbar, SnackbarContent } from "@mui/material";
-
-// const traitTypeToIcon = {
-//   Palette: faPalette, // color
-//   Build: faPerson, // body
-//   Clan: faHandFist, // ??
-//   Pose: faPersonWalking, // pose
-//   Mask: faMasksTheater, // Mask
-//   Cans: faSprayCan, // Can?
-//   "Front Floatie": faHatWizard, // Headdress
-//   "Side Floatie": faUserNinja, // ??
-//   Collar: faUserTie, // Collar
-//   Backpack: faSuitcase, // Backpack
-//   Accessory: faGem, // Accessory
-//   Uniform: faShirt, // Clothes?
-//   Chtara: faUserGroup, // ??
-//   Faction: faHandshake, // Faction
-// };
 
 const traitTypeIconString = {
   Palette: "palette", // color
@@ -110,6 +76,90 @@ export default function TokenData() {
       </>
     );
   } else {
+    // console.log(data?.backgroundcolor);
+
+
+    // Title Card + OS/Etherscan Buttons
+    const titleCard = (
+      <div>
+        <div className="items-center justify-start rounded bg-white bg-opacity-20 px-3 py-2">
+          <p className="mb-2 text-4xl">
+            <b>{`#${query.tokenId}`} //</b>
+          </p>
+          <p className="mb-2 text-xs">Fyat Lux</p>
+          {data.owner_name && (
+            <div className="flex text-sm">
+              <span className="font-bold">{data.name}</span>
+              <p>&nbsp;owned by&nbsp;</p>
+              <a
+                href={`https://opensea.io/${data.owner_name}`}
+                target="_blank"
+                title="View Owner on OpenSea"
+                className="italic no-underline hover:underline"
+              >
+                {data.owner_name}
+              </a>
+            </div>
+          )}
+        </div>
+
+        <div className="flex pt-5">
+          <div className="mr-4 flex items-center">
+            <OpenSeaButton
+              link={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`}
+            />
+            <p className="ml-1 text-sm">Buy on OpenSea</p>
+          </div>
+          <div className="flex items-center">
+            <EtherscanButton
+              link={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`}
+            />
+            <p className="ml-1 text-sm">View on Etherscan</p>
+          </div>
+        </div>
+      </div>
+    );
+
+    // Display for Properties
+    const propertiesSection = (
+      <div className="mt-5">
+        <div className="leading-24 text-2xl font-bold">Properties //</div>
+        <div className="rounded-12 bg-gray-4 mt-1 mb-3 py-1">
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-3">
+            {data.metadata.attributes.map((attribute, i) => (
+              <li
+                key={i}
+                className="flex w-full content-center items-center rounded bg-white bg-opacity-20 py-2 px-2 shadow-2xl duration-300 hover:scale-105"
+              >
+                <FontAwesomeIcon
+                  icon = {icon(findIconDefinition({ iconName: traitTypeIconString[attribute.trait_type] ?? "gem"}))}
+                />
+                <div className="ml-2">
+                  <p className="text-2xs mr-auto inline-block flex items-center tracking-wider opacity-60">
+                    <span className="pt-px">{attribute.trait_type}:</span>
+                  </p>
+                  <p className="font-600 ml-auto text-xs uppercase">
+                    <b>{attribute.value}</b>
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+    
+    const assetDisplay = (
+      <iframe
+      allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+      frameBorder="0"
+      height="100%"
+      sandbox="allow-scripts"
+      src={`https://fyatlux-viewer.web.app?tokenID=${query.tokenId}`}
+      width="100%"
+      ></iframe>
+    );
+
     page = (
       <>
         <div
@@ -124,7 +174,7 @@ export default function TokenData() {
           </Head>
 
           <div className="block w-1/2 align-top md:sticky md:inline-block">
-            <Snackbar
+            {/* <Snackbar
               open={showSnackbar}
               autoHideDuration={4000}
               onClose={() => setShowSnackbar(false)}
@@ -138,81 +188,14 @@ export default function TokenData() {
                 }}
                 message="Click and drag to move me around!"
               />
-            </Snackbar>
-
-            <iframe
-              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-              frameBorder="0"
-              height="100%"
-              sandbox="allow-scripts"
-              src={`https://fyatlux-viewer.web.app?tokenID=${query.tokenId}`}
-              width="100%"
-            ></iframe>
+            </Snackbar> */}
+            {assetDisplay}
           </div>
 
-          <div className="mt-1 w-1/2 overflow-y-scroll px-10">
-            <div className="items-center justify-start rounded bg-white bg-opacity-20 px-3 py-2">
-              <p className="mb-2 text-4xl">
-                <b>{`#${query.tokenId}`} //</b>
-              </p>
-              <p className="mb-2 text-xs">Fyat Lux</p>
-              {data.owner_name && (
-                <div className="flex text-sm">
-                  <span className="font-bold">{data.name}</span>
-                  <p>&nbsp;owned by&nbsp;</p>
-                  <a
-                    href={`https://opensea.io/${data.owner_name}`}
-                    target="_blank"
-                    title="View Owner on OpenSea"
-                    className="italic no-underline hover:underline"
-                  >
-                    {data.owner_name}
-                  </a>
-                </div>
-              )}
-            </div>
-
-            <div className="flex pt-5">
-              <div className="mr-4 flex items-center">
-                <OpenSeaButton
-                  link={`https://opensea.io/assets/${query.collectionId}/${query.tokenId}`}
-                />
-                <p className="ml-1 text-sm">Buy on OpenSea</p>
-              </div>
-              <div className="flex items-center">
-                <EtherscanButton
-                  link={`https://etherscan.io/token/${query.collectionId}?a=${query.tokenId}`}
-                />
-                <p className="ml-1 text-sm">View on Etherscan</p>
-              </div>
-            </div>
-
-            <div className="mt-5">
-              <div className="leading-24 text-2xl font-bold">Properties //</div>
-              <div className="rounded-12 bg-gray-4 mt-1 mb-3 py-1">
-                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-3">
-                  {data.metadata.attributes.map((attribute, i) => (
-                    <li
-                      key={i}
-                      className="flex w-full content-center items-center rounded bg-white bg-opacity-20 py-2 px-2 shadow-2xl duration-300 hover:scale-105"
-                    >
-                      <FontAwesomeIcon
-                         icon = {icon(findIconDefinition({ iconName: traitTypeIconString[attribute.trait_type] ?? "gem"}))}
-                      />
-                      <div className="ml-2">
-                        <p className="text-2xs mr-auto inline-block flex items-center tracking-wider opacity-60">
-                          <span className="pt-px">{attribute.trait_type}:</span>
-                        </p>
-                        <p className="font-600 ml-auto text-xs uppercase">
-                          <b>{attribute.value}</b>
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+          <div className="mt-1 w-1/2 overflow-y-auto px-10">
+            {titleCard}
+            {propertiesSection}
+          </div> 
         </div>
       </>
     );

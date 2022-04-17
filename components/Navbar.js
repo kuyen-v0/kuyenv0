@@ -9,7 +9,7 @@ export default function Navbar({ bg }) {
   return (
     <>
     {/* Mobile */}
-    <nav className="lg:hidden flex flex-wrap items-center justify-between w-full px-4">
+    <nav className={"lg:hidden flex flex-wrap items-center justify-between w-full px-4 " + (bg ?? "")}>
       <div className='flex flex-wrap items-center justify-between w-full'>
         <div>
           <a className="pr-2 text-xl font-semibold text-white" href="/">
