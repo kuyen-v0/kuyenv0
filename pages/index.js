@@ -134,11 +134,10 @@ export default function Gallery({ traits }) {
           <div className="flex max-w-full">
             {/* Left Filter */}
             <div className="mx-4 w-96 hidden lg:block">
-              <div className="flex items-end">
+              <div className="flex items-end mb-4">
                 <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
                 <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
               </div>
-              <br />
               <FilterSelector
                 traitJSON={collectionTraits}
                 selectedFilters={selectedFilters}
@@ -148,11 +147,10 @@ export default function Gallery({ traits }) {
 
             {/* Right Search/Pills/Gallery */}
             <div>
-              <div className="flex items-end px-4">
+              <div className="flex items-end px-4 mb-2">
                 <h2 className="text-2xl font-bold text-yellow-300">GALLERY //</h2>
                 <p className="hidden sm:block text-2xl font-bold text-yellow-300">&nbsp;{total} {plural}</p>
               </div>
-              <br />
 
               {/* Search + Sort */}
               <div className="ml-4 mr-4 flex items-center justify-start">

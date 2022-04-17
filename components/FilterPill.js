@@ -64,7 +64,7 @@ export function FilterPills({
   }
 
   return (
-    <div className='flex items-center pt-4'>
+    <div className={'flex items-center' + (selectedOptions > 0 ? 'pt-4' : '')}>
       {selectedOptions.map(option => (
         <FilterPill option={option} onClick={updateSelectedFilters} key={JSON.stringify(option)} />
       ))}

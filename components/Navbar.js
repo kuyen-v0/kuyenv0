@@ -3,6 +3,7 @@ import { useState } from "react";
 import BigButton from "./BigButton";
 
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar({ bg }) {
   const [showMobileOptions, setShowMobileOptions] = useState(false);
@@ -22,18 +23,25 @@ export default function Navbar({ bg }) {
             ></img>
           </a>
         </div>
-        <FontAwesomeIcon icon={faBars} onClick={() => setShowMobileOptions(!showMobileOptions)} />
+        <FontAwesomeIcon className='h-8' icon={faBars} onClick={() => setShowMobileOptions(true)} />
       </div>
-      <div className={(showMobileOptions ? '' : 'hidden') + ' flex flex-wrap items-center justify-end w-full'}>
-        <ul>
-          <li>
-            <a className="md:p-4 py-2 block" href="https://discord.gg/fyatlux">Join Our Discord</a>
-          </li>
-          <li>
-            <a className="md:p-4 py-2 block" href="my-assets">My Collection</a>
-          </li>
-        </ul>
-      </div>
+      <aside class={(showMobileOptions ? 'translate-x-0' : 'translate-x-full') + " transform top-0 right-0 w-full bg-black/75 text-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 lg:hidden"}>
+        <div className='flex-col'>
+            <div className='flex justify-end mx-5 mb-10 mt-10'>
+              <button onClick={() => setShowMobileOptions(false)}>
+                <FontAwesomeIcon icon={faXmark} className='h-8 text-white' />
+              </button>
+            </div>
+            <ul className='mr-5'>
+              <li className='mb-5'>
+                <a className="py-2 block text-right" href="https://discord.gg/fyatlux">Join Our Discord</a>
+              </li>
+              <li>
+                <a className="py-2 block text-right" href="my-assets">My Collection</a>
+              </li>
+            </ul>
+        </div>
+      </aside>
     </nav>
 
     {/* Desktop */}
