@@ -76,9 +76,6 @@ export default function TokenData() {
       </>
     );
   } else {
-    // console.log(data?.backgroundcolor);
-
-
     // Title Card + OS/Etherscan Buttons
     const titleCard = (
       <div>
@@ -149,6 +146,7 @@ export default function TokenData() {
       </div>
     );
     
+    // Container for showing the asset
     const assetDisplay = (
       <iframe
       allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
