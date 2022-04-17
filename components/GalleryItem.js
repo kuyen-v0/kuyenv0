@@ -1,6 +1,8 @@
 import Badge from "./Badge";
 
 export default function GalleryItem({ nft }) {
+  console.log(nft.metadata);
+  console.log(nft);
   const nftNum = nft.metadata.name.split("#")[1];
   return (
     <>
@@ -16,7 +18,7 @@ export default function GalleryItem({ nft }) {
       </div>
       <div className="align-items-center flex-col">
         <p className="text-center text-white">
-          <b>#{nftNum}</b>
+          {nft.name} #{nftNum}
         </p>
         {/* <p className="text-center text-white">Ξ {nft.price}</p> */}
       </div>

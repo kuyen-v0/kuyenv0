@@ -217,7 +217,7 @@ export default function Gallery({ traits }) {
                     loader={<h3> Collection Loading...</h3>}
                     endMessage={<h4></h4>}
                   >
-                    <div className="grid grid-cols-1 gap-4 p-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-4 p-4 pt-4 grid-cols-2 lg:grid-cols-4">
                       {collectionNfts.map((nft, i) => (
                         <Link
                           key={i}
