@@ -164,7 +164,7 @@ export default function Gallery({ traits }) {
                     }} />
                     <button
                       type="submit"
-                      className="flex items-center justify-center px-4"
+                      className="flex items-center justify-center"
                     >
                       <svg
                         className="h-6 w-6 text-gray-600"
@@ -178,14 +178,14 @@ export default function Gallery({ traits }) {
                   </div>
                 </form>
 
-                <div className="flex ml-6">
+                <div className="flex ml-3">
                   <FormControl>
                     <InputLabel id="sortLabel">Sort By</InputLabel>
                     <Select
                       labelId="sortLabel"
                       label="Sort"
                       id="gallerySortInput"
-                      style={{ minWidth: 100, height: '3rem' }}
+                      style={{ minWidth: 120, height: '3rem' }}
                       value={sortBy}
                       onChange={handleDropdownSort}
                     >
@@ -193,6 +193,12 @@ export default function Gallery({ traits }) {
                       <MenuItem value={"rarity"}>Rarity (most to least)</MenuItem>
                     </Select>
                   </FormControl>
+                </div>
+
+                <div className='lg:hidden ml-3'>
+                  <button className='text-yellow-300'>
+                    Filters
+                  </button>
                 </div>
               </div>
               
