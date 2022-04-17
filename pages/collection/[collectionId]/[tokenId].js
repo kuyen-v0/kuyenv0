@@ -122,10 +122,10 @@ export default function TokenData() {
 
     // Display for Properties
     const propertiesSection = (
-      <div className="mt-5">
+      <div>
         <div className="leading-24 text-2xl font-bold">Properties //</div>
-        <div className="rounded-12 bg-gray-4 mt-1 mb-3 py-1">
-          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-3">
+        <div className="rounded-12 bg-gray-4 mt-2 mb-3 py-1">
+          <ul className="grid grid-cols-2 gap-4 lg:grid-cols-3">
             {data.metadata.attributes.map((attribute, i) => (
               <li
                 key={i}
@@ -162,8 +162,22 @@ export default function TokenData() {
 
     page = (
       <>
+        {/* Mobile */}
+        <div className='lg:hidden flex-col'>
+          <div className='px-2 mb-3'>
+            {titleCard}
+          </div>
+          <div className='h-96'>
+            {assetDisplay}
+          </div>
+          <div className='px-2 mt-3'>
+            {propertiesSection}
+          </div>
+        </div>
+
+        {/* Desktop */}
         <div
-          className={`m-0 flex h-screen justify-around ${data.textcolor} ${data.backgroundcolor}`}
+          className={`hidden lg:flex m-0 h-screen justify-around ${data.textcolor} ${data.backgroundcolor}`}
         >
           <Head>
             <title>NFT Details</title>
@@ -174,7 +188,7 @@ export default function TokenData() {
           </Head>
 
           <div className="block w-1/2 align-top md:sticky md:inline-block">
-            {/* <Snackbar
+            <Snackbar
               open={showSnackbar}
               autoHideDuration={4000}
               onClose={() => setShowSnackbar(false)}
@@ -188,13 +202,15 @@ export default function TokenData() {
                 }}
                 message="Click and drag to move me around!"
               />
-            </Snackbar> */}
+            </Snackbar>
             {assetDisplay}
           </div>
 
-          <div className="mt-1 w-1/2 overflow-y-auto px-10">
+          <div className="w-1/2 overflow-y-auto px-10">
             {titleCard}
-            {propertiesSection}
+            <div className='mt-5'>
+              {propertiesSection}
+            </div>
           </div> 
         </div>
       </>
