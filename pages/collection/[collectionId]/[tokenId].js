@@ -119,10 +119,10 @@ export default function TokenData() {
 
     // Display for Properties
     const propertiesSection = (
-      <div>
+      <div className='h-full'>
         <div className="leading-24 text-2xl font-bold">Properties //</div>
-        <div className="rounded-12 bg-gray-4 mt-2 mb-3 py-1">
-          <ul className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+        <div className="rounded-12 bg-gray-4 mt-2 pb-4 pt-1">
+          <ul className="grid grid-cols-2 gap-4 md:grid-cols-3">
             {data.metadata.attributes.map((attribute, i) => (
               <li
                 key={i}
@@ -158,13 +158,10 @@ export default function TokenData() {
       ></iframe>
     );
 
-    const bg = data.backgroundcolor;
-    const customStyle = { background: bg?.slice(4, -1) };
-
     page = (
       <>
         {/* Mobile */}
-        <div className='lg:hidden flex-col' style={customStyle}>
+        <div className={`lg:hidden flex-col h-full ${data.textcolor}`}>
           <div className='px-2 mb-3'>
             {titleCard}
           </div>
@@ -179,7 +176,6 @@ export default function TokenData() {
         {/* Desktop */}
         <div
           className={`hidden lg:flex m-0 h-screen justify-around ${data.textcolor} ${data.backgroundcolor}`}
-          style={customStyle}
         >
           <Head>
             <title>NFT Details</title>
@@ -218,5 +214,6 @@ export default function TokenData() {
       </>
     );
   }
-  return <PageTemplate page={page} navProps={{ bg: data?.backgroundcolor }} />;
+  const customStyle = { background: data?.backgroundcolor?.slice(4, -1) };
+  return <PageTemplate page={page} navProps={{ bg: data?.backgroundcolor }} mainProps={{ customStyle }} />;
 }

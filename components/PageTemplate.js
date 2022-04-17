@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navbar from "./Navbar";
 
-export default function PageTemplate({ page, navProps }) {
+export default function PageTemplate({ page, navProps, mainProps={} }) {
 
   const [scrollPos, setScrollPos] = useState(0);
 
@@ -14,9 +14,9 @@ export default function PageTemplate({ page, navProps }) {
       <header className={scrollPos > 0 ? 'shadow-md' : ''}>
         <Navbar {...navProps} />
       </header>
-      <main className='flex-1 overflow-y-auto' id='asdf' onScroll={handleScroll}>
+      <div className='flex-1 overflow-y-auto' id='asdf' style={mainProps.customStyle} onScroll={handleScroll}>
         {page}
-      </main>
+      </div>
     </div>
   );
 }
