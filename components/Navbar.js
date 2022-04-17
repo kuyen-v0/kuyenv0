@@ -6,10 +6,13 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar({ bg }) {
   const [showMobileOptions, setShowMobileOptions] = useState(false);
+
+  const customStyle = { background: bg?.slice(4, -1) };
+
   return (
     <>
     {/* Mobile */}
-    <nav className={"lg:hidden flex flex-wrap items-center justify-between w-full px-4 " + (bg ?? "")}>
+    <nav className={"lg:hidden flex flex-wrap items-center justify-between w-full px-4"} style={customStyle}>
       <div className='flex flex-wrap items-center justify-between w-full'>
         <div>
           <a className="pr-2 text-xl font-semibold text-white" href="/">
@@ -34,7 +37,7 @@ export default function Navbar({ bg }) {
     </nav>
 
     {/* Desktop */}
-    <nav className={"navbar-expand-lg hidden lg:flex relative flex w-full flex-wrap items-center justify-between " + (bg ?? "")}>
+    <nav className="navbar-expand-lg hidden lg:flex relative flex w-full flex-wrap items-center justify-between" style={customStyle}>
       <div className="container-fluid flex w-full flex-wrap items-center justify-between px-6">
         <div
           className="collapse navbar-collapse flex-grow place-content-between items-center"
