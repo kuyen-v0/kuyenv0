@@ -166,6 +166,21 @@ export default function TokenData() {
             {titleCard}
           </div>
           <div className='h-96'>
+            <Snackbar
+              open={showSnackbar}
+              autoHideDuration={4000}
+              onClose={() => setShowSnackbar(false)}
+              action={() => {}}
+            >
+              <SnackbarContent
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.8)",
+                  color: "black",
+                  opacity: "20",
+                }}
+                message="Swipe to move me around!"
+              />
+            </Snackbar>
             {assetDisplay}
           </div>
           <div className='px-2 mt-3'>

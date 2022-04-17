@@ -25,7 +25,7 @@ export default function Navbar({ bg }) {
         </div>
         <FontAwesomeIcon className='h-8' icon={faBars} onClick={() => setShowMobileOptions(true)} />
       </div>
-      <aside class={(showMobileOptions ? 'translate-x-0' : 'translate-x-full') + " transform top-0 right-0 w-full bg-black/75 text-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 lg:hidden"}>
+      <aside className={(showMobileOptions ? 'translate-x-0' : 'translate-x-full') + " transform top-0 right-0 w-full bg-black/75 text-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 lg:hidden"}>
         <div className='flex-col'>
             <div className='flex justify-end mx-5 mb-10 mt-10'>
               <button onClick={() => setShowMobileOptions(false)}>
