@@ -158,10 +158,13 @@ export default function TokenData() {
       ></iframe>
     );
 
+    const bg = data.backgroundcolor;
+    const customStyle = { background: bg?.slice(4, -1) };
+
     page = (
       <>
         {/* Mobile */}
-        <div className='lg:hidden flex-col'>
+        <div className='lg:hidden flex-col' style={customStyle}>
           <div className='px-2 mb-3'>
             {titleCard}
           </div>
@@ -176,6 +179,7 @@ export default function TokenData() {
         {/* Desktop */}
         <div
           className={`hidden lg:flex m-0 h-screen justify-around ${data.textcolor} ${data.backgroundcolor}`}
+          style={customStyle}
         >
           <Head>
             <title>NFT Details</title>
