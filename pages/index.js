@@ -9,7 +9,7 @@ import FilterSelector from "../components/FilterSelector";
 import PageTemplate from "../components/PageTemplate";
 import { FilterPills } from "../components/FilterPill";
 import useSWR from "swr";
-
+import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -108,14 +108,16 @@ export default function Gallery({ traits }) {
 
   const handleSearchFilter = (e) => {
     e.preventDefault();
-    setSearchValue(e.target.filter.value);
+    const searchInput = document.getElementById('gallerySearchInput').value;
+    setSearchValue(searchInput);
   };
 
-  const handleDropdownFilter = (e) => {
-    const selectedValue = e.target.value;
-    setSortBy(selectedValue);
+  const handleDropdownSort = (e) => {
+    e.preventDefault();
+    const sortValue = e.target.value;
+    setSortBy(sortValue);
   };
-
+  
   let plural = (total > 1) ? "RESULTS" : "RESULT";
 
   return (
@@ -155,17 +157,16 @@ export default function Gallery({ traits }) {
               {/* Search + Sort */}
               <div className="ml-4 mr-4 flex items-center justify-start">
                 <form onSubmit={handleSearchFilter}>
-                  <div className="flex rounded border-2">
-                    <input
-                      type="text"
-                      id="filter"
-                      name="filter"
-                      className="min-w-0 max-w-80 px-4 py-2"
-                      placeholder="Search..."
-                    />
+                  <div className="flex">
+                    <TextField id="gallerySearchInput" label="Search..." variant="outlined" inputProps={{
+                      style: {
+                        background: 'none',
+                        height: '2rem',
+                      }
+                    }} />
                     <button
                       type="submit"
-                      className="flex items-center justify-center border-l px-4"
+                      className="flex items-center justify-center px-4"
                     >
                       <svg
                         className="h-6 w-6 text-gray-600"
@@ -179,16 +180,21 @@ export default function Gallery({ traits }) {
                   </div>
                 </form>
 
-                <div className="hidden lg:flex ml-6 rounded border-2">
-                  <select
-                    className="form-select dropdown relative block w-full w-120 px-4 py-2"
-                    name="price"
-                    id="price"
-                    onChange={handleDropdownFilter}
-                  >
-                    <option value="tokenId">Token ID</option>
-                    <option value="rarity">Rarity (most to least)</option>
-                  </select>
+                <div className="hidden lg:flex ml-6">
+                  <FormControl>
+                    <InputLabel id="sortLabel">Filter</InputLabel>
+                    <Select
+                      labelId="sortLabel"
+                      label="Sort"
+                      id="gallerySortInput"
+                      style={{ minWidth: 100, height: '3rem' }}
+                      value={sortBy}
+                      onChange={handleDropdownSort}
+                    >
+                      <MenuItem value={"tokenId"}>Token ID</MenuItem>
+                      <MenuItem value={"rarity"}>Rarity (most to least)</MenuItem>
+                    </Select>
+                  </FormControl>
                 </div>
               </div>
               
