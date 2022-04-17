@@ -117,7 +117,7 @@ export default function Gallery({ traits }) {
     const sortValue = e.target.value;
     setSortBy(sortValue);
   };
-  
+
   let plural = (total > 1) ? "RESULTS" : "RESULT";
 
   return (
@@ -149,8 +149,8 @@ export default function Gallery({ traits }) {
             {/* Right Search/Pills/Gallery */}
             <div>
               <div className="flex items-end px-4">
-                <h2 className="text-2xl font-bold text-yellow-300">GALLERY // {total} {plural}</h2>
-                <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
+                <h2 className="text-2xl font-bold text-yellow-300">GALLERY //</h2>
+                <p className="hidden sm:block text-2xl font-bold text-yellow-300">&nbsp;{total} {plural}</p>
               </div>
               <br />
 
@@ -158,10 +158,10 @@ export default function Gallery({ traits }) {
               <div className="ml-4 mr-4 flex items-center justify-start">
                 <form onSubmit={handleSearchFilter}>
                   <div className="flex">
-                    <TextField id="gallerySearchInput" label="Search..." variant="outlined" inputProps={{
+                    <TextField id="gallerySearchInput" label="Search..." variant="standard" inputProps={{
                       style: {
                         background: 'none',
-                        height: '2rem',
+                        // height: '2rem',
                       }
                     }} />
                     <button
@@ -180,9 +180,9 @@ export default function Gallery({ traits }) {
                   </div>
                 </form>
 
-                <div className="hidden lg:flex ml-6">
+                <div className="flex ml-6">
                   <FormControl>
-                    <InputLabel id="sortLabel">Filter</InputLabel>
+                    <InputLabel id="sortLabel">Sort By</InputLabel>
                     <Select
                       labelId="sortLabel"
                       label="Sort"
