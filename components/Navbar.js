@@ -39,7 +39,7 @@ export default function Navbar({ bg }) {
                     <a className="py-2 block text-right" href="https://discord.gg/fyatlux">Join Our Discord</a>
                   </li>
                   <li>
-                    <a className="py-2 block text-right" href="my-assets">My Collection</a>
+                    <a className="py-2 block text-right" href="https://collection.fyatlux.com/">My Collection</a>
                   </li>
                 </ul>
               </div>
