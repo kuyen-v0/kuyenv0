@@ -68,7 +68,7 @@ export default function Navbar({ bg }) {
     {/* Mobile */}
     <nav className={"lg:hidden flex flex-wrap items-center justify-between w-full px-4"} style={customStyle}>
       <div className='flex flex-wrap items-center justify-between w-full'>
-        <div>
+        <div className='items-center'>
           <a className="pr-2 text-xl font-semibold text-white" href="/">
             <img
               className="logo-fyat"
@@ -76,7 +76,7 @@ export default function Navbar({ bg }) {
             ></img>
           </a>
         </div>
-        <FontAwesomeIcon className='h-8' icon={faBars} onClick={() => setShowMobileOptions(true)} />
+        <FontAwesomeIcon className='h-6' icon={faBars} onClick={() => setShowMobileOptions(true)} />
       </div>
       {MenuSidebar}
     </nav>

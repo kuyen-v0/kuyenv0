@@ -205,7 +205,10 @@ export default function Gallery({ traits }) {
             <div>
               <div className="flex items-end px-4 mb-2">
                 <h2 className="text-2xl font-bold text-yellow-300">GALLERY //</h2>
-                <p className="hidden sm:block text-2xl font-bold text-yellow-300">&nbsp;{total} {plural}</p>
+                <div className="flex text-2xl font-bold text-yellow-300">
+                  <p>&nbsp;{total}</p>
+                  <p className="hidden sm:block">&nbsp;{plural}</p> 
+                </div>
               </div>
 
               {/* Search + Sort */}
@@ -279,7 +282,7 @@ export default function Gallery({ traits }) {
                     loader={<h3> Collection Loading...</h3>}
                     endMessage={<h4></h4>}
                   >
-                    <div className="grid gap-4 p-4 pt-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+                    <div className="grid gap-4 p-4 pt-4 grid-cols-2 lg:grid-cols-4">
                       {collectionNfts.map((nft, i) => (
                         <Link
                           key={i}
