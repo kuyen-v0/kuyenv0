@@ -1,14 +1,67 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import BigButton from "./BigButton";
 
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import {Transition, Dialog} from "@headlessui/react";
 
 export default function Navbar({ bg }) {
   const [showMobileOptions, setShowMobileOptions] = useState(false);
 
   const customStyle = { background: bg?.slice(4, -1) };
+
+  // TODO: Move to its own component
+  const MenuSidebar = (
+    <Transition show={showMobileOptions}>
+      <Dialog as="div" onClose={() => setShowMobileOptions(false)} className="lg:hidden fixed inset-0 z-40">
+        <Transition.Child 
+          as={Fragment}
+          enter="transition ease-in-out duration-200 transform" 
+          enterFrom="translate-x-full" 
+          enterTo="translate-x-0" 
+          leave="transition ease-in-out duration-200 transform" 
+          leaveFrom="translate-x-0" 
+          leaveTo="translate-x-full"
+        >
+          <div className="flex justify-end h-full">
+            <div className="flex flex-col px-4 bg-black relative z-10 h-full w-72 lg:hidden pt-10">
+              <div className="flex justify-end items-center">
+                <button type="button" className="-mr-2 w-10 rounded-md flex items-center justify-center hover:cursor" tabIndex="0" onClick={() => setShowMobileOptions(false)}>
+                  <span className="sr-only">Close menu</span>
+                  <FontAwesomeIcon icon={faXmark} className='text-yellow-300 h-6' />
+                </button>
+              </div>
+              <br />
+              <div className="overflow-y-auto flex-1 text-white">
+                <ul className='mr-5'>
+                  <li className='mb-5'>
+                    <a className="py-2 block text-right" href="https://discord.gg/fyatlux">Join Our Discord</a>
+                  </li>
+                  <li>
+                    <a className="py-2 block text-right" href="my-assets">My Collection</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </Transition.Child>
+        
+        <Transition.Child
+          as={Fragment}
+          enter="transition-opacity ease-linear duration-200"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity ease-linear duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-50">
+          </Dialog.Overlay>
+        </Transition.Child>
+      </Dialog>
+    </Transition>
+  );
 
   return (
     <>
@@ -25,23 +78,7 @@ export default function Navbar({ bg }) {
         </div>
         <FontAwesomeIcon className='h-8' icon={faBars} onClick={() => setShowMobileOptions(true)} />
       </div>
-      <aside className={(showMobileOptions ? 'translate-x-0' : 'translate-x-full') + " transform top-0 right-0 w-full bg-black/75 text-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 lg:hidden"}>
-        <div className='flex-col'>
-            <div className='flex justify-end mx-5 mb-10 mt-10'>
-              <button onClick={() => setShowMobileOptions(false)}>
-                <FontAwesomeIcon icon={faXmark} className='h-8 text-white' />
-              </button>
-            </div>
-            <ul className='mr-5'>
-              <li className='mb-5'>
-                <a className="py-2 block text-right" href="https://discord.gg/fyatlux">Join Our Discord</a>
-              </li>
-              <li>
-                <a className="py-2 block text-right" href="my-assets">My Collection</a>
-              </li>
-            </ul>
-        </div>
-      </aside>
+      {MenuSidebar}
     </nav>
 
     {/* Desktop */}

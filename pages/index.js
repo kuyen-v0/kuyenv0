@@ -3,6 +3,8 @@ import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
 import clientPromise from "../lib/mongodb";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
@@ -137,11 +139,11 @@ export default function Gallery({ traits }) {
           leaveTo="-translate-x-full"
         >
           <div className="flex flex-col px-4 bg-black relative z-10 h-full w-72 lg:hidden pt-10">
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold text-yellow-300">FILTER //</h2>
-              <button type="button" className="-mr-2 w-10 rounded-md flex items-center justify-center opacity-50 hover:cursor" tabIndex="0" onClick={() => setShowFilters(false)}>
+              <button type="button" className="-mr-2 w-10 rounded-md flex items-center justify-center hover:cursor" tabIndex="0" onClick={() => setShowFilters(false)}>
                 <span className="sr-only">Close menu</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="yellow" aria-hidden="true" className="h-6 w-6"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <FontAwesomeIcon icon={faXmark} className='text-yellow-300 h-6' />
               </button>
             </div>
             <br />
