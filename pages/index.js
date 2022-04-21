@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
@@ -8,6 +8,8 @@ import GalleryItem from "../components/GalleryItem";
 import FilterSelector from "../components/FilterSelector";
 import PageTemplate from "../components/PageTemplate";
 import { FilterPills } from "../components/FilterPill";
+
+import {Transition, Dialog} from "@headlessui/react";
 import useSWR from "swr";
 
 
@@ -53,6 +55,7 @@ export default function Gallery({ traits }) {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [collectionTraits, setCollectionTraits] = useState([]);
   const [sortBy, setSortBy] = useState("tokenId");
+  const [showFilters, setShowFilters] = useState(false);
 
   let collectionId = "0x14c4471a7f6dcac4f03a81ded6253eaceff15b3d";
   let skipAmt = 0;
@@ -121,7 +124,7 @@ export default function Gallery({ traits }) {
   return (
     <PageTemplate
       page={
-        <div className="flex-col justify-center">
+        <div className="flex-col justify-center max-w-full">
           <Head>
             <title>NFT Gallery</title>
             <meta
@@ -129,11 +132,9 @@ export default function Gallery({ traits }) {
               content="initial-scale=1.0, width=device-width"
             />
           </Head>
-          <br />
-          <br />
-          <div className="flex">
+          <div className="flex max-w-full">
             {/* Left Filter */}
-            <div className="mx-4 w-96">
+            <div className="mx-4 w-96 hidden lg:block">
               <div className="flex items-end">
                 <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
                 <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
@@ -145,6 +146,55 @@ export default function Gallery({ traits }) {
                 setSelectedFilters={setSelectedFilters}
               />
             </div>
+
+            <Transition show={showFilters}>
+              <Dialog as="div" onClose={() => setShowFilters(false)} className="lg:hidden fixed inset-0 z-40">
+                <Transition.Child 
+                  as={Fragment}
+                  enter="transition ease-in-out duration-200 transform" 
+                  enterFrom="-translate-x-full" 
+                  enterTo="translate-x-0" 
+                  leave="transition ease-in-out duration-200 transform" 
+                  leaveFrom="translate-x-0" 
+                  leaveTo="-translate-x-full"
+                >
+                  <div className="flex flex-col px-4 bg-black relative z-10 h-full w-72 lg:hidden pt-10">
+                    <div className="flex justify-between items-end">
+                      <h2 className="text-xl font-bold text-yellow-300">FILTER //</h2>
+                      <button type="button" class="-mr-2 w-10 rounded-md flex items-center justify-center opacity-50 hover:cursor" tabindex="0" onClick={() => setShowFilters(false)}>
+                        <span class="sr-only">Close menu</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="yellow" aria-hidden="true" class="h-6 w-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                      </button>
+                    </div>
+                    <br />
+                    <div className="overflow-y-auto flex-1">
+                      <FilterSelector
+                        traitJSON={collectionTraits}
+                        selectedFilters={selectedFilters}
+                        setSelectedFilters={setSelectedFilters}
+                      />
+                    </div>
+                    
+                  </div>
+                </Transition.Child>
+                
+                <Transition.Child
+                  as={Fragment}
+                  enter="transition-opacity ease-linear duration-200"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="transition-opacity ease-linear duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <Dialog.Overlay className="fixed inset-0 bg-white bg-opacity-50">
+                  </Dialog.Overlay>
+                </Transition.Child>
+              </Dialog>
+            </Transition>
+            
+
+            
 
             {/* Right Search/Pills/Gallery */}
             <div>
@@ -162,7 +212,7 @@ export default function Gallery({ traits }) {
                       type="text"
                       id="filter"
                       name="filter"
-                      className="w-80 px-4 py-2"
+                      className="min-w-0 max-w-80 px-4 py-2"
                       placeholder="Search..."
                     />
                     <button
@@ -181,7 +231,7 @@ export default function Gallery({ traits }) {
                   </div>
                 </form>
 
-                <div className="ml-6 flex rounded border-2">
+                <div className="hidden lg:flex ml-6 rounded border-2">
                   <select
                     className="form-select dropdown relative block w-full w-120 px-4 py-2"
                     name="price"
@@ -191,6 +241,27 @@ export default function Gallery({ traits }) {
                     <option value="tokenId">Token ID</option>
                     <option value="rarity">Rarity (most to least)</option>
                   </select>
+                </div>
+
+                <div className="hidden lg:flex ml-6 rounded border-2">
+                  <select
+                    className="form-select dropdown relative block w-full w-120 px-4 py-2"
+                    name="price"
+                    id="price"
+                    onChange={handleDropdownFilter}
+                  >
+                    <option value="tokenId">Token ID</option>
+                    <option value="rarity">Rarity (most to least)</option>
+                  </select>
+                </div>
+
+                <div className='lg:hidden ml-3'>
+                  <button 
+                    className='text-yellow-300 hover:cursor'
+                    onClick={() => setShowFilters(!showFilters)}
+                  >
+                    Filters
+                  </button>
                 </div>
               </div>
               
