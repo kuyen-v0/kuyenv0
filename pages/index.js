@@ -204,7 +204,7 @@ export default function Gallery({ traits }) {
             {FilterSidebar}
 
             {/* Right Search/Pills/Gallery */}
-            <div className="h-full">
+            <div className="h-full flex flex-col">
               <div className="flex items-end px-4 mb-2">
                 <h2 className="text-2xl font-bold text-yellow-300">GALLERY //</h2>
                 <p className="hidden sm:block text-2xl font-bold text-yellow-300">&nbsp;{total} {plural}</p>
@@ -270,9 +270,9 @@ export default function Gallery({ traits }) {
                   setSelectedFilters={setSelectedFilters}
                 />
               </div>
-              
+
               {/* Gallery */}
-              <div className="flex justify-center h-full">
+              <div className="flex justify-center h-full overflow-y-hidden no-scrollbar">
                 <div style={{ maxWidth: "1600px" }}>
                   <InfiniteScroll
                     dataLength={collectionNfts.length}
@@ -282,8 +282,6 @@ export default function Gallery({ traits }) {
                     height={'100vh'}
                     endMessage={<h4></h4>}
                   >
-
-
                     <div className="grid gap-4 p-4 pt-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
                       {collectionNfts.map((nft, i) => (
                         <Link
