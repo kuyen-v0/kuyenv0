@@ -187,12 +187,12 @@ export default function Gallery({ traits }) {
           </Head>
           <div className="flex max-w-full h-full">
             {/* Left Filter */}
-            <div className="mx-4 w-96 hidden lg:block">
+            <div className="mx-4 w-96 hidden lg:flex flex-col">
+              <div className="flex items-end mb-4">
+                <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
+                <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
+              </div>
               <div className='h-full no-scrollbar overflow-y-auto'>
-                <div className="flex items-end mb-4">
-                  <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
-                  <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
-                </div>
                 <FilterSelector
                   traitJSON={collectionTraits}
                   selectedFilters={selectedFilters}
