@@ -177,7 +177,7 @@ export default function Gallery({ traits }) {
   return (
     <PageTemplate
       page={
-        <div className="flex-col justify-center max-w-full">
+        <div className="flex-col justify-center max-w-full h-full">
           <Head>
             <title>NFT Gallery</title>
             <meta
@@ -185,25 +185,92 @@ export default function Gallery({ traits }) {
               content="initial-scale=1.0, width=device-width"
             />
           </Head>
-          <div className="flex max-w-full">
+          <div className="flex max-w-full h-full">
             {/* Left Filter */}
             <div className="mx-4 w-96 hidden lg:block">
-              <div className="flex items-end mb-4">
-                <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
-                <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
+              <div className='h-full no-scrollbar overflow-y-auto'>
+                <div className="flex items-end mb-4">
+                  <h2 className="text-2xl font-bold text-yellow-300">FILTER</h2>
+                  <h1 className="mx-2 text-2xl font-bold text-yellow-300">//</h1>
+                </div>
+                <FilterSelector
+                  traitJSON={collectionTraits}
+                  selectedFilters={selectedFilters}
+                  setSelectedFilters={setSelectedFilters}
+                />
               </div>
-              <FilterSelector
-                traitJSON={collectionTraits}
-                selectedFilters={selectedFilters}
-                setSelectedFilters={setSelectedFilters}
-              />
             </div>
 
             {FilterSidebar}
 
             {/* Right Search/Pills/Gallery */}
-            <div>
+            <div className="h-full">
+              <div className="flex items-end px-4 mb-2">
+                <h2 className="text-2xl font-bold text-yellow-300">GALLERY //</h2>
+                <p className="hidden sm:block text-2xl font-bold text-yellow-300">&nbsp;{total} {plural}</p>
+              </div>
 
+              {/* Search + Sort */}
+              <div className="ml-4 mr-4 flex items-center justify-start">
+                <form onSubmit={handleSearchFilter}>
+                  <div className="flex">
+                    <TextField id="gallerySearchInput" label="Search..." variant="standard" inputProps={{
+                      style: {
+                        background: 'none',
+                        // height: '2rem',
+                      }
+                    }} />
+                    <button
+                      type="submit"
+                      className="flex items-center justify-center"
+                    >
+                      <svg
+                        className="h-6 w-6 text-gray-600"
+                        fill="yellow"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+                      </svg>
+                    </button>
+                  </div>
+                </form>
+
+                <div className="flex ml-3">
+                  <FormControl>
+                    <InputLabel id="sortLabel">Sort By</InputLabel>
+                    <Select
+                      labelId="sortLabel"
+                      label="Sort"
+                      id="gallerySortInput"
+                      style={{ minWidth: 120, height: '3rem' }}
+                      value={sortBy}
+                      onChange={handleDropdownSort}
+                    >
+                      <MenuItem value={"tokenId"}>Token ID</MenuItem>
+                      <MenuItem value={"rarity"}>Rarity (most to least)</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <div className='lg:hidden ml-3'>
+                  <button 
+                    className='text-yellow-300 hover:cursor'
+                    onClick={() => setShowFilters(!showFilters)}
+                  >
+                    Filter
+                  </button>
+                </div>
+              </div>
+              
+              {/* Filter Pills */}
+              <div className="ml-4">
+                <FilterPills
+                  selectedFilters={selectedFilters}
+                  setSelectedFilters={setSelectedFilters}
+                />
+              </div>
+              
               {/* Gallery */}
               <div className="flex justify-center h-full">
                 <div style={{ maxWidth: "1600px" }}>
@@ -215,71 +282,7 @@ export default function Gallery({ traits }) {
                     height={'100vh'}
                     endMessage={<h4></h4>}
                   >
-                    <div className="flex items-end px-4 mb-2">
-                      <h2 className="text-2xl font-bold text-yellow-300">GALLERY //</h2>
-                      <p className="hidden sm:block text-2xl font-bold text-yellow-300">&nbsp;{total} {plural}</p>
-                    </div>
 
-                    {/* Search + Sort */}
-                    <div className="ml-4 mr-4 flex items-center justify-start">
-                      <form onSubmit={handleSearchFilter}>
-                        <div className="flex">
-                          <TextField id="gallerySearchInput" label="Search..." variant="standard" inputProps={{
-                            style: {
-                              background: 'none',
-                              // height: '2rem',
-                            }
-                          }} />
-                          <button
-                            type="submit"
-                            className="flex items-center justify-center"
-                          >
-                            <svg
-                              className="h-6 w-6 text-gray-600"
-                              fill="yellow"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-                            </svg>
-                          </button>
-                        </div>
-                      </form>
-
-                      <div className="flex ml-3">
-                        <FormControl>
-                          <InputLabel id="sortLabel">Sort By</InputLabel>
-                          <Select
-                            labelId="sortLabel"
-                            label="Sort"
-                            id="gallerySortInput"
-                            style={{ minWidth: 120, height: '3rem' }}
-                            value={sortBy}
-                            onChange={handleDropdownSort}
-                          >
-                            <MenuItem value={"tokenId"}>Token ID</MenuItem>
-                            <MenuItem value={"rarity"}>Rarity (most to least)</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </div>
-
-                      <div className='lg:hidden ml-3'>
-                        <button 
-                          className='text-yellow-300 hover:cursor'
-                          onClick={() => setShowFilters(!showFilters)}
-                        >
-                          Filter
-                        </button>
-                      </div>
-                    </div>
-                    
-                    {/* Filter Pills */}
-                    <div className="ml-4">
-                      <FilterPills
-                        selectedFilters={selectedFilters}
-                        setSelectedFilters={setSelectedFilters}
-                      />
-                    </div>
 
                     <div className="grid gap-4 p-4 pt-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
                       {collectionNfts.map((nft, i) => (

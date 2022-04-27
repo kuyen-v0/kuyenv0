@@ -63,7 +63,7 @@ export default function FilterSelector({
   ));
 
   return (
-    <div display="flex-col text-white">
+    <div display="flex-col text-white overflow-y-auto">
       <hr className="border-stone-300" />
       {filterOptions}
     </div>
