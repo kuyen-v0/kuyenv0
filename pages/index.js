@@ -214,25 +214,24 @@ export default function Gallery({ traits }) {
               <div className="ml-4 mr-4 flex items-center justify-start">
                 <form onSubmit={handleSearchFilter}>
                   <div className="flex">
-                    <TextField id="gallerySearchInput" label="Search..." variant="standard" inputProps={{
-                      style: {
-                        background: 'none',
-                        // height: '2rem',
-                      }
-                    }} />
-                    <button
-                      type="submit"
-                      className="flex items-center justify-center"
-                    >
-                      <svg
-                        className="h-6 w-6 text-gray-600"
-                        fill="yellow"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
+                  
+                    <div class="relative flex border border-white rounded-sm">
+                      <input class="bg-transparent min-w-0 w-full pr-0 text-white placeholder-white focus:placeholder-gray-400 focus:border-transparent border-transparent focus:ring-0" type="search" id="gallerySearchInput" placeholder="Search..." />
+                      <button
+                        type="submit"
+                        className="flex items-center justify-center px-2"
                       >
-                        <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-                      </svg>
-                    </button>
+                        <svg
+                          className="h-6 w-6 text-gray-600"
+                          fill="yellow"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+                        </svg>
+                      </button>
+                    </div>
+
                   </div>
                 </form>
 
