@@ -238,7 +238,7 @@ export default function Gallery({ traits }) {
                     <Menu as="div" className="relative inline-block text-left h-full">
                       <div className='h-full'>
                         <Menu.Button className="border rounded-sm border-white bg-transparent inline-flex w-full h-full justify-center items-center px-4 py-2 text-white focus:outline-none">
-                          Sort By: {sortBy}
+                          {sortBy == 'tokenId' ? "Token" : "Rarity"}
                           <FontAwesomeIcon icon={faChevronDown} className='ml-2 text-yellow-300 h-5' />
                         </Menu.Button>
                       </div>
@@ -284,6 +284,7 @@ export default function Gallery({ traits }) {
                   </div>
                 </div>
 
+                {/* Show Filters Button (mobile) */}
                 <div className='lg:hidden ml-3'>
                   <button 
                     className='text-yellow-300 hover:cursor'
