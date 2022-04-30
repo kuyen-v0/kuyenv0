@@ -116,10 +116,8 @@ export default function Gallery({ traits }) {
     setSearchValue(searchInput);
   };
 
-  const handleDropdownSort = (e) => {
-    e.preventDefault();
-    const sortValue = e.target.value;
-    setSortBy(sortValue);
+  const handleDropdownSort = (newSortValue) => {
+    setSortBy(newSortValue);
   };
 
   let plural = (total > 1) ? "RESULTS" : "RESULT";
@@ -260,10 +258,11 @@ export default function Gallery({ traits }) {
                               {({ active }) => (
                                 <button
                                   className={`${
-                                    active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                                    active ? 'bg-black text-white' : 'text-black'
                                   } group flex w-full items-center rounded-sm px-2 py-2 text-sm`}
+                                  onClick={() => handleDropdownSort("tokenId")}
                                 >
-                                  Duplicate
+                                  Token ID
                                 </button>
                               )}
                             </Menu.Item>
