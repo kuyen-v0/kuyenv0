@@ -296,7 +296,7 @@ export default function Gallery({ traits }) {
               </div>
               
               {/* Filter Pills */}
-              <div className="ml-4">
+              <div className="ml-4 mb-2">
                 <FilterPills
                   selectedFilters={selectedFilters}
                   setSelectedFilters={setSelectedFilters}
@@ -314,7 +314,7 @@ export default function Gallery({ traits }) {
                     height={'100vh'}
                     endMessage={<h4></h4>}
                   >
-                    <div className="grid gap-4 p-4 pt-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+                    <div className="grid gap-4 p-4 pt-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
                       {collectionNfts.map((nft, i) => (
                         <Link
                           key={i}
