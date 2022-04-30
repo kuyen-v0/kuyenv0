@@ -234,7 +234,6 @@ export default function Gallery({ traits }) {
 
                 {/* Sort */}
                 <div className="flex ml-3 h-full">
-
                   <div className="text-right z-50 h-full">
                     <Menu as="div" className="relative inline-block text-left h-full">
                       <div className='h-full'>
@@ -266,26 +265,23 @@ export default function Gallery({ traits }) {
                                 </button>
                               )}
                             </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${
+                                    active ? 'bg-black text-white' : 'text-black'
+                                  } group flex w-full items-center rounded-sm px-2 py-2 text-sm`}
+                                  onClick={() => handleDropdownSort("rarity")}
+                                >
+                                  Rarity (most to least)
+                                </button>
+                              )}
+                            </Menu.Item>
                           </div>
                         </Menu.Items>
                       </Transition>
                     </Menu>
                   </div>
-
-                  {/* <FormControl>
-                    <InputLabel id="sortLabel">Sort By</InputLabel>
-                    <Select
-                      labelId="sortLabel"
-                      label="Sort"
-                      id="gallerySortInput"
-                      style={{ minWidth: 120, height: '3rem' }}
-                      value={sortBy}
-                      onChange={handleDropdownSort}
-                    >
-                      <MenuItem value={"tokenId"}>Token ID</MenuItem>
-                      <MenuItem value={"rarity"}>Rarity (most to least)</MenuItem>
-                    </Select>
-                  </FormControl> */}
                 </div>
 
                 <div className='lg:hidden ml-3'>
