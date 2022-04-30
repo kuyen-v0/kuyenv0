@@ -241,7 +241,7 @@ export default function Gallery({ traits }) {
                     <Menu as="div" className="relative inline-block text-left h-full">
                       <div className='h-full'>
                         <Menu.Button className="border rounded-sm border-white bg-transparent inline-flex w-full h-full justify-center items-center px-4 py-2 text-white focus:outline-none">
-                          Sort By: {/* Todo: selection name here */}
+                          Sort By: {sortBy}
                           <FontAwesomeIcon icon={faChevronDown} className='ml-2 text-yellow-300 h-5' />
                         </Menu.Button>
                       </div>
@@ -254,28 +254,15 @@ export default function Gallery({ traits }) {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="focus:outline-none absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-100">
+                        <Menu.Items className="focus:outline-none absolute right-0 mt-1 w-full origin-top-right divide-y divide-gray-100 rounded-sm bg-white opacity-90 shadow-md z-100">
                           <div className="px-1 py-1 ">
                             <Menu.Item>
                               {({ active }) => (
                                 <button
                                   className={`${
                                     active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                  } group flex w-full items-center rounded-sm px-2 py-2 text-sm`}
                                 >
-                                  {active ? (
-                                    // <DuplicateActiveIcon
-                                    //   className="mr-2 h-5 w-5"
-                                    //   aria-hidden="true"
-                                    // />
-                                    <p>asdf</p>
-                                  ) : (
-                                    // <DuplicateInactiveIcon
-                                    //   className="mr-2 h-5 w-5"
-                                    //   aria-hidden="true"
-                                    // />
-                                    <p>dfda</p>
-                                  )}
                                   Duplicate
                                 </button>
                               )}
