@@ -234,7 +234,7 @@ export default function Gallery({ traits }) {
 
                 {/* Sort */}
                 <div className="flex ml-3 h-full">
-                  <div className="text-right z-50 h-full">
+                  <div className="text-right h-full">
                     <Menu as="div" className="relative inline-block text-left h-full">
                       <div className='h-full'>
                         <Menu.Button className="border rounded-sm border-white bg-transparent inline-flex w-full h-full justify-center items-center px-4 py-2 text-white focus:outline-none">
@@ -251,7 +251,7 @@ export default function Gallery({ traits }) {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="focus:outline-none absolute right-0 mt-1 w-full origin-top-right divide-y divide-gray-100 rounded-sm bg-white opacity-90 shadow-md z-100">
+                        <Menu.Items className="focus:outline-none absolute right-0 mt-1 w-full origin-top-right divide-y divide-gray-100 rounded-sm bg-white opacity-90 shadow-md z-50">
                           <div className="px-1 py-1 ">
                             <Menu.Item>
                               {({ active }) => (
