@@ -209,7 +209,7 @@ export default function Gallery({ traits }) {
                 <p className="hidden sm:block text-2xl font-bold text-yellow-300">&nbsp;{total} {plural}</p>
               </div>
 
-              {/* Search + Sort */}
+              {/* Search */}
               <div className="ml-4 mr-4 flex items-center justify-start">
                 <form onSubmit={handleSearchFilter}>
                   <div className="flex">
@@ -234,14 +234,15 @@ export default function Gallery({ traits }) {
                   </div>
                 </form>
 
-                <div className="flex ml-3">
+                {/* Sort */}
+                <div className="flex ml-3 h-full">
 
-                  <div className="text-right z-50">
-                    <Menu as="div" className="relative inline-block text-left">
-                      <div>
-                        <Menu.Button className="focus:outline-none inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                          Options
-                          <FontAwesomeIcon icon={faChevronDown} className='text-yellow-300 h-6' />
+                  <div className="text-right z-50 h-full">
+                    <Menu as="div" className="relative inline-block text-left h-full">
+                      <div className='h-full'>
+                        <Menu.Button className="border rounded-sm border-white bg-transparent inline-flex w-full h-full justify-center items-center px-4 py-2 text-white focus:outline-none">
+                          Sort By: {/* Todo: selection name here */}
+                          <FontAwesomeIcon icon={faChevronDown} className='ml-2 text-yellow-300 h-5' />
                         </Menu.Button>
                       </div>
                       <Transition
