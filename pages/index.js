@@ -215,8 +215,8 @@ export default function Gallery({ traits }) {
                 <form onSubmit={handleSearchFilter}>
                   <div className="flex">
                   
-                    <div class="relative flex border border-white rounded-sm">
-                      <input class="bg-transparent min-w-0 w-full pr-0 text-white placeholder-white focus:placeholder-gray-400 focus:border-transparent border-transparent focus:ring-0" type="search" id="gallerySearchInput" placeholder="Search..." />
+                    <div className="relative flex border border-white rounded-sm">
+                      <input className="bg-transparent min-w-0 w-full pr-0 text-white placeholder-white focus:placeholder-gray-400 focus:border-transparent border-transparent focus:ring-0" type="search" id="gallerySearchInput" placeholder="Search..." />
                       <button
                         type="submit"
                         className="flex items-center justify-center px-2"
