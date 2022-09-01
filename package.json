@@ -35,7 +35,7 @@
     "ipfs-http-client": "50.1.2",
     "magic-sdk": "^8.0.1",
     "mongodb": "^4.5.0",
-    "moralis": "^1.2.6",
+    "moralis": "^2.2.0",
     "net": "^1.0.2",
     "next": "12.1.5",
     "postcss": "^8.4.6",
